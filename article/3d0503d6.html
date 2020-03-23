@@ -12,27 +12,27 @@
   <link rel="dns-prefetch" href="http://www.yunqing.xyz">
   <title>mysql必知必会读书笔记（1） | MY WORLD</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="mysql命令行客户端登录1234#默认端口3306 主机本地localhostmysql -u root -p#写全的话mysql -u root -p -h localhost -P 3307">
+  <meta name="description" content="mysql命令行客户端登录1234-- 默认端口3306 主机本地localhostmysql -u root -p-- 写全的话mysql -u root -p -h localhost -P 3307">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql必知必会读书笔记（1）">
 <meta property="og:url" content="http://www.yunqing.xyz/article/3d0503d6.html">
 <meta property="og:site_name" content="MY WORLD">
-<meta property="og:description" content="mysql命令行客户端登录1234#默认端口3306 主机本地localhostmysql -u root -p#写全的话mysql -u root -p -h localhost -P 3307">
+<meta property="og:description" content="mysql命令行客户端登录1234-- 默认端口3306 主机本地localhostmysql -u root -p-- 写全的话mysql -u root -p -h localhost -P 3307">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8020666-e1df2f897ed79c9e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8020666-32f4ce908bd48f1d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8020666-8eab3ecb33a10981.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8020666-603839c8146f03a0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8020666-c945d77f8c441799.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8020666-c3a45ff2489ea9df.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8020666-a63f08be2c93c7b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8020666-c844498b574fd8bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-1.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-2.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-3.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-4.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-5.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-6.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-7.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-8.png">
 <meta property="article:published_time" content="2020-03-22T10:56:44.000Z">
-<meta property="article:modified_time" content="2020-03-22T11:05:59.462Z">
+<meta property="article:modified_time" content="2020-03-23T12:24:53.883Z">
 <meta property="article:author" content="云晴">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/8020666-e1df2f897ed79c9e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-1.png">
   
     <link rel="alternative" href="/atom.xml" title="MY WORLD" type="application/atom+xml">
   
@@ -240,14 +240,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="mysql命令行客户端登录"><a href="#mysql命令行客户端登录" class="headerlink" title="mysql命令行客户端登录"></a>mysql命令行客户端登录</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#默认端口3306 主机本地localhost</span><br><span class="line">mysql -u root -p</span><br><span class="line">#写全的话</span><br><span class="line">mysql -u root -p -h localhost -P 3307</span><br></pre></td></tr></table></figure>
+        <h2 id="mysql命令行客户端登录"><a href="#mysql命令行客户端登录" class="headerlink" title="mysql命令行客户端登录"></a>mysql命令行客户端登录</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 默认端口3306 主机本地localhost</span><br><span class="line">mysql -u root -p</span><br><span class="line">-- 写全的话</span><br><span class="line">mysql -u root -p -h localhost -P 3307</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 
 <blockquote>
 <p>解释一下：-u 用户名为root     -p 密码待输入   -h 主机名localhost   -P 注意大写P ，意思是端口号3307</p>
 </blockquote>
-<h2 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#展示所有数据库</span><br><span class="line">show databases;</span><br><span class="line">#使用数据库</span><br><span class="line">use kls;</span><br><span class="line">#展示数据库中所有的表</span><br><span class="line">show tables;</span><br><span class="line">#展示person表的字段</span><br><span class="line">show columns from person;</span><br><span class="line">#show columns from 可以用describe代替</span><br><span class="line">describe person;</span><br></pre></td></tr></table></figure>
-<p><img src="https://upload-images.jianshu.io/upload_images/8020666-e1df2f897ed79c9e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-- 展示所有数据库</span><br><span class="line">show databases;</span><br><span class="line">-- 使用数据库</span><br><span class="line">use kls;</span><br><span class="line">-- 展示数据库中所有的表</span><br><span class="line">show tables;</span><br><span class="line">-- 展示person表的字段</span><br><span class="line">show columns from person;</span><br><span class="line">-- show columns from 可以用describe代替</span><br><span class="line">describe person;</span><br></pre></td></tr></table></figure>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-1.png" alt="22-3d0503d6-1.png"></p>
 <blockquote>
 <p>mysql不区分大小写，但是为了易于阅读，开发人员经常把关键字大写，列和表名小写。(反正我是遵守不了，看大写的英文难受)</p>
 </blockquote>
@@ -277,45 +277,46 @@
 <h2 id="通配符-和"><a href="#通配符-和" class="headerlink" title="通配符 % 和 _"></a>通配符 % 和 _</h2><blockquote>
 <p>mysql使用LIKE操作符跟%通配符进行模糊搜索。</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#查询姓李的学生</span><br><span class="line">select name from student where name like &#39;李%&#39;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 查询姓李的学生</span><br><span class="line">select name from student where name like &#39;李%&#39;;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>①注意：根据mysql的配置方式，搜索是要区分大小写的，例如模糊搜索中’jet%’是不会匹配JetPack的。<br>②注意’%jet%’表示匹配任何位置包括jet文本的值，而不论他之前或之后出现什么值。<br>③%表示搜索模式指定位置有0到多个任意字符。<br>④注意通配符_下划线，只能匹配1个字符，不能多也不能少。<br>⑤%不会匹配NULL行，即使是like ‘%’也不会匹配NULL行。<br>⑥通配符一般处理时间比其他搜索要长，其他操作能达到尽量不要使用，使用通配符时候除非有绝对必要，否则不要把通配符用在开始处，因为放在开始处，搜索会最慢。</p>
 </blockquote>
 <h2 id="使用mysql正则表达式"><a href="#使用mysql正则表达式" class="headerlink" title="使用mysql正则表达式"></a>使用mysql正则表达式</h2><blockquote>
-<p>mysql使用 <code>regexp</code> 表示后面跟的内容为正则表达式<br>###基本字符匹配</p>
+<p>mysql使用 <code>regexp</code> 表示后面跟的内容为正则表达式</p>
+<p>###基本字符匹配</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#正则匹配姓名为小刚的行</span><br><span class="line">select * from student where name regexp &#39;小刚&#39;；</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 正则匹配姓名为小刚的行</span><br><span class="line">select * from student where name regexp &#39;小刚&#39;；</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>. 点号是正则表达式中的一个重要字符，表示匹配任意一个字符。</p>
+<p><code>.</code>点号是正则表达式中的一个重要字符，表示匹配任意一个字符。</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#正则匹配0前面有任意一个字符的行,例如10、20等</span><br><span class="line">select * from student where age regexp &#39;.0&#39;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 正则匹配0前面有任意一个字符的行,例如10、20等</span><br><span class="line">select * from student where age regexp &#39;.0&#39;;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>正则表达式不区分大小写，为了区分大小写可以使用binary关键字</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#下面例子则匹配jet 1000 或者 jet a000等</span><br><span class="line">... where name regexp binary &#39;jet .000&#39;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 下面例子则匹配jet 1000 或者 jet a000等</span><br><span class="line">... where name regexp binary &#39;jet .000&#39;;</span><br></pre></td></tr></table></figure>
 <h3 id="进行OR匹配"><a href="#进行OR匹配" class="headerlink" title="进行OR匹配"></a>进行OR匹配</h3><blockquote>
 <p>正则表达式利用<code>|</code>来表示or操作</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#匹配名字中包括小明或小李的</span><br><span class="line">... where name regexp &#39;小明|小李&#39;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 匹配名字中包括小明或小李的</span><br><span class="line">... where name regexp &#39;小明|小李&#39;;</span><br></pre></td></tr></table></figure>
 <h3 id="匹配几个字符之一"><a href="#匹配几个字符之一" class="headerlink" title="匹配几个字符之一"></a>匹配几个字符之一</h3><blockquote>
 <p>使用<code>[]</code>包裹的字符，表示匹配其中之一</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#正则匹配包括1或2或3的学号</span><br><span class="line">... where id regexp &#39;[123]&#39;；</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 正则匹配包括1或2或3的学号</span><br><span class="line">... where id regexp &#39;[123]&#39;；</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>解释：<code>[123]</code>是<code>[1|2|3]</code>的缩写，其实<code>[]</code>就是正则中另一种形式的or语句，为什么加<code>[]</code>是因为如下：</p>
 </blockquote>
-<p><img src="https://upload-images.jianshu.io/upload_images/8020666-32f4ce908bd48f1d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-2.png" alt="22-3d0503d6-2.png"></p>
 <blockquote>
 <p>字符集合也可以被否定，即匹配除指定字符之外的任何东西，即<code>[^123]</code>匹配除123这三个字符之外的任何东西。</p>
 </blockquote>
-<h2 id="正则匹配范围"><a href="#正则匹配范围" class="headerlink" title="正则匹配范围"></a>正则匹配范围</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#例如</span><br><span class="line">[0-9]</span><br><span class="line">[a-z]</span><br><span class="line">[1-3]</span><br><span class="line">[a-e]</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#将会匹配到1 Ton anvil 或 .5 ton anvil等 </span><br><span class="line">... where name regexp &#39;[1-5] Ton&#39;；</span><br></pre></td></tr></table></figure>
+<h2 id="正则匹配范围"><a href="#正则匹配范围" class="headerlink" title="正则匹配范围"></a>正则匹配范围</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-- 例如</span><br><span class="line">[0-9]</span><br><span class="line">[a-z]</span><br><span class="line">[1-3]</span><br><span class="line">[a-e]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 将会匹配到1 Ton anvil 或 .5 ton anvil等 </span><br><span class="line">... where name regexp &#39;[1-5] Ton&#39;；</span><br></pre></td></tr></table></figure>
 <h3 id="正则匹配特殊字符-转义"><a href="#正则匹配特殊字符-转义" class="headerlink" title="正则匹配特殊字符\\转义"></a>正则匹配特殊字符<code>\\</code>转义</h3><blockquote>
 <p>如果需要转义<code>\</code>本身，需要使用<code>\\\</code><br>为什么正则表达式用两个<code>\\</code>呢？因为在mysql当中，mysql自己解释一个，正则表达式库解释一个。</p>
 </blockquote>
-<h3 id="正则匹配字符类"><a href="#正则匹配字符类" class="headerlink" title="正则匹配字符类"></a>正则匹配字符类</h3><p><img src="https://upload-images.jianshu.io/upload_images/8020666-8eab3ecb33a10981.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<h3 id="正则匹配多个实例"><a href="#正则匹配多个实例" class="headerlink" title="正则匹配多个实例"></a>正则匹配多个实例</h3><p><img src="https://upload-images.jianshu.io/upload_images/8020666-603839c8146f03a0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/8020666-c945d77f8c441799.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<h3 id="正则定位符"><a href="#正则定位符" class="headerlink" title="正则定位符"></a>正则定位符</h3><p><img src="https://upload-images.jianshu.io/upload_images/8020666-c3a45ff2489ea9df.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="正则匹配字符类"><a href="#正则匹配字符类" class="headerlink" title="正则匹配字符类"></a>正则匹配字符类</h3><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-3.png" alt="22-3d0503d6-3"></p>
+<h3 id="正则匹配多个实例"><a href="#正则匹配多个实例" class="headerlink" title="正则匹配多个实例"></a>正则匹配多个实例</h3><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-4.png" alt="22-3d0503d6-4"><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-5.png" alt="22-3d0503d6-5.png"></p>
+<h3 id="正则定位符"><a href="#正则定位符" class="headerlink" title="正则定位符"></a>正则定位符</h3><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-6.png" alt="22-3d0503d6-6"></p>
 <blockquote>
 <p>例如我们想搜索一个以<code>.</code>点号或者数字开头的结果，怎么办？<br>[0-9\.]是不行的，因为他会在文本的任意位置开始查找，解决办法就是使用定位符^从文本开始位置查找。</p>
 </blockquote>
@@ -323,13 +324,13 @@
 <h2 id="创建计算字段"><a href="#创建计算字段" class="headerlink" title="创建计算字段"></a>创建计算字段</h2><blockquote>
 <p>简单来说，数据库中存储的结果不是我们最终想要的，例如省市区分别存储在3列中，我们需要连在一列显示。</p>
 </blockquote>
-<h3 id="拼接字段Concat-函数"><a href="#拼接字段Concat-函数" class="headerlink" title="拼接字段Concat()函数"></a>拼接字段Concat()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#将first_name、 ( 、last_name、和）这四个字符串拼接起来，例如: 李 （小明）</span><br><span class="line">select Concat(first_name, &#39; (&#39; , last_name, &#39;)&#39;) as name from student;</span><br></pre></td></tr></table></figure>
+<h3 id="拼接字段Concat-函数"><a href="#拼接字段Concat-函数" class="headerlink" title="拼接字段Concat()函数"></a>拼接字段Concat()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 将first_name、 ( 、last_name、和）这四个字符串拼接起来，例如: 李 （小明）</span><br><span class="line">select Concat(first_name, &#39; (&#39; , last_name, &#39;)&#39;) as name from student;</span><br></pre></td></tr></table></figure>
 <h3 id="Trim-、LTrim-、RTrim-函数"><a href="#Trim-、LTrim-、RTrim-函数" class="headerlink" title="Trim()、LTrim() 、RTrim()函数"></a><code>Trim()</code>、<code>LTrim()</code> 、<code>RTrim()</code>函数</h3><blockquote>
 <p>分别为去掉左右两边的空格、去掉左边空格、去掉右边空格</p>
 </blockquote>
-<h2 id="如何测试计算？"><a href="#如何测试计算？" class="headerlink" title="如何测试计算？"></a>如何测试计算？</h2><p><img src="https://upload-images.jianshu.io/upload_images/8020666-a63f08be2c93c7b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#例如查询当前时间</span><br><span class="line">select  now();</span><br></pre></td></tr></table></figure>
-<p><img src="https://upload-images.jianshu.io/upload_images/8020666-c844498b574fd8bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="如何测试计算？"><a href="#如何测试计算？" class="headerlink" title="如何测试计算？"></a>如何测试计算？</h2><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-7.png" alt="22-3d0503d6-7"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 例如查询当前时间</span><br><span class="line">select  now();</span><br></pre></td></tr></table></figure>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-8.png" alt="22-3d0503d6-8"></p>
 
       
 
