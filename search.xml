@@ -70,7 +70,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#停止名为test的容器</span></span><br><span class="line">docker stop <span class="built_in">test</span></span><br><span class="line"><span class="comment">#删除名为test的容器</span></span><br><span class="line">docker rm <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>重新启动一个完整的nginx容器</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -d -p 80:80 --name nginx --net host -v /usr/docker/nginx/html:/usr/share/nginx/html -v /usr/docker/nginx/nginx.conf:/etc/nginx/nginx.conf -v /usr/docker/nginx/logs:/var/<span class="built_in">log</span>/nginx --privileged=<span class="literal">true</span> --restart always nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -d -p 80:80 --name nginx --net host -v /usr/docker/nginx/html:/usr/share/nginx/html -v /usr/docker/nginx/nginx.conf:/etc/nginx/nginx.conf -v /usr/docker/nginx/logs:/var/<span class="built_in">log</span>/nginx --privileged=<span class="literal">true</span> --restart=always nginx</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -81,7 +81,7 @@
 <p>–net host 容器和宿主机公用网络</p>
 <p>-v 映射宿主机和容器内的路径</p>
 <p>–privileged=true 给容器内root权限</p>
-<p>–restart always 随docker自启动</p>
+<p>–restart=always 随docker自启动</p>
 <p>启动nginx:latest镜像</p>
 </blockquote>
 <ul>
@@ -93,7 +93,7 @@
 <li><p>这时候打开浏览器访问宿主机ip我这里是192.168.137.100就应该访问调到nginx欢迎页，<strong>这里会报错403因为/usr/docker/nginx/html路径下并没有index.html这个欢迎页</strong></p>
 </li>
 <li><p>额，但是准确的说nginx已经作为docker容器启动了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#简单的自己写一个欢迎页吧，最起码访问宿主机ip我这是192.168.137.100要看到效果啊</span></span><br><span class="line"><span class="built_in">cd</span> /usr/docker/nginx/html</span><br><span class="line"><span class="comment">#添加一个index.html文件写入hello nginx</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"hello nginx"</span> &gt; index.html</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#简单的自己写一个欢迎页吧，最起码访问宿主机ip我这是192.168.137.100要看到效果啊</span></span><br><span class="line"><span class="built_in">cd</span> /usr/docker/nginx/html</span><br><span class="line"><span class="comment">#添加一个index.html文件写入hello nginx</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"hello nginx"</span> &gt; index.html</span><br><span class="line"><span class="comment">#容器中的nginx热更新</span></span><br><span class="line">docker <span class="built_in">exec</span> -it nginx  nginx -s reload</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -659,7 +659,7 @@
 <p>梦想是一定要有的，我们肯定能实现！</p>
 <p>问题不是自己的梦想是否疯狂，而是够不够疯狂！</p>
 </blockquote>
-<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","loop":true,"video":{"url":"https://yunqing-img.oss-cn-beijing.aliyuncs.com/video/dream-crazy.mp4","pic":"https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/dream-img.png"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","loop":true,"video":{"url":"https://yunqing-img.oss-cn-beijing.aliyuncs.com/video/dream-crazy.mp4","pic":"https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexovideo-logo.png"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
 
 
 
