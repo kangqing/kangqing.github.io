@@ -41,8 +41,8 @@
     <title>用Docker安装nginx和vsftpd搭建文件服务器</title>
     <link href="http://www.yunqing.xyz/article/11c2cd82.html"/>
     <id>http://www.yunqing.xyz/article/11c2cd82.html</id>
-    <published>2020-03-26T15:39:47.578Z</published>
-    <updated>2020-03-30T14:15:13.139Z</updated>
+    <published>2020-03-26T12:48:23.000Z</published>
+    <updated>2020-04-02T13:59:46.217Z</updated>
     
     <summary type="html">
     
@@ -52,6 +52,14 @@
     </summary>
     
     
+    
+      <category term="docker" scheme="http://www.yunqing.xyz/tags/docker/"/>
+    
+      <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+      <category term="nginx" scheme="http://www.yunqing.xyz/tags/nginx/"/>
+    
+      <category term="vsftpd" scheme="http://www.yunqing.xyz/tags/vsftpd/"/>
     
   </entry>
   

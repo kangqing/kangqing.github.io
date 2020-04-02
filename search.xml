@@ -59,31 +59,46 @@
 </li>
 <li><p>查看nginx容器id</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+
+<h2 id="注意：docker启动nginx需要两个配置文件"><a href="#注意：docker启动nginx需要两个配置文件" class="headerlink" title="注意：docker启动nginx需要两个配置文件"></a>注意：docker启动nginx需要两个配置文件</h2></li>
+</ul>
+<p>  <a href="https://blog.csdn.net/weixin_42880943/article/details/100777093?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task" target="_blank" rel="noopener external nofollow noreferrer" class="LinkCard">此处参考☛迷彩诱惑的青春</a></p>
+<ul>
+<li><p>一个是位于容器内部的<code>/etc/nginx/nginx.conf</code></p>
 </li>
-<li><p>创建目录用于存放nginx.conf</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -p创建多级目录</span></span><br><span class="line">mkdir /usr/docker/nginx -p</span><br></pre></td></tr></table></figure>
+<li><p>另一个是位于容器内部的<code>/etc/nginx/conf.d/default.conf</code></p>
+</li>
+<li><p><code>default.conf</code>配置的是<code>server { }</code>的内容</p>
+<h2 id="所以在这里我们需要把这两个配置文件复制到宿主机用于挂载"><a href="#所以在这里我们需要把这两个配置文件复制到宿主机用于挂载" class="headerlink" title="所以在这里我们需要把这两个配置文件复制到宿主机用于挂载"></a>所以在这里我们需要把这两个配置文件复制到宿主机用于挂载</h2></li>
+</ul>
+<ul>
+<li><p>创建目录用于存放nginx.conf 和 default.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -p创建多级目录</span></span><br><span class="line">mkdir /usr/docker/nginx -p</span><br><span class="line">mkdir /usr/docker/nginx/conf.d/ -p</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>从nginx容器中复制出nginx文件到刚才新建的目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># docker复制容器id为e9bf057b53bb的/etc/nginx/nginx.conf路径的nginx.conf文件到容器外宿主机的/docker/nginx/目录</span></span><br><span class="line">docker cp e9bf057b53bb:/etc/nginx/nginx.conf /usr/docker/nginx/</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># docker复制容器id为e9bf057b53bb的/etc/nginx/nginx.conf路径的nginx.conf文件到容器外宿主机的/docker/nginx/目录</span></span><br><span class="line">docker cp e9bf057b53bb:/etc/nginx/nginx.conf /usr/docker/nginx/</span><br><span class="line"><span class="comment"># 复制default.conf,含义参考上条注释</span></span><br><span class="line">docker cp e9bf057b53bb:/etc/nginx/conf.d/default.conf /usr/docker/nginx/conf.d/</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>复制出来之后删除刚才临时启动的test的容器</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#停止名为test的容器</span></span><br><span class="line">docker stop <span class="built_in">test</span></span><br><span class="line"><span class="comment">#删除名为test的容器</span></span><br><span class="line">docker rm <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>重新启动一个完整的nginx容器</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -d -p 80:80 --name nginx --net host -v /usr/docker/nginx/html:/usr/share/nginx/html -v /usr/docker/nginx/nginx.conf:/etc/nginx/nginx.conf -v /usr/docker/nginx/logs:/var/<span class="built_in">log</span>/nginx --privileged=<span class="literal">true</span> --restart=always nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -d -p 80:80 \</span><br><span class="line">--name nginx --net host \</span><br><span class="line">-v /usr/docker/nginx/nginx.conf:/etc/nginx/nginx.conf \</span><br><span class="line">-v /usr/docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf \</span><br><span class="line">-v /usr/docker/nginx/html:/usr/share/nginx/html \</span><br><span class="line">-v /usr/docker/vsftpd/root:/mnt/data \</span><br><span class="line">-v /usr/docker/nginx/logs:/var/<span class="built_in">log</span>/nginx \</span><br><span class="line">--privileged=<span class="literal">true</span> --restart=always nginx</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<blockquote>
+<h2 id="下面的配置解释很重要-结合我default-conf的配置看"><a href="#下面的配置解释很重要-结合我default-conf的配置看" class="headerlink" title="下面的配置解释很重要****结合我default.conf的配置看"></a>下面的配置解释很重要<code>****</code>结合我default.conf的配置看</h2><blockquote>
 <p>解释：</p>
 <p>-p 宿主机的80端口映射到容器的80端口</p>
 <p>–name nginx 容器命名为nginx</p>
 <p>–net host 容器和宿主机公用网络</p>
-<p>-v 映射宿主机和容器内的路径</p>
+<p><strong>-v 映射宿主机和容器内的路径，首先是把两个配置文件nginx.conf和default.conf从容器目录映射到宿主机的/usr/docker/nginx下的相应目录中，之后只要改宿主机的配置就相当于改了容器中的配置文件。</strong></p>
+<p><strong>其次看下面图片中的配置全是去找的容器相应位置的文件，没错，就是找容器相应位置，但是这些位置我也做了映射，例如把nginx的主页位置映射到了/usr/docker/nginx/html最重要的是把静态资源的位置映射到了宿主机的vsftpd静态资源服务器/usr/docker/vsftpd/root目录下，结合default.conf中的配置，就能通过nginx访问vsftpd下的静态图片文件了。</strong></p>
+<p>-v 还做了日志文件目录的映射</p>
 <p>–privileged=true 给容器内root权限</p>
 <p>–restart=always 随docker自启动</p>
 <p>启动nginx:latest镜像</p>
 </blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/26-11c2cd82-0.png" alt="image-20200402213717324"></p>
 <ul>
 <li>开启防火墙相关端口</li>
 </ul>
@@ -93,10 +108,12 @@
 <li><p>这时候打开浏览器访问宿主机ip我这里是192.168.137.100就应该访问调到nginx欢迎页，<strong>这里会报错403因为/usr/docker/nginx/html路径下并没有index.html这个欢迎页</strong></p>
 </li>
 <li><p>额，但是准确的说nginx已经作为docker容器启动了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#简单的自己写一个欢迎页吧，最起码访问宿主机ip我这是192.168.137.100要看到效果啊</span></span><br><span class="line"><span class="built_in">cd</span> /usr/docker/nginx/html</span><br><span class="line"><span class="comment">#添加一个index.html文件写入hello nginx</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"hello nginx"</span> &gt; index.html</span><br><span class="line"><span class="comment">#容器中的nginx热更新</span></span><br><span class="line">docker <span class="built_in">exec</span> -it nginx  nginx -s reload</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 简单的自己写一个欢迎页吧，最起码访问宿主机ip我这是192.168.137.100要看到效果啊</span></span><br><span class="line"><span class="built_in">cd</span> /usr/docker/nginx/html</span><br><span class="line"><span class="comment"># 添加一个index.html文件写入hello nginx</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"hello nginx"</span> &gt; index.html</span><br><span class="line"><span class="comment"># 容器中的nginx热更新</span></span><br><span class="line">docker <span class="built_in">exec</span> -it nginx  nginx -s reload</span><br><span class="line"><span class="comment"># 不管用就直接重启ngixn容器</span></span><br><span class="line">docker restart nginx</span><br><span class="line"><span class="comment"># 强迫症非要nginx首页如我的话，我直接拷贝windows中nginx的index页到/usr/docker/nginx/html中了</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/26-11c2cd82-1.png" alt="image-20200402204959612"></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/26-11c2cd82-2.png" alt="image-20200402205847973"></p>
 <h3 id="到这nginx容器启动好了，下面启动vsftpd容器"><a href="#到这nginx容器启动好了，下面启动vsftpd容器" class="headerlink" title="到这nginx容器启动好了，下面启动vsftpd容器"></a>到这nginx容器启动好了，下面启动vsftpd容器</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#拉取vsftpd镜像</span></span><br><span class="line">docker pull fauria/vsftpd</span><br><span class="line"><span class="comment">#启动容器</span></span><br><span class="line">docker run -d -v /usr/docker/vsftpd:/home/vsftpd \</span><br><span class="line">-p 20:20 -p 21:21 -p 21100-21110:21100-21110 \</span><br><span class="line">-e FTP_USER=root -e FTP_PASS=123456 \</span><br><span class="line">-e PASV_ADDRESS=192.168.137.100 -e PASV_MIN_PORT=21100 -e PASV_MAX_PORT=21110 \</span><br><span class="line">--name vsftpd --privileged=<span class="literal">true</span> --restart=always fauria/vsftpd</span><br><span class="line"><span class="comment">#开启20防火墙端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=20/tcp --permanent</span><br><span class="line"><span class="comment">#开启21防火墙端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=21/tcp --permanent</span><br><span class="line"><span class="comment">#开启21100-21110防火墙端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=21100-21110/tcp --permanent</span><br><span class="line"><span class="comment">#重启防火墙</span></span><br><span class="line">firewall-cmd --reload</span><br><span class="line"><span class="comment">#查看防火墙已经启动的端口</span></span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -117,9 +134,28 @@
 <li><p>将新的FTP用户添加到现有容器中</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入容器内部</span></span><br><span class="line">docker <span class="built_in">exec</span> -it vsftpd bash</span><br><span class="line"><span class="comment"># 新建myuser用户的文件夹</span></span><br><span class="line">mkdir /home/vsftpd/myuser</span><br><span class="line"><span class="comment"># 添加新用户myuser换行密码5678写入文件中</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"myuser\n5678"</span> &gt;&gt; /etc/vsftpd/virtual_users.txt</span><br><span class="line"><span class="comment"># 密码写入数据库</span></span><br><span class="line">/usr/bin/db_load -T -t <span class="built_in">hash</span> -f /etc/vsftpd/virtual_users.txt /etc/vsftpd/virtual_users.db</span><br><span class="line"><span class="comment"># 退出容器内部</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line"><span class="comment"># 重启vsftpd</span></span><br><span class="line">docker restart vsftpd</span><br></pre></td></tr></table></figure>
 
+
+
 </li>
 </ul>
+<ul>
+<li>通过nginx访问到静态资源服务器中的图片了<code>http://192.168.16.128/images/test.png</code></li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/26-11c2cd82-3.png" alt="image-20200402211508955"></p>
+<ul>
+<li><p>用nginx是方便我们使用http协议访问静态资源服务器</p>
+</li>
+<li><p>其实只需要安装vsftpd就能ftp协议上传图片了，浏览器访问<code>ftp://192.168.16.128</code>,填写我们之前设置的用户名<code>root</code> 密码<code>5678</code></p>
+</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/26-11c2cd82-4.png" alt="image-20200402211957464"></p>
 ]]></content>
+      <tags>
+        <tag>docker</tag>
+        <tag>linux</tag>
+        <tag>nginx</tag>
+        <tag>vsftpd</tag>
+      </tags>
   </entry>
   <entry>
     <title>mysql必知必会读书笔记（3）</title>
