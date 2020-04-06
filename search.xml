@@ -7,6 +7,8 @@
 
 <h3 id="2-雪花生成器（推）"><a href="#2-雪花生成器（推）" class="headerlink" title="2.雪花生成器（推）"></a>2.雪花生成器（推）</h3>   <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@TableId</span>(value = <span class="string">"id"</span>, type = IdType.ASSIGN_ID)</span><br><span class="line"><span class="keyword">private</span> String id;</span><br></pre></td></tr></table></figure>
 
+<a id="more"></a>
+
 <h3 id="3-UUID"><a href="#3-UUID" class="headerlink" title="3.UUID"></a>3.UUID</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@TableId</span>(value = <span class="string">"id"</span>, type = IdType.ASSIGN_UUID)</span><br><span class="line"><span class="keyword">private</span> String id;</span><br></pre></td></tr></table></figure>
 
 

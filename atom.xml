@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-04-06T11:20:33.049Z</updated>
+  <updated>2020-04-06T11:23:49.301Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -21,17 +21,13 @@
     <link href="http://www.yunqing.xyz/article/cf7f7e62.html"/>
     <id>http://www.yunqing.xyz/article/cf7f7e62.html</id>
     <published>2020-04-05T13:33:58.000Z</published>
-    <updated>2020-04-06T11:20:33.049Z</updated>
+    <updated>2020-04-06T11:23:49.301Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
-        
-      
+      &lt;h2 id=&quot;mybatis-plus之主键生成策略&quot;&gt;&lt;a href=&quot;#mybatis-plus之主键生成策略&quot; class=&quot;headerlink&quot; title=&quot;mybatis plus之主键生成策略&quot;&gt;&lt;/a&gt;mybatis plus之主键生成策略&lt;/h2&gt;&lt;h3 id=&quot;1-自增策略&quot;&gt;&lt;a href=&quot;#1-自增策略&quot; class=&quot;headerlink&quot; title=&quot;1.自增策略&quot;&gt;&lt;/a&gt;1.自增策略&lt;/h3&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@TableId&lt;/span&gt;(value = &lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt;, type = IdType.AUTO)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String id;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;2-雪花生成器（推）&quot;&gt;&lt;a href=&quot;#2-雪花生成器（推）&quot; class=&quot;headerlink&quot; title=&quot;2.雪花生成器（推）&quot;&gt;&lt;/a&gt;2.雪花生成器（推）&lt;/h3&gt;   &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@TableId&lt;/span&gt;(value = &lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt;, type = IdType.ASSIGN_ID)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String id;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
