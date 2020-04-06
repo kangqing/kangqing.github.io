@@ -1,6 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>基于mybatis plus讲解一些知识点</title>
+    <url>/article/cf7f7e62.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="mybatis-plus之主键生成策略"><a href="#mybatis-plus之主键生成策略" class="headerlink" title="mybatis plus之主键生成策略"></a>mybatis plus之主键生成策略</h2><h3 id="1-自增策略"><a href="#1-自增策略" class="headerlink" title="1.自增策略"></a>1.自增策略</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@TableId</span>(value = <span class="string">"id"</span>, type = IdType.AUTO)</span><br><span class="line"><span class="keyword">private</span> String id;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-雪花生成器（推）"><a href="#2-雪花生成器（推）" class="headerlink" title="2.雪花生成器（推）"></a>2.雪花生成器（推）</h3>   <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@TableId</span>(value = <span class="string">"id"</span>, type = IdType.ASSIGN_ID)</span><br><span class="line"><span class="keyword">private</span> String id;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-UUID"><a href="#3-UUID" class="headerlink" title="3.UUID"></a>3.UUID</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@TableId</span>(value = <span class="string">"id"</span>, type = IdType.ASSIGN_UUID)</span><br><span class="line"><span class="keyword">private</span> String id;</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><p>自3.3.0开始,默认使用雪花算法+UUID(不含中划线)</p>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th>主键生成策略</th>
+<th>主键类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">nextId</td>
+<td>ASSIGN_ID，<del>ID_WORKER，ID_WORKER_STR</del></td>
+<td>Long,Integer,String</td>
+<td>支持自动转换为String类型，但数值类型不支持自动转换，需精准匹配，例如返回Long，实体主键就不支持定义为Integer</td>
+</tr>
+<tr>
+<td align="center">nextUUID</td>
+<td>ASSIGN_UUID，<del>UUID</del></td>
+<td>String</td>
+<td>默认不含中划线的UUID生成</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h3 id="4-Sequence主键"><a href="#4-Sequence主键" class="headerlink" title="4.Sequence主键"></a>4.Sequence主键</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@KeySequence</span>(value = <span class="string">"SEQ_ORACLE_STRING_KEY"</span>, clazz = String<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">YourEntity</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@TableId</span>(value = <span class="string">"ID_STR"</span>, type = IdType.INPUT)</span><br><span class="line">    <span class="keyword">private</span> String idStr;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>主键生成策略必须使用INPUT</strong></p>
+</blockquote>
+<blockquote>
+<p>支持父类定义@KeySequence子类继承使用</p>
+</blockquote>
+<p>内置支持：</p>
+<ul>
+<li>DB2KeyGenerator</li>
+<li>H2KeyGenerator</li>
+<li>KingbaseKeyGenerator</li>
+<li>OracleKeyGenerator</li>
+<li>PostgreKeyGenerator</li>
+</ul>
+<blockquote>
+<p>如果内置支持不满足你的需求，可实现IKeyGenerator接口来进行扩展.</p>
+</blockquote>
+<h4 id="SpringBoot方式一：配置类"><a href="#SpringBoot方式一：配置类" class="headerlink" title="SpringBoot方式一：配置类"></a>SpringBoot方式一：配置类</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> IKeyGenerator <span class="title">keyGenerator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> H2KeyGenerator();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="SpringBoot方式二：通过MybatisPlusPropertiesCustomizer自定义"><a href="#SpringBoot方式二：通过MybatisPlusPropertiesCustomizer自定义" class="headerlink" title="SpringBoot方式二：通过MybatisPlusPropertiesCustomizer自定义"></a>SpringBoot方式二：通过MybatisPlusPropertiesCustomizer自定义</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> MybatisPlusPropertiesCustomizer <span class="title">plusPropertiesCustomizer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> plusProperties -&gt; plusProperties.getGlobalConfig().getDbConfig().setKeyGenerator(<span class="keyword">new</span> H2KeyGenerator());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="mybatis-plus之自动填充字段功能"><a href="#mybatis-plus之自动填充字段功能" class="headerlink" title="mybatis plus之自动填充字段功能"></a>mybatis plus之自动填充字段功能</h2><ul>
+<li>个人比较喜欢这个功能，尤其是用于<code>create_time</code>和<code>update_time</code>两个字段的自动填充。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 注意：设置此字段为自动填充字段，即添加记录的时候自动添加创建时间</span></span><br><span class="line"><span class="comment">    * 需要配置实现接口 MetaObjectHandler</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="meta">@TableField</span>(fill = FieldFill.INSERT)</span><br><span class="line">   <span class="keyword">private</span> LocalDateTime createTime;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 注意：设置此字段为自动填充字段，添加或更新记录时候，此字段自动填充</span></span><br><span class="line"><span class="comment">    * 需要配置实现接口 MetaObjectHandler</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="meta">@TableField</span>(fill = FieldFill.INSERT_UPDATE)</span><br><span class="line">   <span class="keyword">private</span> LocalDateTime updateTime;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>需要实现接口<code>MetaObjectHandler</code>元数据处理器接口</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMetaObjectHandler</span> <span class="keyword">implements</span> <span class="title">MetaObjectHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 实现添加的时候自动填充的字段</span></span><br><span class="line"><span class="comment">     * 添加记录的时候自动设置创建时间和修改时间为当前时间</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> metaObject</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertFill</span><span class="params">(MetaObject metaObject)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.setFieldValByName(<span class="string">"createTime"</span>, LocalDateTime.now(), metaObject);</span><br><span class="line">        <span class="keyword">this</span>.setFieldValByName(<span class="string">"updateTime"</span>, LocalDateTime.now(), metaObject);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 修改的时候自动填充的字段, 填充为当前时间</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> metaObject</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateFill</span><span class="params">(MetaObject metaObject)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.setFieldValByName(<span class="string">"updateTime"</span>, LocalDateTime.now(), metaObject);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="mybatis-plus之乐观锁"><a href="#mybatis-plus之乐观锁" class="headerlink" title="mybatis plus之乐观锁"></a>mybatis plus之乐观锁</h2><ul>
+<li>首先了解一下什么是乐观锁？什么是悲观锁？</li>
+</ul>
+<blockquote>
+<p>乐观锁与悲观锁都是用来解决并发情况下写操作可能会导致的<strong>丢失更新</strong>的问题。</p>
+</blockquote>
+<ul>
+<li>什么是并发操作下造成的读的问题 ？</li>
+</ul>
+<blockquote>
+<p>首先来说如果不考虑事务的隔离性，会产生几个读的问题，<strong>脏读、不可重复读、幻读</strong></p>
+<p><strong>脏读</strong>：读到未提交的数据，也就是事务A读到事务B更改后的数据，事务B异常回滚了，所以事务A读到的是脏数据。</p>
+<p><strong>不可重复读</strong>：例如事务A读到小李30岁，这时候事务B把小李改成20岁提交了，事务A未结束又读了一遍，发现小李变成了20岁。</p>
+<p><strong>幻读</strong>：例如事务A读员工数量200人，这时候事务B添加了5条员工数据并提交，这时候事务A未结束，又读取了一遍员工数量，发现变成了205条。</p>
+</blockquote>
+<ul>
+<li><p>额、上面简单总结一下，不考虑事务的隔离级别的情况下可能造成的读的问题。</p>
+</li>
+<li><p>事务的隔离级别有什么呢？</p>
+</li>
+</ul>
+<blockquote>
+<p>1、Serializable （串行化）：最严格的级别，事务串行执行，资源消耗最大；</p>
+</blockquote>
+<blockquote>
+<p>2、REPEATABLE READ（重复读） ：保证了一个事务不会修改已经由另一个事务读取但未提交（回滚）的数据。避免了“脏读取”和“不可重复读取”的情况，但不能避免“幻读”，但是带来了更多的性能损失。</p>
+</blockquote>
+<blockquote>
+<p>3、READ COMMITTED （读提交）：大多数主流数据库的默认事务等级，保证了一个事务不会读到另一个并行事务已修改但未提交的数据，避免了“脏读取”，但不能避免“幻读”和“不可重复读取”。该级别适用于大多数系统。</p>
+</blockquote>
+<blockquote>
+<p>4、Read Uncommitted（读未提交） ：事务中的修改，即使没有提交，其他事务也可以看得到，会导致“脏读”、“幻读”和“不可重复读取”。</p>
+</blockquote>
+<ul>
+<li>mysql默认的事务隔离级别是：可重复读</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>事务隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>读未提交（read-uncommitted）</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>读已提交（read-committed）</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td><strong>可重复读（repeatable-read）</strong></td>
+<td><strong>否</strong></td>
+<td><strong>否</strong></td>
+<td><strong>是</strong></td>
+</tr>
+<tr>
+<td>串行化（serializable）</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<ul>
+<li>什么是并发写操作造成的丢失更新？</li>
+</ul>
+<blockquote>
+<p>例如事务A和事务B同时修改小明的工资，他们两个读取到的小明工资都是2000然后事务A更改了小明工资为3000后提交，这时候事务B更改了小明的工资为5000，提交之后事务A对工资的更新就丢失了。结果为5000</p>
+</blockquote>
+<blockquote>
+<p>悲观锁和乐观锁就是为了解决并发操作造成的丢失更新问题:</p>
+<p><strong>悲观锁：</strong>顾名思义，就是悲观的认为并发问题一定会出现，所以在对一个数据进行操作的时候一定会加锁，因为他认为不加锁一定会产并发问题。</p>
+<p><strong>乐观锁：</strong>顾名思义，就是乐观的认为读取数据的时候不会有其他事务进行修改，所以不会加锁，但是在更新时会判断其他线程在这之前有没有对数据进行修改，一般会使用<strong>版本号机制</strong>或<strong>CAS操作</strong>实现。这里mybatis plus使用的就是版本号机制实现的乐观锁。</p>
+</blockquote>
+<ul>
+<li>先介绍一下CAS操作：Compare and Swap，即比较再交换。</li>
+</ul>
+<blockquote>
+<p>java中有一个并发包<code>java.util.concurrent.*</code>,这个包中的类就是使用CAS算法实现了乐观锁。之前java语言靠<code>synchronized</code>关键字保证同步，使用<code>synchronized</code>关键字是一种独占锁，属于悲观锁。</p>
+</blockquote>
+<ul>
+<li>CAS的功能是判断内存中的某个位置的值是否为预期值，如果是则改变为新的值，这个过程是原子的。</li>
+</ul>
+<blockquote>
+<p>CAS算法实现的一个前提是需要取出内存中某时刻的数据，并在当前时间进行比较并替换，那么在这个时间差内，如果线程A从内存V处取出值为1，这时候另一个线程B也在内存V处取出值为1，并且线程B经过一些操作将值改成了2，然后线程B又经过操作将值改回1，这时候线程A操作CAS发现内存中的值仍为1，然后线程A操作成功改了V处的值为3。</p>
+<p>尽管这个线程A的CAS操作执行成功，但是并不代表这个过程是没有问题的。这就是著名的<code>ABA问题</code>。</p>
+</blockquote>
+<ul>
+<li>如何解决ABA问题？使用版本号！mybatis plus就是使用版本号来实现乐观锁的。</li>
+</ul>
+<blockquote>
+<p>可以使用版本号来解决，例如:数据库中添加一个版本号，取出记录的时候，获取当前的版本号，更新数据的时候，带上这个版本号，即 update set version = newVersion where version = oldVersion,如果版本号不等于之前的版本号，说明已经被更改过了，即本次更新失败。</p>
+</blockquote>
+<ul>
+<li>使用mybatis plus实现乐观锁</li>
+</ul>
+<ol>
+<li>表中添加字段，作为乐观锁的版本号</li>
+<li>对应实体类添加属性version</li>
+<li>在实体类版本号属性上添加@Version注解</li>
+<li>配置mybatis plus乐观锁的插件</li>
+<li>（可选）可以利用之前讲的自动填充在添加记录的时候给Version一个默认值1</li>
+</ol>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202004/05-cf7f7e62-1.png" alt="image-20200406185428516"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 版本号属性</span></span><br><span class="line"><span class="comment"> * 设置此字段在添加的时候自动设置version值为 1</span></span><br><span class="line"><span class="comment"> * 需要配置实现接口 MetaObjectHandler</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Version</span></span><br><span class="line"><span class="meta">@TableField</span>(fill = FieldFill.INSERT)</span><br><span class="line"><span class="keyword">private</span> Integer version;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@MapperScan</span>(basePackages = &#123;<span class="string">"com.yunqing.demomybatisplus.mapper"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MybatisPlusConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//配置乐观锁插件</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> OptimisticLockerInterceptor <span class="title">optimisticLockerInterceptor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> OptimisticLockerInterceptor();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMetaObjectHandler</span> <span class="keyword">implements</span> <span class="title">MetaObjectHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 实现添加的时候自动填充的字段</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> metaObject</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertFill</span><span class="params">(MetaObject metaObject)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//配置添加role记录的时候自动填充版本号为1</span></span><br><span class="line">        <span class="keyword">this</span>.setFieldValByName(<span class="string">"version"</span>, <span class="string">"1"</span>, metaObject);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>测试使用乐观锁进行更新数据</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * ActiveRecord修改</span></span><br><span class="line"><span class="comment">     * UPDATE t_role SET role_code=?, role_name=?, update_time=?, version=? WHERE id=? AND version=?</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * UPDATE t_role SET create_time=? WHERE (id = ?)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 测试乐观锁更新Role,先查询获取版本号，在更新，之后再获取版本号</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        Role role = <span class="keyword">new</span> Role().selectById(<span class="number">2L</span>);</span><br><span class="line">        log.info(<span class="string">"更新之前获取版本号 = &#123;&#125;"</span>, role.getVersion());</span><br><span class="line">        role.setRoleName(<span class="string">"管理员1234"</span>);</span><br><span class="line">        Assertions.assertTrue(role.updateById());</span><br><span class="line">        Role role2 = <span class="keyword">new</span> Role().selectById(<span class="number">2L</span>);</span><br><span class="line">        log.info(<span class="string">"更新之后获取版本号 = &#123;&#125;"</span>, role2.getVersion());</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 非乐观锁更新，直接更新</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        Assertions.assertTrue(<span class="keyword">new</span> Role().update(<span class="keyword">new</span> UpdateWrapper&lt;Role&gt;().lambda()</span><br><span class="line">                .set(Role::getCreateTime, LocalDateTime.now()).eq(Role::getId, <span class="number">1</span>)));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可以看到控制台如下输出：</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202004/05-cf7f7e62-2.png" alt="image-20200406191834047"></p>
+<ul>
+<li><strong>适用场景：读取频繁使用乐观锁，写入频繁使用悲观锁</strong></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>mybatis plus</tag>
+        <tag>乐观锁</tag>
+        <tag>悲观锁</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo之next主题美化</title>
     <url>/article/29e1e123.html</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><ul>

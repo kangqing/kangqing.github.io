@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-03-29T08:52:35.007Z</updated>
+  <updated>2020-04-06T11:20:33.049Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>基于mybatis plus讲解一些知识点</title>
+    <link href="http://www.yunqing.xyz/article/cf7f7e62.html"/>
+    <id>http://www.yunqing.xyz/article/cf7f7e62.html</id>
+    <published>2020-04-05T13:33:58.000Z</published>
+    <updated>2020-04-06T11:20:33.049Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="mybatis plus" scheme="http://www.yunqing.xyz/tags/mybatis-plus/"/>
+    
+      <category term="乐观锁" scheme="http://www.yunqing.xyz/tags/%E4%B9%90%E8%A7%82%E9%94%81/"/>
+    
+      <category term="悲观锁" scheme="http://www.yunqing.xyz/tags/%E6%82%B2%E8%A7%82%E9%94%81/"/>
+    
+  </entry>
   
   <entry>
     <title>hexo之next主题美化</title>
@@ -42,7 +71,7 @@
     <link href="http://www.yunqing.xyz/article/11c2cd82.html"/>
     <id>http://www.yunqing.xyz/article/11c2cd82.html</id>
     <published>2020-03-26T12:48:23.000Z</published>
-    <updated>2020-04-02T13:59:46.217Z</updated>
+    <updated>2020-04-02T14:58:13.541Z</updated>
     
     <summary type="html">
     
