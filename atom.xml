@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-04-08T13:04:14.517Z</updated>
+  <updated>2020-04-09T14:55:37.458Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用redis特性来创建每日流水号</title>
+    <link href="http://www.yunqing.xyz/article/8f6dc9b4.html"/>
+    <id>http://www.yunqing.xyz/article/8f6dc9b4.html</id>
+    <published>2020-04-09T14:16:11.000Z</published>
+    <updated>2020-04-09T14:55:37.458Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;这里需求是创建每日的流水号，例如：每向数据库中添加一条数据，其编号设置为yyyyMMdd0001、yyyyMMdd0002这样的格式，日期加后四位为当日流水号，也就是当日第几个添加的数据。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="redis" scheme="http://www.yunqing.xyz/tags/redis/"/>
+    
+  </entry>
   
   <entry>
     <title>基于mybatis plus讲解一些知识点</title>
