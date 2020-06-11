@@ -1,6 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Postman使用的几个小技巧</title>
+    <url>/article/b811dc66.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Postman使用的几个小技巧"><a href="#Postman使用的几个小技巧" class="headerlink" title="Postman使用的几个小技巧"></a>Postman使用的几个小技巧</h2><h3 id="1-环境变量"><a href="#1-环境变量" class="headerlink" title="1.环境变量"></a>1.环境变量</h3><ul>
+<li>调用方式 </li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-1.png" alt="image-20200611212208754"></p>
+<a id="more"></a>
+
+<p>如上图标注位置，可以切换、查看、管理环境，在环境中可以指定环境变量，供Postman进行相应环境下的全局调用。</p>
+<p>真正的不分环境的全局变量可设置成全局变量。</p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-2.png" alt="image-20200611212530159"></p>
+<ul>
+<li><p>例如我在环境 变量中设置了一个变量 <code>url_base</code> 值为 <code>localhost:8080</code>之后每次测试接口就直接调用<code></code>就可以了。</p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-3.png" alt="image-20200611215620570"></p>
+</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-4.png" alt="image-20200611222906182"></p>
+<h3 id="2-设置接口调用前执行脚本"><a href="#2-设置接口调用前执行脚本" class="headerlink" title="2.设置接口调用前执行脚本"></a>2.设置接口调用前执行脚本</h3><ul>
+<li>例如：登录之前需要执行一个接口获取验证码，</li>
+<li>然后将返回结果中的验证码设置到环境中</li>
+<li>供登录接口作为参数调用</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/image-20200611221039122.png" alt="image-20200611221039122"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//发送一个Get请求</span></span><br><span class="line">pm.sendRequest(<span class="string">"http://127.0.0.1:8080/api/account/getverifycode"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, response</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//打印返回的json结果</span></span><br><span class="line">    <span class="built_in">console</span>.log(response.json());</span><br><span class="line">    <span class="comment">//从返回的结果中设置变量到环境中</span></span><br><span class="line">    pm.environment.set(<span class="string">"text"</span>, response.json().data.text);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-6.png" alt="image-20200611221333496"></p>
+<h3 id="3-设置调用之后的Test脚本"><a href="#3-设置调用之后的Test脚本" class="headerlink" title="3.设置调用之后的Test脚本"></a>3.设置调用之后的<code>Test</code>脚本</h3><ul>
+<li>我们可以在Tests中书写捷空运调用之后执行的脚本，可以进行结果断言、控制台打印、设置变量等等</li>
+<li>例如登录成功之后，打印返回token到控制台，postman控制台在软件左下角，并把token设置为环境变量</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-7.png" alt="image-20200611220545705"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取返回结果</span></span><br><span class="line"><span class="keyword">var</span> jsonData = <span class="built_in">JSON</span>.parse(responseBody);</span><br><span class="line"><span class="comment">//打印返回结果中的token到控制台</span></span><br><span class="line"><span class="built_in">console</span>.log(jsonData.data);</span><br><span class="line"><span class="comment">//设置返回结果的token为变量到环境中</span></span><br><span class="line">pm.environment.set(<span class="string">"token"</span>, jsonData.data);</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-登录成功的Token的使用"><a href="#4-登录成功的Token的使用" class="headerlink" title="4.登录成功的Token的使用"></a>4.登录成功的Token的使用</h3><ul>
+<li>登录成功之后的Token被我们使用脚本存储到环境中，在之后测试需要登录的接口的时候，我们需要将这个token加到Headers请求头中，但是每个接口都要设置一次太麻烦</li>
+<li>找了很久没有发现设置一次性解决方案</li>
+<li>最后发现了一个提前设置好，一键添加的方案</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-8.png" alt="image-20200611222149293"></p>
+<ul>
+<li>之后测试接口的时候可以直接点击这里，一键设置token到请求头</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-9.png" alt="image-20200611222316152"></p>
+<ul>
+<li>效果：</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-10.png" alt="image-20200611222359442"></p>
+]]></content>
+      <tags>
+        <tag>Postman</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>java链接Lettuce客户端操作</title>
     <url>/article/dc5eed37.html</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="java使用Lettuce客户端连接redis学习基本redis指令"><a href="#java使用Lettuce客户端连接redis学习基本redis指令" class="headerlink" title="java使用Lettuce客户端连接redis学习基本redis指令"></a>java使用Lettuce客户端连接redis学习基本redis指令</h2><ul>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-06-07T14:45:16.514Z</updated>
+  <updated>2020-06-11T14:34:15.254Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Postman使用的几个小技巧</title>
+    <link href="http://www.yunqing.xyz/article/b811dc66.html"/>
+    <id>http://www.yunqing.xyz/article/b811dc66.html</id>
+    <published>2020-06-11T13:16:23.000Z</published>
+    <updated>2020-06-11T14:34:15.254Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Postman使用的几个小技巧&quot;&gt;&lt;a href=&quot;#Postman使用的几个小技巧&quot; class=&quot;headerlink&quot; title=&quot;Postman使用的几个小技巧&quot;&gt;&lt;/a&gt;Postman使用的几个小技巧&lt;/h2&gt;&lt;h3 id=&quot;1-环境变量&quot;&gt;&lt;a href=&quot;#1-环境变量&quot; class=&quot;headerlink&quot; title=&quot;1.环境变量&quot;&gt;&lt;/a&gt;1.环境变量&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;调用方式 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-1.png&quot; alt=&quot;image-20200611212208754&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Postman" scheme="http://www.yunqing.xyz/tags/Postman/"/>
+    
+  </entry>
   
   <entry>
     <title>java链接Lettuce客户端操作</title>
