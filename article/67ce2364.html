@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="mask-icon" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico" color="#222">
+  <meta name="baidu-site-verification" content="JBKkqXL0ZXuox1dk">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.yunqing.xyz","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"E2L6TPNSLL","apiKey":"adcc95c4546f58dccc7d759f415bdf20","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"搜索关键字文章","hits_empty":"我们没有找到任何搜索结果: ${query}","hits_stats":"查找到 ${hits} 个结果，用时 ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"perspectiveLeftIn","post_header":"perspectiveLeftIn","post_body":"slideLeftBigIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="简介Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。 Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象。 Stream API可以极大提高Java程序员的生产力，让程序员写出高效率、干净、简洁的代码。 这种风格将要处理的元素集合看作一种流， 流在管道中传输， 并且可以在管道的节点上进行处">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何使用Java8 Stream()流处理集合">
+<meta property="og:url" content="http://www.yunqing.xyz/article/67ce2364.html">
+<meta property="og:site_name" content="云晴&#39;s WORLD">
+<meta property="og:description" content="简介Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。 Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象。 Stream API可以极大提高Java程序员的生产力，让程序员写出高效率、干净、简洁的代码。 这种风格将要处理的元素集合看作一种流， 流在管道中传输， 并且可以在管道的节点上进行处">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-03T13:14:12.000Z">
+<meta property="article:modified_time" content="2020-07-03T13:29:26.974Z">
+<meta property="article:author" content="云晴">
+<meta property="article:tag" content="Stream()流">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.yunqing.xyz/article/67ce2364.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>如何使用Java8 Stream()流处理集合 | 云晴's WORLD</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2501c3b103bbe9c0c72d60da10b158bd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <script src="/live2d-widget/autoload.js"></script>
+<link rel="alternate" href="/atom.xml" title="云晴's WORLD" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">云晴's WORLD</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">贩卖快乐！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>阅读</a>
+
+  </li>
+        <li class="menu-item menu-item-movies">
+
+    <a href="/movies/" rel="section"><i class="fa fa-fw fa-video-camera"></i>观影</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yunqing.xyz/article/67ce2364.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+      <meta itemprop="name" content="云晴">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云晴's WORLD">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何使用Java8 Stream()流处理集合
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-03 21:14:12 / 修改时间：21:29:26" itemprop="dateCreated datePublished" datetime="2020-07-03T21:14:12+08:00">2020-07-03</time>
+            </span>
+
+          
+            <span id="/article/67ce2364.html" class="post-meta-item leancloud_visitors" data-flag-title="如何使用Java8 Stream()流处理集合" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/article/67ce2364.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/article/67ce2364.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。</p>
+<p>Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象。</p>
+<p>Stream API可以极大提高Java程序员的生产力，让程序员写出高效率、干净、简洁的代码。</p>
+<p>这种风格将要处理的元素集合看作一种流， 流在管道中传输， 并且可以在管道的节点上进行处理， 比如筛选， 排序，聚合等。</p>
+<a id="more"></a>
+
+<h2 id="下面通过代码了解下"><a href="#下面通过代码了解下" class="headerlink" title="下面通过代码了解下"></a>下面通过代码了解下</h2><h3 id="创建学生类、精英学生类"><a href="#创建学生类、精英学生类" class="headerlink" title="创建学生类、精英学生类"></a>创建学生类、精英学生类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 定义学生类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="keyword">private</span> Double score;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 定义精英学生类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EliteStudent</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Double score;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建两个集合，用于Stream-流处理"><a href="#构建两个集合，用于Stream-流处理" class="headerlink" title="构建两个集合，用于Stream()流处理"></a>构建两个集合，用于Stream()流处理</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StreamTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;Student&gt; list;</span><br><span class="line">    <span class="keyword">private</span> List&lt;List&lt;Student&gt;&gt; listFlat;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@BeforeEach</span><span class="comment">//注解在非静态方法上</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        list = Arrays.asList(</span><br><span class="line">                <span class="keyword">new</span> Student(<span class="number">1</span>, <span class="string">"盖伦1"</span>, <span class="number">200</span>, <span class="number">66.0</span>),</span><br><span class="line">                <span class="keyword">new</span> Student(<span class="number">2</span>, <span class="string">"赵信"</span>, <span class="number">21</span>, <span class="number">90.0</span>),</span><br><span class="line">                <span class="keyword">new</span> Student(<span class="number">3</span>, <span class="string">"乐芙兰1"</span>, <span class="number">21</span>, <span class="number">90.0</span>),</span><br><span class="line">                <span class="keyword">new</span> Student(<span class="number">4</span>, <span class="string">"李青"</span>, <span class="number">50</span>, <span class="number">100</span>d),</span><br><span class="line">                <span class="keyword">new</span> Student(<span class="number">5</span>, <span class="string">"泰达米尔"</span>, <span class="number">600</span>, <span class="number">90</span>d)</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        listFlat = Arrays.asList(</span><br><span class="line">                Arrays.asList(</span><br><span class="line">                        <span class="keyword">new</span> Student(<span class="number">1</span>, <span class="string">"盖伦1"</span>, <span class="number">200</span>, <span class="number">66.0</span>),</span><br><span class="line">                        <span class="keyword">new</span> Student(<span class="number">2</span>, <span class="string">"赵信"</span>, <span class="number">21</span>, <span class="number">90.0</span>)</span><br><span class="line">                ),</span><br><span class="line">                Arrays.asList(</span><br><span class="line">                        <span class="keyword">new</span> Student(<span class="number">3</span>, <span class="string">"乐芙兰1"</span>, <span class="number">21</span>, <span class="number">90.0</span>),</span><br><span class="line">                        <span class="keyword">new</span> Student(<span class="number">4</span>, <span class="string">"李青"</span>, <span class="number">50</span>, <span class="number">100</span>d)</span><br><span class="line">                ),</span><br><span class="line">                Collections.singletonList(</span><br><span class="line">                        <span class="keyword">new</span> Student(<span class="number">5</span>, <span class="string">"泰达米尔"</span>, <span class="number">600</span>, <span class="number">90</span>d)</span><br><span class="line">                )</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//各种流处理方法---------filter</span></span><br><span class="line">    <span class="comment">//----------------------map</span></span><br><span class="line">    <span class="comment">//--------------------reduce等等</span></span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-filter"><a href="#1-filter" class="headerlink" title="1.filter"></a>1.filter</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * filter</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@DESC</span> 过滤出list中学生名字中包括 "1" 的学生集合，</span></span><br><span class="line"><span class="comment">     *       并使用peek()利用其返回Stream&lt;Student&gt;直接以流的方式实现打印过滤出的学生</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     *       peek() 和 ForEach() 的区别：</span></span><br><span class="line"><span class="comment">     *       前者返回Stream&lt;T&gt; 可在流的基础上继续流操作</span></span><br><span class="line"><span class="comment">     *       后者返回void,想要继续流操作需要进行二次流处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">filterTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> List&lt;Student&gt; collect = list.stream().filter(item -&gt; item.getName().contains(<span class="string">"1"</span>))</span><br><span class="line">                .peek(System.out::println)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        Assertions.assertEquals(<span class="number">2</span>, collect.size());</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 获取过滤的第一条数据，如果包含则打印</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        list.stream().filter(item -&gt; item.getName().contains(<span class="string">"1"</span>))</span><br><span class="line">                .findFirst()</span><br><span class="line">                .ifPresent(System.out::println);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-map"><a href="#2-map" class="headerlink" title="2.map"></a>2.map</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * map</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@DESC</span> 可以将List里面的对象转化成新的对象</span></span><br><span class="line"><span class="comment">     * 1.将学生集合里不小于90分的作为精英学生过滤出来,并打印</span></span><br><span class="line"><span class="comment">     * 2.获取所有学生的 name 集合,并打印</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">mapTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> List&lt;EliteStudent&gt; collect = list.stream().filter(item -&gt; item.getScore() &gt;= <span class="number">90</span>)</span><br><span class="line">                .map(student -&gt; &#123;</span><br><span class="line">                    EliteStudent eliteStudent = <span class="keyword">new</span> EliteStudent();</span><br><span class="line">                    BeanUtils.copyProperties(student, eliteStudent);</span><br><span class="line">                    <span class="keyword">return</span> eliteStudent;</span><br><span class="line">                &#125;).peek(System.out::println)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        Assertions.assertEquals(<span class="number">3</span>, collect.size());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> List&lt;String&gt; nameList = list.stream().map(Student::getName)</span><br><span class="line">                .peek(System.out::println)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        Assertions.assertEquals(<span class="number">5</span>, nameList.size());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-flatMap"><a href="#3-flatMap" class="headerlink" title="3.flatMap"></a>3.flatMap</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * flatMap</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@DESC</span> 将嵌套列表转换为普通列表，例如 List&lt;List&lt;Student&gt;&gt; 转化为 List&lt;Student&gt;</span></span><br><span class="line"><span class="comment">     * 1.将嵌套列表转化成普通列表，断言转化结果 = list</span></span><br><span class="line"><span class="comment">     * 2.转化后获取列表的 id 集合并打印</span></span><br><span class="line"><span class="comment">     * 3.转化后再提取集合的分数，求平均值，打印平均值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">flatMapTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;Student&gt; collect = listFlat.stream().flatMap(Collection::stream)</span><br><span class="line">                .peek(System.out::println)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        Assertions.assertEquals(collect, list);</span><br><span class="line"></span><br><span class="line">        List&lt;Integer&gt; idList = listFlat.stream().flatMap(Collection::stream)</span><br><span class="line">                .peek(System.out::println)</span><br><span class="line">                .flatMapToInt(student -&gt; IntStream.of(student.getId()))</span><br><span class="line">                .peek(System.out::println)</span><br><span class="line">                .boxed()</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        Assertions.assertEquals(idList.size(), <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">        listFlat.stream().flatMap(Collection::stream)</span><br><span class="line">                .mapToDouble(Student::getScore)</span><br><span class="line">                .average()</span><br><span class="line">                .ifPresent(System.out::println);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-sorted"><a href="#4-sorted" class="headerlink" title="4.sorted"></a>4.sorted</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * sorted</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@DESC</span> 排序</span></span><br><span class="line"><span class="comment">     * 1.先按照分数倒叙排列，如果分数相同按照年龄正序排列，如果年龄相同按照 id 正序排列，打印</span></span><br><span class="line"><span class="comment">     * 2.如果 reversed() 写在最后，则全部按照倒叙排列</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">sortedTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;Student&gt; collect = list.stream().sorted(Comparator.comparing(Student::getScore).reversed()</span><br><span class="line">                .thenComparing(Student::getAge)</span><br><span class="line">                .thenComparing(Student::getId))</span><br><span class="line">                .peek(System.out::println)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        Assertions.assertEquals(<span class="string">"李青"</span>, collect.get(<span class="number">0</span>).getName());</span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">"-------------------------------------------------------------"</span>);</span><br><span class="line"></span><br><span class="line">        List&lt;Student&gt; collect2 = list.stream().sorted(Comparator.comparing(Student::getScore)</span><br><span class="line">                .thenComparing(Student::getAge)</span><br><span class="line">                .thenComparing(Student::getId).reversed())</span><br><span class="line">                .peek(System.out::println)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        Assertions.assertEquals(<span class="string">"李青"</span>, collect2.get(<span class="number">0</span>).getName());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-match"><a href="#5-match" class="headerlink" title="5.match"></a>5.match</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * match</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@DESC</span> 验证list中的每一项是否匹配我们的条件</span></span><br><span class="line"><span class="comment">     * allMatch 全都匹配</span></span><br><span class="line"><span class="comment">     * anyMatch 任意匹配</span></span><br><span class="line"><span class="comment">     * noneMatch 全不匹配</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 设置匹配条件为正则表达式 ^[1-9]\\d*$ 正整数</span></span><br><span class="line"><span class="comment">     * 1.验证list的id是否全都匹配条件</span></span><br><span class="line"><span class="comment">     * 2.临时改变list的第一个年龄为 -1 验证是否年龄任意一个匹配条件</span></span><br><span class="line"><span class="comment">     * 3.验证分数是否全不匹配条件</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">matchTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> b = list.stream().allMatch(item -&gt; ReUtil.isMatch(<span class="string">"^[1-9]\\d*$"</span>, item.getId().toString()));</span><br><span class="line">        log.info(<span class="string">"输出list的id是否全部匹配条件,结果：----------[&#123;&#125;]"</span>, b);</span><br><span class="line"></span><br><span class="line">        list.get(<span class="number">0</span>).setAge(-<span class="number">1</span>);</span><br><span class="line">        list.forEach(System.out::println);</span><br><span class="line">        <span class="keyword">boolean</span> b1 = list.stream().anyMatch(item -&gt; ReUtil.isMatch(<span class="string">"^[1-9]\\d*$"</span>, item.getAge().toString()));</span><br><span class="line">        log.info(<span class="string">"输出list的年龄是否任意匹配条件,结果：----------[&#123;&#125;]"</span>, b1);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span> b2 = list.stream().noneMatch(item -&gt; ReUtil.isMatch(<span class="string">"^[1-9]\\d*$"</span>, item.getScore().toString()));</span><br><span class="line">        log.info(<span class="string">"输出list的年龄是否都不匹配条件,结果：----------[&#123;&#125;]"</span>, b2);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-reduce"><a href="#6-reduce" class="headerlink" title="6.reduce"></a>6.reduce</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * reduce</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@DESC</span> 合并流元素产生单个值</span></span><br><span class="line"><span class="comment">     * 1.计算list中所有学生年龄的总和，存在则打印</span></span><br><span class="line"><span class="comment">     * 2.计算list中所有学生年龄的总和，存在则打印</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">reduceTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        list.stream().map(Student::getAge)</span><br><span class="line">                .reduce(Integer::sum)</span><br><span class="line">                .ifPresent(System.out::println);</span><br><span class="line"></span><br><span class="line">        list.stream().map(Student::getScore)</span><br><span class="line">                .reduce(Double::sum)</span><br><span class="line">                .ifPresent(System.out::println);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-collertor"><a href="#7-collertor" class="headerlink" title="7.collertor"></a>7.collertor</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * collector</span></span><br><span class="line"><span class="comment">     * 收集器，主要用于toList() / toSet() / toMap() / joining()连接字符串</span></span><br><span class="line"><span class="comment">     * 1.把list中的id作为key, name作为value转化成Map</span></span><br><span class="line"><span class="comment">     * 2.把学生名字用逗号拼接，并且第一个逗号用星号替换</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">collectorTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Map&lt;Integer, String&gt; map = list.stream().collect(Collectors.toMap(Student::getId, Student::getName));</span><br><span class="line">        map.forEach((k, v) -&gt; log.info(<span class="string">"key = &#123;&#125; , value = &#123;&#125;"</span>, k, v));</span><br><span class="line"></span><br><span class="line">        String s = list.stream().map(Student::getName)</span><br><span class="line">                .collect(Collectors.joining(<span class="string">","</span>))</span><br><span class="line">                .replaceFirst(<span class="string">","</span>, <span class="string">"*"</span>);</span><br><span class="line">        log.info(<span class="string">"输出逗号拼接的字符串--&gt;&#123;&#125;"</span>, s);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-summarizingDouble"><a href="#8-summarizingDouble" class="headerlink" title="8.summarizingDouble"></a>8.summarizingDouble</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * summarizingDouble</span></span><br><span class="line"><span class="comment">     * 1.计算集合中某个元素的 count / sum / avg / min / max</span></span><br><span class="line"><span class="comment">     * 2.第二种写法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">summarizingDoubleTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        DoubleSummaryStatistics collect = list.stream()</span><br><span class="line">                .collect(Collectors.summarizingDouble(Student::getScore));</span><br><span class="line">        System.out.println(collect);</span><br><span class="line"></span><br><span class="line">        DoubleSummaryStatistics doubleSummaryStatistics = list.stream()</span><br><span class="line">                .mapToDouble(Student::getScore)</span><br><span class="line">                .summaryStatistics();</span><br><span class="line">        System.out.println(doubleSummaryStatistics);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-partitioningBy"><a href="#9-partitioningBy" class="headerlink" title="9.partitioningBy"></a>9.partitioningBy</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * partitioningBy</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@DESC</span> 用于分割列表</span></span><br><span class="line"><span class="comment">     * 把学生列表中年龄大于100的放进key为true的Map中</span></span><br><span class="line"><span class="comment">     * 小于等于100的放进key为false的Map中</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">partitioningByTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Map&lt;Boolean, List&lt;Student&gt;&gt; map = list.stream()</span><br><span class="line">                .collect(Collectors.partitioningBy(e -&gt; e.getAge() &gt; <span class="number">100</span>));</span><br><span class="line">        log.info(<span class="string">"true列表 = &#123;&#125;"</span>, map.get(Boolean.TRUE));</span><br><span class="line">        log.info(<span class="string">"false列表 = &#123;&#125;"</span>, map.get(Boolean.FALSE));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-groupingBy"><a href="#10-groupingBy" class="headerlink" title="10.groupingBy"></a>10.groupingBy</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * groupingBy</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@DESC</span> 分组</span></span><br><span class="line"><span class="comment">     * 1.根据成绩分组</span></span><br><span class="line"><span class="comment">     * 2.获取每个分数的人数</span></span><br><span class="line"><span class="comment">     * 3.根据成绩获取取得每个成绩的学生的总分</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">groupingByTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Map&lt;Double, List&lt;Student&gt;&gt; map1 = list.stream().collect(Collectors.groupingBy(Student::getScore));</span><br><span class="line">        map1.forEach((k, v) -&gt; System.out.println(k + <span class="string">"\t"</span> + v));</span><br><span class="line"></span><br><span class="line">        Map&lt;Double, Long&gt; map2 = list.stream().collect(Collectors.groupingBy(Student::getScore, Collectors.counting()));</span><br><span class="line">        map2.forEach((k,v) -&gt; System.out.println(k + <span class="string">"\t"</span> + v));</span><br><span class="line"></span><br><span class="line">        Map&lt;Double, Double&gt; map3 = list.stream()</span><br><span class="line">                .collect(Collectors.groupingBy(Student::getScore, Collectors.summingDouble(Student::getScore)));</span><br><span class="line">        map3.forEach((k, v) -&gt; System.out.println(k + <span class="string">"\t"</span> + v));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="11-parallel"><a href="#11-parallel" class="headerlink" title="11.parallel"></a>11.parallel</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * parallel</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@DESC</span> 并发</span></span><br><span class="line"><span class="comment">     * 延迟一秒后，并发的打印出学生的名字</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">parallel</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        list.stream().parallel().forEach(<span class="keyword">this</span>::print);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(Student student)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        log.info(<span class="string">"学生的名字是 ： &#123;&#125;"</span>, student.getName());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="12-读写文件"><a href="#12-读写文件" class="headerlink" title="12.读写文件"></a>12.读写文件</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@DESC</span> 读写文件</span></span><br><span class="line"><span class="comment">     * 先把list中的数据写到student.txt中</span></span><br><span class="line"><span class="comment">     * 再读取出来</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fileTest</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        PrintWriter printWriter = <span class="keyword">new</span> PrintWriter(Files.newBufferedWriter(Paths.get(<span class="string">"D://student.txt"</span>)));</span><br><span class="line">        <span class="comment">//list列表写出到文件student.txt中</span></span><br><span class="line">        list.forEach(printWriter::println);</span><br><span class="line">        printWriter.close();</span><br><span class="line">        <span class="comment">//读取文件</span></span><br><span class="line">        List&lt;String&gt; collect = Files.lines(Paths.get(<span class="string">"D://student.txt"</span>))</span><br><span class="line">                .peek(System.out::println)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        Assertions.assertEquals(<span class="number">5</span>, collect.size());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+      
+
+        <div class="reward-container">
+  <div>赞赏作者一杯奶茶</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    <i class="fa fa-qrcode fa-2x" style="line-height:35px;"></i>
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/weixin.png" alt="云晴 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/alipay.png" alt="云晴 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>云晴
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.yunqing.xyz/article/67ce2364.html" title="如何使用Java8 Stream()流处理集合">http://www.yunqing.xyz/article/67ce2364.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Stream-%E6%B5%81/" rel="tag"># Stream()流</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/article/b811dc66.html" rel="prev" title="Postman使用的几个小技巧">
+      <i class="fa fa-chevron-left"></i> Postman使用的几个小技巧
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下面通过代码了解下"><span class="nav-number">2.</span> <span class="nav-text">下面通过代码了解下</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建学生类、精英学生类"><span class="nav-number">2.1.</span> <span class="nav-text">创建学生类、精英学生类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建两个集合，用于Stream-流处理"><span class="nav-number">2.2.</span> <span class="nav-text">构建两个集合，用于Stream()流处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-filter"><span class="nav-number">2.3.</span> <span class="nav-text">1.filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-map"><span class="nav-number">2.4.</span> <span class="nav-text">2.map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-flatMap"><span class="nav-number">2.5.</span> <span class="nav-text">3.flatMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-sorted"><span class="nav-number">2.6.</span> <span class="nav-text">4.sorted</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-match"><span class="nav-number">2.7.</span> <span class="nav-text">5.match</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-reduce"><span class="nav-number">2.8.</span> <span class="nav-text">6.reduce</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-collertor"><span class="nav-number">2.9.</span> <span class="nav-text">7.collertor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-summarizingDouble"><span class="nav-number">2.10.</span> <span class="nav-text">8.summarizingDouble</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-partitioningBy"><span class="nav-number">2.11.</span> <span class="nav-text">9.partitioningBy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-groupingBy"><span class="nav-number">2.12.</span> <span class="nav-text">10.groupingBy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-parallel"><span class="nav-number">2.13.</span> <span class="nav-text">11.parallel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-读写文件"><span class="nav-number">2.14.</span> <span class="nav-text">12.读写文件</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="云晴"
+      src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+  <p class="site-author-name" itemprop="name">云晴</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kangqing" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kangqing" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/6e081250d92d" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;6e081250d92d" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-external-link"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yunqing_71@163.com" title="E-Mail → mailto:yunqing_71@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/yunqing-98" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;yunqing-98" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-external-link"></i>知乎</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener external nofollow noreferrer" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<div>
+    <strong style="color:red">欢迎订阅本站</strong>
+    <img width=110px height=110px src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/weixingongzhonghao.jpg"/>
+</dic>
+<div style="padding-top:20px">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener external nofollow noreferrer" target="_blank">津ICP备20001588号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">云晴</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">52k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:26</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-ribbon@1/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'lIk2gGNugY8zCgwtqt303RVa-gzGzoHsz',
+      appKey     : 'uyHwBgO9UcmCYIUdzciDj6Wv',
+      placeholder: "匿名也可以留言哦0.0",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/linkcard.js"></script>
+</body>
+</html>
