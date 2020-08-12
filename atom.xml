@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-07-03T13:29:26.974Z</updated>
+  <updated>2020-08-12T14:26:08.836Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -17,11 +17,55 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>阿里巴巴开发手册为什么这么规定？</title>
+    <link href="http://www.yunqing.xyz/article/e7c4a452.html"/>
+    <id>http://www.yunqing.xyz/article/e7c4a452.html</id>
+    <published>2020-08-12T13:06:04.000Z</published>
+    <updated>2020-08-12T14:26:08.836Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202008/20200812210827.png&quot; alt=&quot;12-e7c4a452-0&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="java基础" scheme="http://www.yunqing.xyz/tags/java%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>多线程基础</title>
+    <link href="http://www.yunqing.xyz/article/53471b9a.html"/>
+    <id>http://www.yunqing.xyz/article/53471b9a.html</id>
+    <published>2020-07-09T13:33:34.000Z</published>
+    <updated>2020-08-12T13:11:21.898Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="多线程" scheme="http://www.yunqing.xyz/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>如何使用Java8 Stream()流处理集合</title>
     <link href="http://www.yunqing.xyz/article/67ce2364.html"/>
     <id>http://www.yunqing.xyz/article/67ce2364.html</id>
     <published>2020-07-03T13:14:12.000Z</published>
-    <updated>2020-07-03T13:29:26.974Z</updated>
+    <updated>2020-07-03T13:29:51.172Z</updated>
     
     <summary type="html">
     
