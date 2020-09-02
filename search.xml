@@ -1,6 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Docker安装redis</title>
+    <url>/article/e5086296.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="直接用中间大佬给的那条命令即可"><a href="#直接用中间大佬给的那条命令即可" class="headerlink" title="直接用中间大佬给的那条命令即可"></a>直接用中间大佬给的那条命令即可</h3><ul>
+<li><p>拉取redis镜像</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull redis</span><br></pre></td></tr></table></figure></li>
+<li><p>从官网获取 <a href="http://download.redis.io/redis-stable/redis.conf" target="_blank" rel="noopener external nofollow noreferrer">redis.conf</a> 配置文件,放到挂载目录/usr/local/docker/redis/redis.conf并修改以下前2项。</p>
+</li>
+<li><p>注意下面3项：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bind 127.0.0.1 #注释掉这部分，因为不注释掉的话限制redis只能本地访问</span><br><span class="line">protected-mode no #改成no, 默认yes开启保护模式，限制为只能本地访问，所以改成no</span><br><span class="line">daemonize no #不修改，就用默认no值，如果改为yes意为以守护进程方式启动，可后台运行，除非kill进程（可选），改为yes会使配置文件方式启动redis失败，所以不修改</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+</li>
+<li><p>docker启动redis</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -p 6379:6379 --name redis -v /usr/local/docker/redis/redis.conf:/etc/redis/redis.conf -v /usr/local/docker/redis/data:/data -d redis redis-server /etc/redis/redis.conf --appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">*************大佬给的方法，不用配置redis.config************************</span></span><br><span class="line">docker run -d --privileged=true --restart=always -p 6379:6379 -v /usr/local/docker/redis/data:/data --name redis redis:latest redis-server --appendonly yes</span><br></pre></td></tr></table></figure></li>
+<li><p>解释：</p>
+<blockquote>
+<p>-p 6379:6379 映射本地6379端口 ：容器6379端口<br>–name redis 给容器命名redis<br>-v /usr/local/docker/redis/redis.conf:/etc/redis/redis.conf 挂载目录，冒号前是本地linux目录，冒号后是容器内目录<br>-d redis 表示后台启动redis<br>redis-server /etc/redis/redis.conf  以配置文件启动redis，加载容器内的conf文件，最终找到的是挂载的目录/usr/local/docker/redis/redis.conf<br>–appendonly yes 开启redis 持久化</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>查看容器运行状况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-redis-1.png" alt="图1"></p>
+</li>
+<li><p>使用 docker exec -it redis /bin/bash进入redis</p>
+</li>
+<li><p>使用 redis-cli 可以测试连接<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-redis-2.png" alt="图2"></p>
+</li>
+</ul>
+<p>#记录遇到的错误</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#docker ps</span></span><br><span class="line">查看容器状态的时候redis的状态一直是restarting一直重启</span><br><span class="line"><span class="comment">#查看redis的日志</span></span><br><span class="line">docker logs redis</span><br><span class="line"><span class="comment">#发现这么一行Bad file format reading the append only file: make a backup of your AOF file, then use ./redis-check-aof --fix &lt;filename&gt;，理解的意思是aof文件损坏，想了一下原因，昨晚更新windows了...八成这个原因</span></span><br><span class="line"><span class="comment">#解决办法：直接删除容器，删除镜像，重新下载镜像重启</span></span><br><span class="line">docker stop redis</span><br><span class="line">docker rm redis</span><br><span class="line">docker rmi redis:latest</span><br><span class="line">docker pull redis</span><br><span class="line">docker run -d --privileged=<span class="literal">true</span> --restart=always -p 6379:6379 -v d:\docker\redis\data:/data --name redis redis:latest redis-server --appendonly yes</span><br><span class="line"><span class="comment">#注意要删除d:/docker/redis/data目录下的aof文件，估计只删除这个文件重新run容器就行，但是没再尝试</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建容器的时候报错WARNING: IPv4 forwarding is disabled. Networking will not work.</span></span><br><span class="line"><span class="comment">#这个错导致连接不上redis，但是在容器内部docker exec -it redis bash     redis-cli能够使用</span></span><br><span class="line"><span class="comment">#我启动redis容器的命令</span></span><br><span class="line">docker run -d --privileged=<span class="literal">true</span> --restart=always -p 6379:6379 -v /usr/docker/redis/data:/data --name redis redis:latest redis-server --appendonly yes</span><br><span class="line"><span class="comment">#解决办法</span></span><br><span class="line">vim  /usr/lib/sysctl.d/00-system.conf</span><br><span class="line"><span class="comment">#添加下面这行</span></span><br><span class="line">net.ipv4.ip_forward=1</span><br><span class="line"><span class="comment">#重启network</span></span><br><span class="line">systemctl restart network</span><br><span class="line"><span class="comment">#删除错误的重启重新执行启动redis的命令</span></span><br><span class="line">docker stop redis</span><br><span class="line">docker rm redis</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker安装mysql</title>
+    <url>/article/b0daabb.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><ul>
+<li><p>去dockerhub 查找mysql的镜像版本<a href="https://hub.docker.com/" target="_blank" rel="noopener external nofollow noreferrer">https://hub.docker.com/</a><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-mysql-1.png" alt="图1"><a id="more"></a><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-mysql-1-1.png" alt="图1.1"></p>
+</li>
+<li><p>拉取镜像mysql5.7.28</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull mysql:5.7.28</span><br></pre></td></tr></table></figure>
+<h1 id="Linux内使用docker安装一样，就是挂载目录的时候把数据文件挂载到Linux内的目录即可。"><a href="#Linux内使用docker安装一样，就是挂载目录的时候把数据文件挂载到Linux内的目录即可。" class="headerlink" title="Linux内使用docker安装一样，就是挂载目录的时候把数据文件挂载到Linux内的目录即可。"></a>Linux内使用docker安装一样，就是挂载目录的时候把数据文件挂载到Linux内的目录即可。</h1></li>
+<li><p>因为我是windows下用docker操作的，所以我这里挂载到了windows的D:\java\docker\mysql\data</p>
+</li>
+<li><p>启动mysql容器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#我的windows上的docker映射mysql数据文件到D盘D:\java\docker\mysql\data</span><br><span class="line">docker run -p 3308:3306 --name mysql -v D:\java\docker\mysql\data:&#x2F;var&#x2F;lib&#x2F;mysql -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d --privileged&#x3D;true --restart&#x3D;always mysql:5.7.28</span><br><span class="line"></span><br><span class="line">#我的Linux上的docker映射mysql数据data文件到&#x2F;usr&#x2F;local&#x2F;docker&#x2F;mysql5.7&#x2F;data</span><br><span class="line">docker run -p 3306:3306 --name mysql5.7 -v &#x2F;usr&#x2F;local&#x2F;docker&#x2F;mysql5.7&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d --privileged&#x3D;true --restart&#x3D;always mysql:5.7.28</span><br></pre></td></tr></table></figure></li>
+<li><p>解释</p>
+<blockquote>
+<p>-p 3308:3306 端口映射，因为我本地3306/3307都被我占用了，所以我把这个版本mysql映射到本地3308 ：容器内3306端口<br>–name mysql 容器命名mysql<br>-v D:\java\docker\mysql\data:/var/lib/mysql 挂载本地磁盘路径D:\java\docker\mysql\data：对应容器路径/var/lib/mysql<br>-e MYSQL_ROOT_PASSWORD=123456 设置密码123456<br>-d 后台启动，即开机自启<br>–privileged=true  <code>container</code>内的root拥有真正的root权限,有了root权限则不用再去打开相应端口。<strong>加了此参数可以使容器内的操作拥有root权限</strong><br>mysql:5.7.28 针对此镜像启动容器<br>–restart=always 自动重启</p>
+</blockquote>
+</li>
+<li><p>查看容器运行状况<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-mysql-2.png" alt="图2"></p>
+</li>
+<li><p>连接<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-mysql-3.png" alt="图3"></p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>阿里巴巴开发手册为什么这么规定？</title>
     <url>/article/e7c4a452.html</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202008/20200812210827.png" alt="12-e7c4a452-0"></p>
