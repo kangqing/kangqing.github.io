@@ -332,6 +332,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yunqing.xyz/article/42812f47.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+      <meta itemprop="name" content="云晴">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云晴's WORLD">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/article/42812f47.html" class="post-title-link" itemprop="url">MySQL查询性能优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-05 09:00:19 / 修改时间：09:02:00" itemprop="dateCreated datePublished" datetime="2020-09-05T09:00:19+08:00">2020-09-05</time>
+            </span>
+
+          
+            <span id="/article/42812f47.html" class="post-meta-item leancloud_visitors" data-flag-title="MySQL查询性能优化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/article/42812f47.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/article/42812f47.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>16 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-为什么查询速度会慢？"><a href="#1-为什么查询速度会慢？" class="headerlink" title="1.为什么查询速度会慢？"></a>1.为什么查询速度会慢？</h3><p>​        首先对一个查询的生命周期简化分析，大致可以按照顺序分为：从客户端、到服务器、然后在服务器进行解析、生成执行计划、执行、并返回结果给客户端。其中的<code>执行</code>可以被认为是查询的生命周期中最重要的部分，执行主要包括了大量为了检索数据到存储引擎的调用以及调用后数据的排序、分组等处理。</p>
+<p>​        在完成生命周期的这些任务的时候，查询需要在不用的地方消耗时间，包括网络、CPU计算、生成执行计划、锁等待等操作，尤其是向底层存储引擎检索数据的调用操作，这些调用操作需要在内存操作、CPU操作和内存不足时导致的I/O操作上消耗时间，根据存储引擎不同，可能还会产生大量的上下文切换以及系统调用小号的时间。所有的这些任务消耗的时间共同构成了响应时间，在每一个消耗大量时间的查询操作中，我们都能看到一些不必要的额外操作，某些操作被额外的重复了很多次，某些操作执行太慢等，优化查询的目的就是减少和消除这些额外操作所花费的时间。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/article/42812f47.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.yunqing.xyz/article/e5086296.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -673,7 +775,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-12 21:11:21" itemprop="dateModified" datetime="2020-08-12T21:11:21+08:00">2020-08-12</time>
+                <time title="修改时间：2020-09-02 20:54:34" itemprop="dateModified" datetime="2020-09-02T20:54:34+08:00">2020-09-02</time>
               </span>
 
           
@@ -723,26 +825,15 @@
 
       
           <h2 id="1-创建线程的方式"><a href="#1-创建线程的方式" class="headerlink" title="1.创建线程的方式"></a>1.创建线程的方式</h2><p>从多线程的基础上来讲，创建线程可以继承 <code>Thread</code> 因为java是单继承的，所以还可以实现 <code>Runnable</code>来创建多线程，下面分别举例子：</p>
-<h3 id="1-1继承Thread"><a href="#1-1继承Thread" class="headerlink" title="1.1继承Thread"></a>1.1继承Thread</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> 继承Thread实现多线程，demo1</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> yunqing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Data</span> 2020/7/6 23:00</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 结论：</span></span><br><span class="line"><span class="comment">     * 多线程中，代码的执行结果与代码的执行顺序或者调用顺序无关。</span></span><br><span class="line"><span class="comment">     * 原因线程是一个子任务，CPU会以一种不确定的方式随机调用线程中的run()方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Demo1Thread t = <span class="keyword">new</span> Demo1Thread();</span><br><span class="line">        t.start();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">"执行main()方法"</span> + i);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                TimeUnit.MILLISECONDS.sleep(<span class="number">100</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo1Thread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 1.继承Thread类</span></span><br><span class="line"><span class="comment">     * 2.重写run方法</span></span><br><span class="line"><span class="comment">     * 3.实例化</span></span><br><span class="line"><span class="comment">     * 4.调用start()方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">"执行run()方法"</span> + i);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                TimeUnit.MILLISECONDS.sleep(<span class="number">100</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2实现Runnable"><a href="#1-2实现Runnable" class="headerlink" title="1.2实现Runnable"></a>1.2实现Runnable</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> 多线程第二种方法，实现Runnable接口</span></span><br><span class="line"><span class="comment"> * 1.类实现Runnable</span></span><br><span class="line"><span class="comment"> * 2.重写Run()方法</span></span><br><span class="line"><span class="comment"> * 3.实例化创建的类</span></span><br><span class="line"><span class="comment"> * 4.实例化Thread，构造函数传值上面声明的实例</span></span><br><span class="line"><span class="comment"> * 5.调用start()方法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> yunqing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Data</span> 2020/7/7 20:54</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo3</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SneakyThrows</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Demo3Runnable d = <span class="keyword">new</span> Demo3Runnable();</span><br><span class="line">        Thread t = <span class="keyword">new</span> Thread(d);</span><br><span class="line">        t.start();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">"执行main()方法"</span> + i);</span><br><span class="line">            TimeUnit.MILLISECONDS.sleep(<span class="number">100</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo3Runnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SneakyThrows</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">"执行run()方法"</span> + i);</span><br><span class="line">            TimeUnit.MILLISECONDS.sleep(<span class="number">100</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-使用join-控制线程的执行顺序"><a href="#2-使用join-控制线程的执行顺序" class="headerlink" title="2.使用join()控制线程的执行顺序"></a>2.使用<code>join()</code>控制线程的执行顺序</h2><p>线程的执行是随机的，由CPU控制，但是我们可以通过以下的方法对多线程进行可控顺序的执行：</p>
-<p>###2.1使用join()方法：让主线程等待子线程的执行完成</p>
-<p>工作原理是：在当前线程调用其它线程的join会让当前线程阻塞等待join线程的执行完成，不停检查thread是否存活，如果存活则让当前线程一直wait，直到thread线程终止。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> 使用join()控制线程的执行顺序</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> yunqing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Data</span> 2020/7/7 22:46</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo4</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SneakyThrows</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Demo4Thread(<span class="number">1</span>);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Demo4Thread(<span class="number">2</span>);</span><br><span class="line">        Thread t3 = <span class="keyword">new</span> Demo4Thread(<span class="number">3</span>);</span><br><span class="line">        t3.start();</span><br><span class="line">        t3.join();</span><br><span class="line">        t2.start();</span><br><span class="line">        t2.join();</span><br><span class="line">        t1.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo4Thread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Demo4Thread</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.i = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@SneakyThrows</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"执行run()方法"</span> + i);</span><br><span class="line">        TimeUnit.MILLISECONDS.sleep(<span class="number">1000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-2使用CountDownLatch，它与join效果是一样的"><a href="#2-2使用CountDownLatch，它与join效果是一样的" class="headerlink" title="2.2使用CountDownLatch，它与join效果是一样的"></a>2.2使用<code>CountDownLatch</code>，它与join效果是一样的</h3><p>原理：<code>CountDownLatch</code> 定义了一个计数器，和一个阻塞队列， 当计数器的值递减为0之前，阻塞队列里面的线程处于挂起状态，当计数器递减到0时会唤醒阻塞队列所有线程，这里的计数器是一个标志，可以表示一个任务一个线程，也可以表示一个倒计时器，<code>CountDownLatch</code>可以解决那些一个或者多个线程在执行之前必须依赖于某些必要的前提业务先执行的场景。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> yunqing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Data</span> 2020/7/9 22:21</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadPool</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 核心线程数2</span></span><br><span class="line"><span class="comment">         * 最大线程数10</span></span><br><span class="line"><span class="comment">         * 线程池中超过corePoolSize数目的空闲线程最大存活时间 30秒</span></span><br><span class="line"><span class="comment">         * 阻塞队列----new ArrayBlockingQueue</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        ThreadPoolExecutor executor = <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">5</span>, <span class="number">100</span>, <span class="number">30L</span>,</span><br><span class="line">                TimeUnit.SECONDS, <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(<span class="number">10</span>));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> CountDownLatch latch = <span class="keyword">new</span> CountDownLatch(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            Runnable runnable = () -&gt; &#123;</span><br><span class="line">                System.out.println(<span class="string">"子线程"</span> + Thread.currentThread().getName() + <span class="string">"开始执行"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    TimeUnit.MILLISECONDS.sleep(<span class="number">2000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">"子线程"</span> + Thread.currentThread().getName() + <span class="string">"执行完毕"</span>);</span><br><span class="line">                latch.countDown();<span class="comment">//执行减一操作</span></span><br><span class="line">            &#125;;</span><br><span class="line">            executor.execute(runnable);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"主线程"</span>+Thread.currentThread().getName()+<span class="string">"等待子线程执行完成..."</span>);</span><br><span class="line">            latch.await();<span class="comment">//阻塞当前线程，直到计数器的值为0</span></span><br><span class="line">            System.out.println(<span class="string">"主线程"</span>+Thread.currentThread().getName()+<span class="string">"开始执行..."</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-停止线程"><a href="#3-停止线程" class="headerlink" title="3.停止线程"></a>3.停止线程</h3><h3 id="3-1使用自定义标记"><a href="#3-1使用自定义标记" class="headerlink" title="3.1使用自定义标记"></a>3.1使用自定义标记</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StopThreadTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SneakyThrows</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        StopThread1 t = <span class="keyword">new</span> StopThread1();</span><br><span class="line">        t.start();</span><br><span class="line">        t.stopMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 停止线程的两种方法</span></span><br><span class="line"><span class="comment"> * 1.自己设置一个标记位</span></span><br><span class="line"><span class="comment"> * 2.利用interrupt()做停止标记</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StopThread1</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SneakyThrows</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">            System.out.println(<span class="string">"执行run()方法"</span>);</span><br><span class="line">            TimeUnit.MILLISECONDS.sleep(<span class="number">1000</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 停止方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">stopMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"调用此自定义方法停止线程"</span>);</span><br><span class="line">        flag = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-2使用中断标记interrupt"><a href="#3-2使用中断标记interrupt" class="headerlink" title="3.2使用中断标记interrupt()"></a>3.2使用中断标记interrupt()</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StopThreadTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SneakyThrows</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        StopThread2 stopThread2 = <span class="keyword">new</span> StopThread2();</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(stopThread2);</span><br><span class="line">        t2.start();</span><br><span class="line">        TimeUnit.MILLISECONDS.sleep(<span class="number">1000</span>);</span><br><span class="line">        t2.interrupt();</span><br><span class="line">        t2.interrupt();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StopThread2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SneakyThrows</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (Thread.interrupted()) &#123;</span><br><span class="line">                System.out.println(<span class="string">"Someone interrupted me."</span>);</span><br><span class="line">                <span class="keyword">if</span> (Thread.currentThread().isInterrupted()) &#123;</span><br><span class="line">                    System.out.println(<span class="string">"中断标志位没被清除"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">"this thread is running..."</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-暂停线程"><a href="#4-暂停线程" class="headerlink" title="4.暂停线程"></a>4.暂停线程</h2><p>###4.1<del>暂停suspend() 恢复resume()</del></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> 暂停线程</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> yunqing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Data</span> 2020/7/8 22:30</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SuspendThreadTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SuspendThreadService test = <span class="keyword">new</span> SuspendThreadService();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(test::method);</span><br><span class="line">        t1.setName(<span class="string">"A"</span>);</span><br><span class="line">        t1.start();</span><br><span class="line"></span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(test::method);</span><br><span class="line">        t2.start();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 暂停线程服务，演示为什么suspend()方法被弃用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SuspendThreadService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 加上同步锁之后，暂停线程就不能释放锁，导致一直处于线程暂停状态</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"线程开始"</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"A"</span>.equals(Thread.currentThread().getName())) &#123;</span><br><span class="line">            System.out.println(<span class="string">"线程被暂停"</span>);</span><br><span class="line">            Thread.currentThread().suspend();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"线程结束"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<h3 id="1-1继承Thread"><a href="#1-1继承Thread" class="headerlink" title="1.1继承Thread"></a>1.1继承Thread</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/article/53471b9a.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1176,115 +1267,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.yunqing.xyz/article/cf7f7e62.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
-      <meta itemprop="name" content="云晴">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="云晴's WORLD">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/article/cf7f7e62.html" class="post-title-link" itemprop="url">基于mybatis plus讲解一些知识点</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-04-05 21:33:58" itemprop="dateCreated datePublished" datetime="2020-04-05T21:33:58+08:00">2020-04-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-08 21:04:14" itemprop="dateModified" datetime="2020-04-08T21:04:14+08:00">2020-04-08</time>
-              </span>
-
-          
-            <span id="/article/cf7f7e62.html" class="post-meta-item leancloud_visitors" data-flag-title="基于mybatis plus讲解一些知识点" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/article/cf7f7e62.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/article/cf7f7e62.html" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="mybatis-plus之主键生成策略"><a href="#mybatis-plus之主键生成策略" class="headerlink" title="mybatis plus之主键生成策略"></a>mybatis plus之主键生成策略</h2><h3 id="1-自增策略"><a href="#1-自增策略" class="headerlink" title="1.自增策略"></a>1.自增策略</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@TableId</span>(value = <span class="string">"id"</span>, type = IdType.AUTO)</span><br><span class="line"><span class="keyword">private</span> String id;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-雪花生成器（推）"><a href="#2-雪花生成器（推）" class="headerlink" title="2.雪花生成器（推）"></a>2.雪花生成器（推）</h3>   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@TableId</span>(value = <span class="string">"id"</span>, type = IdType.ASSIGN_ID)</span><br><span class="line"><span class="keyword">private</span> String id;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/article/cf7f7e62.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1357,7 +1339,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1686,12 +1668,12 @@ if(canvas.getContext){
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">66k</span>
+    <span title="站点总字数">75k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:50</span>
+    <span title="站点阅读时长">2:05</span>
 </div>
 
         

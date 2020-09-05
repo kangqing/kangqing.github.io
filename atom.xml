@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-09-02T12:46:58.282Z</updated>
+  <updated>2020-09-05T01:02:00.053Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL查询性能优化</title>
+    <link href="http://www.yunqing.xyz/article/42812f47.html"/>
+    <id>http://www.yunqing.xyz/article/42812f47.html</id>
+    <published>2020-09-05T01:00:19.000Z</published>
+    <updated>2020-09-05T01:02:00.053Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-为什么查询速度会慢？&quot;&gt;&lt;a href=&quot;#1-为什么查询速度会慢？&quot; class=&quot;headerlink&quot; title=&quot;1.为什么查询速度会慢？&quot;&gt;&lt;/a&gt;1.为什么查询速度会慢？&lt;/h3&gt;&lt;p&gt;​        首先对一个查询的生命周期简化分析，大致可以按照顺序分为：从客户端、到服务器、然后在服务器进行解析、生成执行计划、执行、并返回结果给客户端。其中的&lt;code&gt;执行&lt;/code&gt;可以被认为是查询的生命周期中最重要的部分，执行主要包括了大量为了检索数据到存储引擎的调用以及调用后数据的排序、分组等处理。&lt;/p&gt;
+&lt;p&gt;​        在完成生命周期的这些任务的时候，查询需要在不用的地方消耗时间，包括网络、CPU计算、生成执行计划、锁等待等操作，尤其是向底层存储引擎检索数据的调用操作，这些调用操作需要在内存操作、CPU操作和内存不足时导致的I/O操作上消耗时间，根据存储引擎不同，可能还会产生大量的上下文切换以及系统调用小号的时间。所有的这些任务消耗的时间共同构成了响应时间，在每一个消耗大量时间的查询操作中，我们都能看到一些不必要的额外操作，某些操作被额外的重复了很多次，某些操作执行太慢等，优化查询的目的就是减少和消除这些额外操作所花费的时间。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="mysql" scheme="http://www.yunqing.xyz/tags/mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>Docker安装redis</title>
@@ -85,17 +105,12 @@
     <link href="http://www.yunqing.xyz/article/53471b9a.html"/>
     <id>http://www.yunqing.xyz/article/53471b9a.html</id>
     <published>2020-07-09T13:33:34.000Z</published>
-    <updated>2020-08-12T13:11:21.898Z</updated>
+    <updated>2020-09-02T12:54:34.438Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
-        
-      
+      &lt;h2 id=&quot;1-创建线程的方式&quot;&gt;&lt;a href=&quot;#1-创建线程的方式&quot; class=&quot;headerlink&quot; title=&quot;1.创建线程的方式&quot;&gt;&lt;/a&gt;1.创建线程的方式&lt;/h2&gt;&lt;p&gt;从多线程的基础上来讲，创建线程可以继承 &lt;code&gt;Thread&lt;/code&gt; 因为java是单继承的，所以还可以实现 &lt;code&gt;Runnable&lt;/code&gt;来创建多线程，下面分别举例子：&lt;/p&gt;
+&lt;h3 id=&quot;1-1继承Thread&quot;&gt;&lt;a href=&quot;#1-1继承Thread&quot; class=&quot;headerlink&quot; title=&quot;1.1继承Thread&quot;&gt;&lt;/a&gt;1.1继承Thread&lt;/h3&gt;
     
     </summary>
     

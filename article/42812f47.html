@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="mask-icon" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico" color="#222">
+  <meta name="baidu-site-verification" content="JBKkqXL0ZXuox1dk">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.yunqing.xyz","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"E2L6TPNSLL","apiKey":"adcc95c4546f58dccc7d759f415bdf20","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"搜索关键字文章","hits_empty":"我们没有找到任何搜索结果: ${query}","hits_stats":"查找到 ${hits} 个结果，用时 ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"perspectiveLeftIn","post_header":"perspectiveLeftIn","post_body":"slideLeftBigIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.为什么查询速度会慢？​        首先对一个查询的生命周期简化分析，大致可以按照顺序分为：从客户端、到服务器、然后在服务器进行解析、生成执行计划、执行、并返回结果给客户端。其中的执行可以被认为是查询的生命周期中最重要的部分，执行主要包括了大量为了检索数据到存储引擎的调用以及调用后数据的排序、分组等处理。 ​        在完成生命周期的这些任务的时候，查询需要在不用的地方消耗时间，包括网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL查询性能优化">
+<meta property="og:url" content="http://www.yunqing.xyz/article/42812f47.html">
+<meta property="og:site_name" content="云晴&#39;s WORLD">
+<meta property="og:description" content="1.为什么查询速度会慢？​        首先对一个查询的生命周期简化分析，大致可以按照顺序分为：从客户端、到服务器、然后在服务器进行解析、生成执行计划、执行、并返回结果给客户端。其中的执行可以被认为是查询的生命周期中最重要的部分，执行主要包括了大量为了检索数据到存储引擎的调用以及调用后数据的排序、分组等处理。 ​        在完成生命周期的这些任务的时候，查询需要在不用的地方消耗时间，包括网">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-1.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-2.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-3.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-4.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-5.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-6.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-7.png">
+<meta property="article:published_time" content="2020-09-05T01:00:19.000Z">
+<meta property="article:modified_time" content="2020-09-05T01:02:00.053Z">
+<meta property="article:author" content="云晴">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-1.png">
+
+<link rel="canonical" href="http://www.yunqing.xyz/article/42812f47.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MySQL查询性能优化 | 云晴's WORLD</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2501c3b103bbe9c0c72d60da10b158bd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <script src="/live2d-widget/autoload.js"></script>
+<link rel="alternate" href="/atom.xml" title="云晴's WORLD" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">云晴's WORLD</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">贩卖快乐！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>阅读</a>
+
+  </li>
+        <li class="menu-item menu-item-movies">
+
+    <a href="/movies/" rel="section"><i class="fa fa-fw fa-video-camera"></i>观影</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yunqing.xyz/article/42812f47.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+      <meta itemprop="name" content="云晴">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云晴's WORLD">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL查询性能优化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-05 09:00:19 / 修改时间：09:02:00" itemprop="dateCreated datePublished" datetime="2020-09-05T09:00:19+08:00">2020-09-05</time>
+            </span>
+
+          
+            <span id="/article/42812f47.html" class="post-meta-item leancloud_visitors" data-flag-title="MySQL查询性能优化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/article/42812f47.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/article/42812f47.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>16 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-为什么查询速度会慢？"><a href="#1-为什么查询速度会慢？" class="headerlink" title="1.为什么查询速度会慢？"></a>1.为什么查询速度会慢？</h3><p>​        首先对一个查询的生命周期简化分析，大致可以按照顺序分为：从客户端、到服务器、然后在服务器进行解析、生成执行计划、执行、并返回结果给客户端。其中的<code>执行</code>可以被认为是查询的生命周期中最重要的部分，执行主要包括了大量为了检索数据到存储引擎的调用以及调用后数据的排序、分组等处理。</p>
+<p>​        在完成生命周期的这些任务的时候，查询需要在不用的地方消耗时间，包括网络、CPU计算、生成执行计划、锁等待等操作，尤其是向底层存储引擎检索数据的调用操作，这些调用操作需要在内存操作、CPU操作和内存不足时导致的I/O操作上消耗时间，根据存储引擎不同，可能还会产生大量的上下文切换以及系统调用小号的时间。所有的这些任务消耗的时间共同构成了响应时间，在每一个消耗大量时间的查询操作中，我们都能看到一些不必要的额外操作，某些操作被额外的重复了很多次，某些操作执行太慢等，优化查询的目的就是减少和消除这些额外操作所花费的时间。</p>
+<a id="more"></a>
+
+<h3 id="2-慢查询基础：优化数据访问"><a href="#2-慢查询基础：优化数据访问" class="headerlink" title="2.慢查询基础：优化数据访问"></a>2.慢查询基础：优化数据访问</h3><p>​        查询性能低下的最根本原因就是访问的数据太多。虽然某些查询可能不可避免的需要筛选大量的数据，但这并不常见。大部分性能低下的查询都可以通过减少访问数据量的方式进行优化。可以通过以下两步进行分析：</p>
+<p>​        1.确认是否存在检索大量超过需要的数据。这通常意味着访问了太多的行，但有时候也可能是因为访问了太多的列。</p>
+<p>​        2.确认MySQL服务器层是否存在分析大量超过需要的数据行。</p>
+<h4 id="2-1是否向数据库请求了不需要的数据？"><a href="#2-1是否向数据库请求了不需要的数据？" class="headerlink" title="2.1是否向数据库请求了不需要的数据？"></a>2.1是否向数据库请求了不需要的数据？</h4><ul>
+<li>查询不需要的记录</li>
+<li>多表关联时返回全部的列</li>
+<li>总是取出全部列</li>
+</ul>
+<p>针对以上三点我这里试举几个典型案例：</p>
+<p>​        1.查询不需要的记录</p>
+<p>​        前端分页就是经典例子，查询实际需求显示第一页10条， 却返回100万条数据，性能低下显而易见，建议后端分页 <code>LIMIT 0, 10</code></p>
+<p>​        2.多表关联时返回全部的列</p>
+<p>​        假如你想查询所在电影<code>大话西游</code>中出现的演员，千万不能按照如下的方式查询，这将返回这三个表全部的列：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM actor</span><br><span class="line">	INNER JOIN film_actor USING(actor_id)</span><br><span class="line">	INNER JOIN film USING(film_id)</span><br><span class="line">	WHERE film.title &#x3D; &#39;大话西游&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>​        正确的做法是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 规定只查询 actor 表的列</span><br><span class="line">SELECT actor.* from actor ...</span><br></pre></td></tr></table></figure>
+
+<p>​        3.总是取出全部的列</p>
+<p>​        每次看到 <code>SELECT *</code> 的时候都要用怀疑的眼光审视，是不是真的需要返回全部的列？很可能是不必须的，取出全部列，会让优化器无法完成索引扫描这类优化，还会为服务器带来额外的 I/O、内存和CPU消耗。</p>
+<h4 id="2-2-MySQL是否在扫描额外的记录？"><a href="#2-2-MySQL是否在扫描额外的记录？" class="headerlink" title="2.2 MySQL是否在扫描额外的记录？"></a>2.2 MySQL是否在扫描额外的记录？</h4><p>​        在确定查询只返回需要的数据后，接下来应该看看查询为了返回结果是否扫描了过多的数据。对于MySQL而言，最简单的衡量查询开销的三个指标如下：</p>
+<ul>
+<li>响应时间</li>
+<li>扫描的行数</li>
+<li>返回的行数</li>
+</ul>
+<p>​        没有哪个指标能够完美的衡量查询的开销，但是他们大致反映了MySQL内部执行查询时候需要访问多少数据，并可以大概推算出查询运行的时间。这三个指标都会记录到MySQL的慢日志中，所以检查慢日志记录是找出扫描行数过多的查询的好办法。</p>
+<p><strong>下面通过一个例子来查看一下慢日志：</strong></p>
+<ul>
+<li>存在一个部门表<code>t_dept</code>，包括100万条部门记录，现在查询部门名称为<code>事询部</code>的所有部门</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 没建立索引的情况下，100万条数据中查询大概0.8秒</span><br><span class="line">SELECT t.id, t.department</span><br><span class="line">	FROM t_dept t</span><br><span class="line">	WHERE t.department &#x3D; &#39;事询部&#39;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首先我将慢日志记录时间设置为0.5秒，然后指定了慢日志位置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-- 将慢日志时间设置为0.5</span><br><span class="line">set long_query_time&#x3D;0.5;</span><br><span class="line"></span><br><span class="line">-- 设置慢日志位置</span><br><span class="line">set global slow_query_log_file&#x3D;&#39;E:\mysql_slow_query.log&#39;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行上面的查询操作，之后查看慢日志</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-1.png" alt="图1"></p>
+<ul>
+<li><p>从慢日志中可以看到上面说到的主要指标：查询事件、返回行数、扫描行数</p>
+</li>
+<li><p>问题来了，返回行数899行，却扫描了整个表100万条数据，当然效率低下了，明显用到了全表扫描，EXPLAIN执行计划中的type列说明了访问类型。执行看一下：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 执行查询计划</span><br><span class="line">EXPLAIN SELECT t.id, t.department</span><br><span class="line">	FROM t_dept t</span><br><span class="line">	WHERE t.department &#x3D; &#39;事询部&#39;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-2.png" alt="图2"></p>
+<p>​        可以看到type访问类型ALL全表扫描，预估访问97万行数据，<code>Using Where</code>代表MySQL将通过<code>WHERE</code>条件来筛选存储引擎返回的记录。</p>
+<ul>
+<li><p>一般MySQL通过如下三种方式应用WHERE条件，从好到坏依次是：</p>
+<p>1.在索引中使用WHERE条件来过滤不匹配的记录，这是在存储引擎层完成的</p>
+<p>2.使用索引覆盖扫描（在Extra中出现Using index）来返回记录，直接从索引中过滤不需要的记录并返回命中结果，这是在MySQL服务器层完成的。</p>
+<p>3.从表中返回数据，然后过滤不满足条件的记录（在Extra中显示Using Where）再试在MySQL服务器层完成，MySQL需要先从数据表读出数据然后过滤。</p>
+</li>
+</ul>
+<h4 id="2-3-加一个索引试试"><a href="#2-3-加一个索引试试" class="headerlink" title="2.3 加一个索引试试"></a>2.3 加一个索引试试</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-- 给部门表的部门名添加一条索引</span><br><span class="line">ALTER TABLE t_dept ADD INDEX index_department(department);</span><br><span class="line">-- 将慢sql记录时间调整成0秒</span><br><span class="line">set long_query_time&#x3D;0</span><br><span class="line">-- 再次执行前面的查询</span><br><span class="line">SELECT t.id, t.department</span><br><span class="line">	FROM t_dept t</span><br><span class="line">	WHERE t.department &#x3D; &#39;事询部&#39;;</span><br><span class="line">-- 查看执行计划</span><br><span class="line">EXPLAIN SELECT t.id, t.department</span><br><span class="line">	FROM t_dept t</span><br><span class="line">	WHERE t.department &#x3D; &#39;事询部&#39;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-3.png" alt="图3"></p>
+<ul>
+<li>可以看到访问类型已经从全表扫描ALL变成了非唯一性索引扫描ref,预计访问行数由97万行变成了899行，Extra显示了WHERE条件使用了索引覆盖扫描。</li>
+<li>下面看一下慢日志，注意要将慢日志记录时限改成0秒，不然记录不下来：</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-4.png" alt="图4"></p>
+<ul>
+<li>由原来的的0.8秒变成了0.000562秒，正确合适的使用索引优化速度显而易见。</li>
+</ul>
+<blockquote>
+<p>总结：</p>
+<p>如果发现查询需要扫描大量的数据行，而只返回其中少量的数据行，这样就可以尝试这样优化：</p>
+<p>1.使用索引覆盖扫描，把所有需要用的列放到索引中，这样存储引擎无需会标获取对应的行就可以返回结果</p>
+<p>2.改变表结构，例如使用单独的汇总表</p>
+<p>3.重写这个复杂查询，让MySQL优化器能够以更优化的方式执行这个查询</p>
+</blockquote>
+<h3 id="3-重构查询的方式"><a href="#3-重构查询的方式" class="headerlink" title="3.重构查询的方式"></a>3.重构查询的方式</h3><h4 id="3-1-一个复杂查询还是多个简单查询？"><a href="#3-1-一个复杂查询还是多个简单查询？" class="headerlink" title="3.1 一个复杂查询还是多个简单查询？"></a>3.1 一个复杂查询还是多个简单查询？</h4><p>​        在传统的实现中，总是强调需要数据库层完成尽可能多的工作，这样做的逻辑在于以前总是认为网络通信、查询解析和优化是一件代价很高的事情。但是MySQL从设计上让连接和断开都很轻量级，现代网络和速度比以前快很多，所以无论是带宽还是延迟，都支持MySQL在必要时可以将一个大的复杂查询转换成多个小的查询。</p>
+<p>​        虽然在其他条件都相同的情况下，使用尽可能少的查询当然是更好的，但是有时候，将一个大的查询分解成多个小的查询是很有必要的。</p>
+<h4 id="3-2-切分查询"><a href="#3-2-切分查询" class="headerlink" title="3.2 切分查询"></a>3.2 切分查询</h4><p>​        有时候对于一个大查询我们需要“分而治之”，将大查询切分成小查询，没个查询功能完全一样，只完成一小部分，每次只返回一小部分查询结果。</p>
+<p>例如：</p>
+<p>​        删除旧的数据就是一个很好的例子，定期的清除大量数据的时候，如果一个大的语句一次性完成的话，则可能需要一次锁住很多数据、占满整个事务日志、耗尽系统资源、阻塞很多小的重要的查询。因此切分成很多小的查询多次完成，则可以尽可能小的影响MySQL的性能，同时还可以减少MySQL复制的延迟。例如：我们需要每个月运行一次下面的查询：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 从messages表中删除3个月之前创建的数据</span><br><span class="line">DELETE FROM messages WHERE created &lt; DATE_SUB(NOW(), INTERVAL 3 MONTH);</span><br></pre></td></tr></table></figure>
+
+<p>​        我们可以将这个查询分成每次删除10000条数据，然后暂停一会再做下次删除，这样可以将服务器上原本一次性的压力分散到一个很长的时间段中，可以降低对服务器的影响，减少删除时锁的持有时间。如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 分成多次执行</span><br><span class="line">DELETE FROM messages WHERE created &lt; DATE_SUB(NOW(), INTERVAL 3 MONTH) LIMIT 10000;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-3分解关联查询"><a href="#3-3分解关联查询" class="headerlink" title="3.3分解关联查询"></a>3.3分解关联查询</h4><p>​        很多高性能应用都会对关联查询进行分解。简单来说，可以对每一个表进行一次单表查询，然后将结果在应用程序中进行关联，例如下面这个查询：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	* </span><br><span class="line">FROM</span><br><span class="line">	t_user t1</span><br><span class="line">	JOIN t_dept t2 USING ( id )</span><br><span class="line">	JOIN t_address t3 USING ( id ) </span><br><span class="line">WHERE</span><br><span class="line">	t1.fname &#x3D; &#39;6Yn&#39;</span><br><span class="line"></span><br><span class="line">-- 可以分解成下面这些查询来代替：</span><br><span class="line">SELECT * FROM t_user t WHERE t.fname &#x3D; &#39;6YN&#39;;</span><br><span class="line">SELECT * FROM t_dept t WHERE t.id &#x3D; 23456;</span><br><span class="line">SELECT * FROM t_address t WHERE t.id in (12, 234, 23456, 100000);</span><br></pre></td></tr></table></figure>
+
+<p>这么做的优势是什么呢？</p>
+<ul>
+<li><p>1.让缓存更高效。许多应用程序可以方便的缓存单表查询对应的结果对象。例如，上面的查询中<code>fname</code>已经被缓存了，那么应用程序就可以跳过第一个查询。再例如，应用中已经缓存了ID为12， 34的内容，那么第三个查询的<code>IN()</code>中就可以少几个ID。</p>
+</li>
+<li><p>2.将查询分解后，执行单个查询可以减少锁的竞争。</p>
+</li>
+<li><p>3.在应用层做关联，可以更容易对数据库进行拆分，更容易做到高性能和可扩展。</p>
+</li>
+<li><p>4.查询本身效率也可能会有所提升。</p>
+</li>
+<li><p>5.可以减少冗余记录的查询。在应用层做关联查询，意味着对于某条记录应用只需要查询一次，而在数据库中做关联查询，则可能需要重复的访问一部分数据。从这点看，这样的重构还可能会减少网络和内存消耗。</p>
+</li>
+<li><p>6.这样做相当于在应用中实现了哈希关联，而不是使用MySQL的嵌套循环关联。</p>
+</li>
+</ul>
+<h3 id="4-查询执行的基础"><a href="#4-查询执行的基础" class="headerlink" title="4.查询执行的基础"></a>4.查询执行的基础</h3><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-5.png" alt="图5"></p>
+<h4 id="4-1查询缓存"><a href="#4-1查询缓存" class="headerlink" title="4.1查询缓存"></a>4.1查询缓存</h4><ul>
+<li>在解析一个查询语句之前，如果查询缓存是打开的，那么MySQL会优先检查这个查询是否命中查询缓存中的数据。</li>
+<li>这个检查是通过一个对大小写敏感的哈希查找的。查询和缓存中的查询即使只有一个不同，也不会匹配缓存结果。</li>
+<li>如果命中缓存，那么在返回结果前MySQL会检查一次用户权限，有权限则跳过其他步骤直接返回数据。</li>
+</ul>
+<p>缓存何时失效？</p>
+<p>​        在表的结构或数据发生改变时，查询缓存中的数据不再有效。有这些INSERT、UPDATE、 DELETE、TRUNCATE、ALTER TABLE、DROP TABLE或DROP DATABASE会导致缓存数据失效。所以查询缓存适合有大量相同查询的应用，不适合有大量数据更新的应用。</p>
+<p>如何清理查询缓存？</p>
+<ul>
+<li>FLUSH QUERY CACHE;  // 清理查询缓存内存碎片。</li>
+<li>RESET QUERY CACHE;  // 从查询缓存中移出所有查询。</li>
+<li>FLUSH TABLES;  //关闭所有打开的表，同时该操作将会清空查询缓存中的内容。</li>
+</ul>
+<h4 id="4-2-查询优化器"><a href="#4-2-查询优化器" class="headerlink" title="4.2 查询优化器"></a>4.2 查询优化器</h4><p>​        MySQL的查询优化器是一个非常复杂的部件，它使用了很多优化策略来生成一个最优的执行计划。下面是一些MySQL能够处理的优化类型：</p>
+<ul>
+<li>重新定义关联表的顺序</li>
+<li>将外连接转化成内连接</li>
+<li>使用等价变换规则</li>
+<li>优化COUNT()、MIN()和MAX()</li>
+<li>预估并转化为常数表达式</li>
+<li>覆盖索引扫描</li>
+<li>子查询优化</li>
+<li>提前终止查询</li>
+<li>等值查询</li>
+<li>列表IN()的比较</li>
+</ul>
+<p>上面列举的并不是MySQL优化器的全部，MySQL还会做大量其他的优化，列举这些主要是让大家明白优化器的复杂性和智能型。如果说从上面这也例子中我们应该学到些什么，那就是不要自认为比优化器更聪明，你可能会占点便宜，但是更有可能会使查询变得更加复杂而难以维护，而最终受益为零。作为开发人员而不是DBA来说，让优化器按照他的方式工作就可以了。</p>
+<h4 id="4-3-排序优化"><a href="#4-3-排序优化" class="headerlink" title="4.3 排序优化"></a>4.3 排序优化</h4><p>​        无论如何排序都是一个成本很高的操作，所以从性能角度考虑，应尽可能避免排序或者尽可能避免对大量数据进行排序。但是通常情况下，排序是不可避免的，所以就要考虑如何优化排序了。</p>
+<p>​        这里给出的建议是通过索引进行排序。</p>
+<p>​        当不能使用索引生成排序结果的时候，MySQL需要自己进行排序，如果数据量小则在内存中，数据量大则需要使用磁盘，不管是内存还是磁盘中进行排序都统称为文件排序（filesort）。MySQL文件排序的时候需要使用临时存储空间可能会比想象的大得多。原因是：在MySQL进行排序的时候，对于每一个排序记录都会分配一个足够长的定长空间来存放，这个定长空间必须足够长以容纳其中最长的字符串，例如，如果是VARCHAR列则需要分配其完整长度；如果使用UTF-8字符集，那么MySQL将会为每个字符预留三个字节。</p>
+<h3 id="5-关于MySQL层面优化的一些建议"><a href="#5-关于MySQL层面优化的一些建议" class="headerlink" title="5.关于MySQL层面优化的一些建议"></a>5.关于MySQL层面优化的一些建议</h3><p><strong>总结到 SQL 优化中，就如下三点：</strong></p>
+<ul>
+<li>最大化利用索引。</li>
+<li>尽可能避免全表扫描。</li>
+<li>减少无效数据的查询。</li>
+</ul>
+<p>理解 SQL 优化原理 ，首先要搞清楚 SQL 执行顺序。</p>
+<h4 id="5-1-MySQL的执行顺序"><a href="#5-1-MySQL的执行顺序" class="headerlink" title="5.1 MySQL的执行顺序"></a>5.1 MySQL的执行顺序</h4><p>MySQL的语法顺序如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">DISTINCT &lt;select_list&gt;</span><br><span class="line">FROM &lt;left_table&gt;</span><br><span class="line">&lt;join_type&gt; JOIN &lt;right_table&gt;</span><br><span class="line">ON &lt;join_condition&gt;</span><br><span class="line">WHERE &lt;where_condition&gt;</span><br><span class="line">GROUP bY &lt;group_by_list&gt;</span><br><span class="line">HAVING &lt;having_condition&gt;</span><br><span class="line">ORDER BY &lt;order_by_condition&gt;</span><br><span class="line">LIMIT &lt;limit_condition&gt;</span><br></pre></td></tr></table></figure>
+
+<p>MySQL的执行顺序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">FROM</span><br><span class="line">&lt;表名&gt; #选取表，将多个表数据通过笛卡尔积变成一个表</span><br><span class="line">ON</span><br><span class="line">&lt;筛选条件&gt; #对笛卡尔积的虚表进行筛选</span><br><span class="line">JOIN #指定join类型</span><br><span class="line">&lt;join表&gt; #用于添加数据到on之后的虚表中</span><br><span class="line">WHERE </span><br><span class="line">&lt;where条件&gt; #对上述虚表进行筛选</span><br><span class="line">GROUP BY</span><br><span class="line">&lt;分组条件&gt; #分组</span><br><span class="line">&lt;SUM()等聚合函数&gt; #用于having进行判断，在书写上这类聚合函数是写在having判断里面的</span><br><span class="line">HAVING</span><br><span class="line">&lt;分组筛选&gt; #对分组后的结果进行聚合筛选</span><br><span class="line">SELECT</span><br><span class="line">&lt;返回数据列表&gt; #返回的单列必须在group by子句中，聚合函数除外</span><br><span class="line">DISTINCT</span><br><span class="line">#数据去重</span><br><span class="line">ORDER BY</span><br><span class="line">&lt;排序条件&gt; #排序</span><br><span class="line">LIMIT</span><br><span class="line">&lt;行数限制&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-2-优化建议"><a href="#5-2-优化建议" class="headerlink" title="5.2 优化建议"></a>5.2 优化建议</h4><p><strong>注意：以下 SQL 优化策略适用于数据量较大的场景下，如果数据量较小一共几百几千条，属实没有必要考虑。</strong></p>
+<h4 id="5-2-1-避免不走索引的场景"><a href="#5-2-1-避免不走索引的场景" class="headerlink" title="5.2.1 避免不走索引的场景"></a>5.2.1 避免不走索引的场景</h4><ul>
+<li>尽量避免字段开头的模糊查询，会导致数据库引擎放弃索引进行全表扫描</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-- 查看执行计划</span><br><span class="line">EXPLAIN SELECT</span><br><span class="line">	* </span><br><span class="line">FROM</span><br><span class="line">	t_user </span><br><span class="line">WHERE</span><br><span class="line">	fname LIKE &#39;%a%&#39;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-6.png" alt="图6"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-- 查看执行计划</span><br><span class="line">EXPLAIN SELECT</span><br><span class="line">	* </span><br><span class="line">FROM</span><br><span class="line">	t_user </span><br><span class="line">WHERE</span><br><span class="line">	fname LIKE &#39;a%&#39;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/04-mysql-select-7.png" alt="图7"></p>
+<p><strong>如果需求是要在前面使用模糊查询：</strong></p>
+<p>1.使用 MySQL 内置函数 INSTR（str，substr）来匹配，作用类似于 Java 中的 indexOf()，查询字符串出现的角标位置。</p>
+<p>2.使用 FullText 全文索引，用 match against 检索。</p>
+<p>3.数据量较大的情况，建议引用 ElasticSearch 亿级数据量检索速度秒级。</p>
+<p>4.当表数据量较少（几千条儿那种），别整花里胡哨的，直接用 like ‘%xx%’。</p>
+<ul>
+<li>使用 or 必须 全部有索引，否则全表扫描，建议使用 union all 代替</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#前提：fname带索引，lname不带索引</span><br><span class="line">-- 因为lname没有索引，会造成全表扫描</span><br><span class="line">select * from t_user where fname &#x3D; &#39;a&#39; or lname &#x3D; &#39;b&#39;;</span><br><span class="line"></span><br><span class="line">-- 由于id和fname都有索引，所以不会全表扫描</span><br><span class="line">select * from t_user where id &#x3D; 1 or fname &#x3D; &#39;a&#39;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>最佳左前缀原则</p>
+<p>例如我给<code>t_user</code> 表创建了联合索引 <code>index_fname_lname_age</code></p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-- 不走索引，全表扫描</span><br><span class="line">select * from t_user where lname &#x3D; &#39;v&#39;;</span><br><span class="line">select * from t_user where age &#x3D; &#39;3&#39;;</span><br><span class="line">select * from t_user where lname &#x3D; &#39;b&#39; and age &#x3D; 3;</span><br><span class="line">-- 走索引</span><br><span class="line">select * from t_user where fname &#x3D; &#39;v&#39;;</span><br><span class="line">select * from t_user where fname &#x3D; &#39;b&#39; and lname &#x3D; &#39;b&#39; and age &#x3D; 3;</span><br><span class="line">-- 仅fname字段走索引</span><br><span class="line">select * from t_user where fname &#x3D; &#39;b&#39; and age &#x3D; 3;</span><br></pre></td></tr></table></figure>
+
+<p>实际上相当于创建了<code>fname索引</code>、<code>fname_lname索引</code> 、<code>fname_lname_age索引</code></p>
+<p>总结：联合索引必须保证有最左索引字段，中间字段不能断，直到最后字段，才能全部用上索引。</p>
+<ul>
+<li><p>索引值不会包含有NULL值的列</p>
+<p>​        只要列中包含有NULL值都将不会被包含在索引中，复合索引中只要有一列含有NULL值，那么这一列对于此复合索引就是无效的。所以我们在数据库设计时不要让字段的默认值为NULL。</p>
+</li>
+<li><p>不要在列上进行运算</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 将在每个行上进行运算，导致扫描</span><br><span class="line">select * from t_user where YEAR(create_time) &lt; 2020;</span><br><span class="line">-- 可以改写成</span><br><span class="line">select * from t_user where create_time &lt; &#39;2020-01-01&#39;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>不使用<code>not in</code>和 <code>&lt;&gt;</code>操作</p>
+<p>​        NOT IN 和 &lt;&gt;都将导致不使用索引而全表扫描。NOT IN可以使用NOT EXISTS代替，id&lt;&gt;3可以使用id&gt;3 or id&lt;3代替</p>
+</li>
+</ul>
+<h4 id="5-2-2-UNION和UNION-ALL的区别"><a href="#5-2-2-UNION和UNION-ALL的区别" class="headerlink" title="5.2.2 UNION和UNION ALL的区别"></a>5.2.2 UNION和UNION ALL的区别</h4><ul>
+<li>UNION 对两个结果集进行并集操作，会过滤掉重复的行，并且会进行默认规则的排序；</li>
+<li>UNION ALL 对两个结果集进行并集操作，不过滤重复的行，也不排序。</li>
+</ul>
+<p>如果你想取两个结果集的前20条操作，mysql会把两个结果集都放到临时表中，再取前20条，你可以分别取出两个结果集的前20条进行并集操作，然后再LIMIT 20</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-- 注意，这里没有考虑排序问题，主要讲的是减少临时表中的数据</span><br><span class="line">(select fname, lname</span><br><span class="line">from t_user </span><br><span class="line">limit 20)</span><br><span class="line">union all</span><br><span class="line">(select fname, lname</span><br><span class="line">from t_student</span><br><span class="line">limit 20</span><br><span class="line">) limit 20</span><br></pre></td></tr></table></figure>
+
+<p>​        实际上，MySQL总是使用创建并填充临时表的方式来执行UNION查询，因此很多优化策略在UNION中没法很好的使用，经常需要手工的将where、limit、order by等子句下推到UNION的各个子查询中，以便优化器可以充分的利用这些条件进行优化。</p>
+<p>​        除非确实需要服务器消除重复的行，否则一定要使用UNION ALL,这一点很重要，如果没有All关键字，MySQL会给临时表加上distinct，这会导致对真个临时表做唯一数据检查，之后进行排序，这样做的代价非常高。即使有ALL关键字，mysql仍会使用临时表存储结果。</p>
+<h4 id="5-2-3-COUNT的使用"><a href="#5-2-3-COUNT的使用" class="headerlink" title="5.2.3 COUNT的使用"></a>5.2.3 COUNT的使用</h4><ul>
+<li>例如：业务中需要根据一个或者多个条件查询是否存在记录，不关心有多少条记录的时候，有人会这么写：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-- 这条sql的确定是，不管有多少条满足，会查出所有的行数，</span><br><span class="line">-- 而前提是我们并不关心行数，只关心是否存在</span><br><span class="line">select count(*) from table where a &#x3D; &quot;param1&quot; and b &#x3D; &quot;param2&quot;;</span><br><span class="line"></span><br><span class="line">-- 优化之后的写法</span><br><span class="line">-- sql不使用count而是使用limit 1限制查到一条就返回，不在继续查找了，业务直接判断是否非空即可</span><br><span class="line">select 1 from table where a &#x3D; param1 and b &#x3D; param2 limit 1;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>COUNT(*) / COUNT(1) / COUNT(列名) / COUNT(DISTINCT 列名)</code> 的区别</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-- 返回表中的记录数（包括所有列），相当于统计行数(不会忽略列值为NULL的记录)</span><br><span class="line">count(*) </span><br><span class="line"></span><br><span class="line">-- 忽略所有列，1表示一个固定值，也可以用count(2)、count(3)代替(不会忽略列值为NULL的记录)</span><br><span class="line">count(1) </span><br><span class="line"></span><br><span class="line">-- 返回列名指定列的记录数，在统计结果的时候，会忽略列值为NULL的记录（不包括空字符串和0），即列值为NULL的记录不统计在内</span><br><span class="line">count(列名)</span><br><span class="line"></span><br><span class="line">-- 只包括列名指定列，返回指定列的不同值的记录数，在统计结果的时候，会忽略列值为NULL的记录（不包括空字符串和0），即列值为NULL的记录不统计在内。</span><br><span class="line">count(distinct 列名)</span><br></pre></td></tr></table></figure>
+
+<h4 id="count-amp-count-1-amp-count-列名-执行效率比较："><a href="#count-amp-count-1-amp-count-列名-执行效率比较：" class="headerlink" title="count(*)&amp;count(1)&amp;count(列名)执行效率比较："></a>count(*)&amp;count(1)&amp;count(列名)执行效率比较：</h4><ul>
+<li>如果列为主键，count(列名)效率优于count(1)</li>
+<li>如果列不为主键，count(1)效率优于count(列名)</li>
+<li>如果表中存在主键，count(主键列名)效率最优</li>
+<li>如果表中只有一列，则count(*)效率最优</li>
+<li>如果表有多列，且不存在主键，则count(1)效率优于count(*)</li>
+</ul>
+<h4 id="5-2-4-Limit的优化使用"><a href="#5-2-4-Limit的优化使用" class="headerlink" title="5.2.4 Limit的优化使用"></a>5.2.4 Limit的优化使用</h4><p>​        在系统中需要进行分页的时候，通常会使用LIMIT加上偏移量的方式实现，同时加上ORDER BY子句。如果有对应的索引，通常效率会不错，否则，MYSQL需要进行大量的文件排序操作。</p>
+<p>​        一个非常典型的问题是，在偏移量非常大的情况下，可能需要 limit 2000000,10 需要查询两百万加20条数据然后丢弃两百万，只返回20条，这样做的代价非常高。</p>
+<ul>
+<li>优化方法：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-- 例如原本的sql是</span><br><span class="line">select * from t_user order by fname limit 2000000, 20;</span><br><span class="line"></span><br><span class="line">-- 使用延迟关联优化</span><br><span class="line">-- 原理是：通过使用覆盖索引查询返回需要的主键，再根据这些主键关联原表获取需要的行。这可以减少mysql扫描那些需要丢弃的行。</span><br><span class="line">select * from t_user</span><br><span class="line">inner join (</span><br><span class="line">    select id from t_user order by fname limit 2000000, 20</span><br><span class="line">) as t1 USING (id)</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\article\970ccb5d.html" rel="bookmark">mysql必知必会读书笔记（3）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\article\2fb0ac38.html" rel="bookmark">mysql必知必会读书笔记（2）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\article\3d0503d6.html" rel="bookmark">mysql必知必会读书笔记（1）</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>赞赏作者一杯奶茶</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    <i class="fa fa-qrcode fa-2x" style="line-height:35px;"></i>
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/weixin.png" alt="云晴 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/alipay.png" alt="云晴 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>云晴
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.yunqing.xyz/article/42812f47.html" title="MySQL查询性能优化">http://www.yunqing.xyz/article/42812f47.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/article/e5086296.html" rel="prev" title="Docker安装redis">
+      <i class="fa fa-chevron-left"></i> Docker安装redis
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-为什么查询速度会慢？"><span class="nav-number">1.</span> <span class="nav-text">1.为什么查询速度会慢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-慢查询基础：优化数据访问"><span class="nav-number">2.</span> <span class="nav-text">2.慢查询基础：优化数据访问</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1是否向数据库请求了不需要的数据？"><span class="nav-number">2.1.</span> <span class="nav-text">2.1是否向数据库请求了不需要的数据？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-MySQL是否在扫描额外的记录？"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 MySQL是否在扫描额外的记录？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-加一个索引试试"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 加一个索引试试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-重构查询的方式"><span class="nav-number">3.</span> <span class="nav-text">3.重构查询的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-一个复杂查询还是多个简单查询？"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 一个复杂查询还是多个简单查询？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-切分查询"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 切分查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3分解关联查询"><span class="nav-number">3.3.</span> <span class="nav-text">3.3分解关联查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-查询执行的基础"><span class="nav-number">4.</span> <span class="nav-text">4.查询执行的基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1查询缓存"><span class="nav-number">4.1.</span> <span class="nav-text">4.1查询缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-查询优化器"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 查询优化器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-排序优化"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 排序优化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-关于MySQL层面优化的一些建议"><span class="nav-number">5.</span> <span class="nav-text">5.关于MySQL层面优化的一些建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-MySQL的执行顺序"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 MySQL的执行顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-优化建议"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 优化建议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-1-避免不走索引的场景"><span class="nav-number">5.3.</span> <span class="nav-text">5.2.1 避免不走索引的场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-2-UNION和UNION-ALL的区别"><span class="nav-number">5.4.</span> <span class="nav-text">5.2.2 UNION和UNION ALL的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-3-COUNT的使用"><span class="nav-number">5.5.</span> <span class="nav-text">5.2.3 COUNT的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#count-amp-count-1-amp-count-列名-执行效率比较："><span class="nav-number">5.6.</span> <span class="nav-text">count(*)&amp;count(1)&amp;count(列名)执行效率比较：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-4-Limit的优化使用"><span class="nav-number">5.7.</span> <span class="nav-text">5.2.4 Limit的优化使用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="云晴"
+      src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+  <p class="site-author-name" itemprop="name">云晴</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kangqing" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kangqing" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/6e081250d92d" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;6e081250d92d" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-external-link"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yunqing_71@163.com" title="E-Mail → mailto:yunqing_71@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/yunqing-98" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;yunqing-98" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-external-link"></i>知乎</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener external nofollow noreferrer" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<div>
+    <strong style="color:red">欢迎订阅本站</strong>
+    <img width=110px height=110px src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/weixingongzhonghao.jpg"/>
+</dic>
+<div style="padding-top:20px">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener external nofollow noreferrer" target="_blank">津ICP备20001588号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">云晴</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">75k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:05</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-ribbon@1/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'lIk2gGNugY8zCgwtqt303RVa-gzGzoHsz',
+      appKey     : 'uyHwBgO9UcmCYIUdzciDj6Wv',
+      placeholder: "匿名也可以留言哦0.0",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/linkcard.js"></script>
+</body>
+</html>
