@@ -1,6 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>使用gogs搭建git服务</title>
+    <url>/article/70f8610.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://gogs.io/" target="_blank" rel="noopener external nofollow noreferrer"><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/16-gogs-01.png" alt="图1"></a></p>
+<a id="more"></a>
+
+<ul>
+<li>之前写过一篇docker结合gitlab搭建git服务的文章，最近换成了gogs，对比两者说下有什么区别吧。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>gitlab</th>
+<th>gogs</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>速度</td>
+<td>比较吃机器性能</td>
+<td>轻量级，配置低速度也快</td>
+</tr>
+<tr>
+<td>搭建</td>
+<td>慢</td>
+<td>快</td>
+</tr>
+<tr>
+<td>功能</td>
+<td>多</td>
+<td>相比gitlab少</td>
+</tr>
+</tbody></table>
+<ul>
+<li>gogs优点：Gogs（<code>/gɑgz/</code>）项目旨在打造一个以最简便的方式搭建简单、稳定和可扩展的自助 Git 服务。使用 Go 语言开发使得 Gogs 能够通过独立的二进制分发，并且支持 Go 语言支持的 <strong>所有平台</strong>，包括 Linux、macOS、Windows 以及 ARM 平台。开源：<a href="https://github.com/gogs/gogs" target="_blank" rel="noopener external nofollow noreferrer">github地址</a></li>
+</ul>
+<h3 id="搭建gogs的git服务过程"><a href="#搭建gogs的git服务过程" class="headerlink" title="搭建gogs的git服务过程"></a>搭建gogs的git服务过程</h3><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 拉取gogs镜像</span></span><br><span class="line">docker pull gogs/gogs</span><br><span class="line"><span class="comment"># 启动容器</span></span><br><span class="line">docker <span class="keyword">run</span><span class="bash"> --name gogs -p 10022:22 -p 10080:3000 \</span></span><br><span class="line"><span class="bash">-v /usr/<span class="built_in">local</span>/docker/gogs/data:/data \</span></span><br><span class="line"><span class="bash">-d gogs/gogs</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动容器之后访问ip:10080我这里是192.168.16.128:10080第一次启动要求配置的页面</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/16-gogs-02.png" alt="图2"></p>
+<ul>
+<li>关于docker启动mysql可以参考我的文章 <a href="http://yunqing.xyz/article/b0daabb.html" target="_blank" rel="noopener external nofollow noreferrer">Docker安装mysql</a></li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/16-gogs-03.png" alt="图3"></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/16-gogs-04.png" alt="图4"></p>
+<ul>
+<li>完成设置之后，我设置的管理员账户叫做gogs_admin登录后的效果</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/16-gogs-05.png" alt="图5"></p>
+<ul>
+<li>创建一个新的仓库</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/16-gogs-06.png" alt="图6"></p>
+<ul>
+<li>最终效果如下：其他功能大家自己研究吧，这里就不做赘述了</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/16-gogs-07.png" alt="图7"></p>
+]]></content>
+      <tags>
+        <tag>docker</tag>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL查询性能优化</title>
     <url>/article/42812f47.html</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-为什么查询速度会慢？"><a href="#1-为什么查询速度会慢？" class="headerlink" title="1.为什么查询速度会慢？"></a>1.为什么查询速度会慢？</h3><p>​        首先对一个查询的生命周期简化分析，大致可以按照顺序分为：从客户端、到服务器、然后在服务器进行解析、生成执行计划、执行、并返回结果给客户端。其中的<code>执行</code>可以被认为是查询的生命周期中最重要的部分，执行主要包括了大量为了检索数据到存储引擎的调用以及调用后数据的排序、分组等处理。</p>
