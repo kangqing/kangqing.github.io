@@ -42,6 +42,7 @@
 
 <p>返回结果金额包括，金额分表示、金额元表示、货币币种（CNY代表人民币）、货币币种的元/分换算比率</p>
 <p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/18-money-01.png" alt="图1"></p>
+<h2 id="注："><a href="#注：" class="headerlink" title="注："></a>注：</h2><p>毕竟跟钱相关，以上代码并未经系统测试，所以慎用，有任何指正欢迎提出。</p>
 ]]></content>
       <tags>
         <tag>mybatis plus</tag>
