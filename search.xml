@@ -1,6 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>结合Hutool的Money类处理业务中的金钱</title>
+    <url>/article/4b82ae0a.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p><strong>货币类中封装了货币金额和币种。目前金额在内部是long类型表示， 单位是所属币种的最小货币单位（对人民币是分）。</strong></p>
+</blockquote>
+<blockquote>
+<p>目前，货币实现了以下主要功能：</p>
+<ul>
+<li>支持货币对象与double(float)/long(int)/String/BigDecimal之间相互转换。</li>
+<li>货币类在运算中提供与JDK中的BigDecimal类似的运算接口， BigDecimal的运算接口支持任意指定精度的运算功能，能够支持各种 可能的财务规则。</li>
+<li>货币类在运算中也提供一组简单运算接口，使用这组运算接口，则在 精度处理上使用缺省的处理规则。</li>
+<li>推荐使用Money，不建议直接使用BigDecimal的原因之一在于， 使用BigDecimal，同样金额和币种的货币使用BigDecimal存在多种可能 的表示，例如：new BigDecimal(“10.5”)与new BigDecimal(“10.50”) 不相等，因为scale不等。使得Money类，同样金额和币种的货币只有 一种表示方式，new Money(“10.5”)和new Money(“10.50”)应该是相等的。</li>
+<li>不推荐直接使用BigDecimal的另一原因在于， BigDecimal是Immutable， 一旦创建就不可更改，对BigDecimal进行任意运算都会生成一个新的 BigDecimal对象，因此对于大批量统计的性能不够满意。Money类是 mutable的，对大批量统计提供较好的支持。</li>
+<li>提供基本的格式化功能。</li>
+<li>Money类中不包含与业务相关的统计功能和格式化功能。业务相关的功能 建议使用utility类来实现。</li>
+<li>Money类实现了Serializable接口，支持作为远程调用的参数和返回值。</li>
+<li>Money类实现了equals和hashCode方法。</li>
+</ul>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="使用步骤与前提"><a href="#使用步骤与前提" class="headerlink" title="使用步骤与前提"></a>使用步骤与前提</h3><p>1.推荐数据库使用bigint(20)类型存储金额</p>
+<p>2.实体类使用Money类型</p>
+<p>3.引入Hutool依赖</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.hutool<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hutool-all<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.4.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>4.这里主要针对mybatis plus使用进行讲解</p>
+<h3 id="分析mybatis-的BaseTypeHandler类"><a href="#分析mybatis-的BaseTypeHandler类" class="headerlink" title="分析mybatis 的BaseTypeHandler类"></a>分析mybatis 的BaseTypeHandler类</h3><p>BaseTypeHandler是类型处理器的基类。</p>
+<p>MyBatis 中的 TypeHandler 类型处理器用于 JavaType 与 JdbcType 之间的转换，用于 PreparedStatement 设置参数值和从 ResultSet 或 CallableStatement 中取出一个值。</p>
+<p>jdbc中bigint对应java的是long，所以需要做一层long到Money的转换，这时候就需要使用mybatis提供的BaseTypeHandler了。我们需要实现一个MoneyTypeHandler继承自BaseTypeHandler完成这个转换。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> yunqing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 2020/9/17 21:15</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MoneyTypeHandler</span> <span class="keyword">extends</span> <span class="title">BaseTypeHandler</span>&lt;<span class="title">Money</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNonNullParameter</span><span class="params">(PreparedStatement ps, <span class="keyword">int</span> i, Money money, JdbcType jdbcType)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        ps.setLong(i, money.getCent());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">getNullableResult</span><span class="params">(ResultSet rs, String s)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(rs.getString(s));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">getNullableResult</span><span class="params">(ResultSet rs, <span class="keyword">int</span> i)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(rs.getString(i));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">getNullableResult</span><span class="params">(CallableStatement cs, <span class="keyword">int</span> i)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(cs.getString(i));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="结合mybatis-plus的字段类型处理器"><a href="#结合mybatis-plus的字段类型处理器" class="headerlink" title="结合mybatis plus的字段类型处理器"></a>结合mybatis plus的字段类型处理器</h3><p>类型处理器，用于 JavaType 与 JdbcType 之间的转换，用于 PreparedStatement 设置参数值和从 ResultSet 或 CallableStatement 中取出一个值，主要用于 <code>mybaits-plus</code> 内置常用类型处理器如何通过<code>TableField</code>注解快速注入到 <code>mybatis</code> 容器中。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 注意我这这里开启了映射注解</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@TableName</span>(value = <span class="string">"mmall_product"</span>, autoResultMap = <span class="keyword">true</span>)</span><br><span class="line"><span class="meta">@ApiModel</span>(value=<span class="string">"Product对象"</span>, description=<span class="string">""</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> <span class="keyword">extends</span> <span class="title">Model</span>&lt;<span class="title">Product</span>&gt; </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 必须开启映射注解</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@TableName</span>(autoResultMap = true)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@TableField</span>(typeHandler = MoneyTypeHandler<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">    @<span class="title">ApiModelProperty</span>(<span class="title">value</span> </span>= <span class="string">"价格,单位-元"</span>)</span><br><span class="line">    <span class="keyword">private</span> Money price;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>返回结果金额包括，金额分表示、金额元表示、货币币种（CNY代表人民币）、货币币种的元/分换算比率</p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/18-money-01.png" alt="图1"></p>
+]]></content>
+      <tags>
+        <tag>mybatis plus</tag>
+        <tag>hutool</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker搭建私有gitlab仓库</title>
+    <url>/article/56db5bfb.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="docker在centos安装教程："><a href="#docker在centos安装教程：" class="headerlink" title="docker在centos安装教程："></a>docker在centos安装教程：</h2><p><a href="https://docs.docker.com/install/linux/docker-ce/centos/" target="_blank" rel="noopener external nofollow noreferrer">官方教程：https://docs.docker.com/install/linux/docker-ce/centos/</a><br>1.查询是否安装过</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum list installed | grep docker</span><br></pre></td></tr></table></figure>
+<p>2.卸载旧版本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo yum -y remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<p>3.安装所需软件包</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo yum -y install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
+<p>4.设置稳定的存储库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
+<p>5.安装最新版本的Docker Engine-Community和containerd</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum -y install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
+<p>6.启动docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+<p>7.通过运行hello-world 映像来验证是否正确安装了Docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+<ul>
+<li>此命令下载测试图像并在容器中运行。容器运行时，它会打印参考消息并退出<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-gitlab-1.png" alt="图1"></li>
+</ul>
+<p>#下面就开始搭建gitlab仓库<br>1.拉取gitlab镜像</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull gitlab&#x2F;gitlab-ce</span><br></pre></td></tr></table></figure>
+<p>2.下载速度太慢，设置国内的阿里镜像加速<br><a href="https://promotion.aliyun.com/ntms/act/kubernetes.html" target="_blank" rel="noopener external nofollow noreferrer">docker阿里镜像地址，具体使用参考下面链接</a></p>
+<p>参考地址 <a href="https://blog.csdn.net/Funny_Ma/article/details/96478395" target="_blank" rel="noopener external nofollow noreferrer">https://blog.csdn.net/Funny_Ma/article/details/96478395</a></p>
+<p>3.启动gitlab</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo docker run --detach \</span><br><span class="line">  --hostname gitlab.example.com \</span><br><span class="line">  --publish 10443:443 --publish 1080:80 --publish 1022:22 \</span><br><span class="line">  --name gitlab \</span><br><span class="line">  --restart always \</span><br><span class="line">  --volume /usr/local/docker/gitlab/config:/etc/gitlab \</span><br><span class="line">  --volume /usr/local/docker/gitlab/logs:/var/log/gitlab \</span><br><span class="line">  --volume /usr/local/docker/gitlab/data:/var/opt/gitlab \</span><br><span class="line">  gitlab/gitlab-ce:latest</span><br></pre></td></tr></table></figure>
+<ul>
+<li>解释一下上面的一条长命令<blockquote>
+<p>–hostname gitlab.example.com \   # 设置主机名或域名<br>–publish 10443:443 –publish 1080:80 –publish 1022:22 \ #本地端口的映射<br>–name gitlab \     # gitlab-ce 的镜像运行成功的容器命名为gitlab<br>–restart always \  # 设置重启方式，always 代表一直开启，即开机自启<br>–volume 分别将 gitlab 的配置文件、日志文件、数据文件目录映射到 /usr/local/docker/gitlab的相应目录中</p>
+</blockquote>
+</li>
+</ul>
+<p>4.通过命令查看所有容器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-gitlab-2.png" alt="图2"><br>5.因为我们把gitlab映射到1080端口，所以防火墙开启1080端口</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 开启1080端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=1080/tcp --permanent </span><br><span class="line"><span class="meta">#</span><span class="bash"> 重启防火墙才能生效</span></span><br><span class="line">systemctl restart firewalld</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看已经开放的端口</span></span><br><span class="line">firewall-cmd --list-ports</span><br></pre></td></tr></table></figure>
+<p>5.访问<a href="http://192.168.8.128:1080" target="_blank" rel="noopener external nofollow noreferrer">http://192.168.8.128:1080</a></p>
+<ul>
+<li>注意改成你服务器的ip</li>
+<li>第一次访问让你设置密码，默认账户是root</li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-gitlab-3.png" alt="图3"></p>
+<ul>
+<li>设置好密码，root账户名登录即可<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-gitlab-4.png" alt="图4"></li>
+</ul>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-gitlab-5.png" alt="图5"></p>
+<ul>
+<li>接下来怎么使用，就不是本文要讲的范围了哦</li>
+</ul>
+<ol start="6">
+<li>新建一个项目，clone的时候发现地址<a href="http://gitlab.example.com/root/test.git" target="_blank" rel="noopener external nofollow noreferrer">http://gitlab.example.com/root/test.git</a><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-gitlab-6.png" alt="图6"></li>
+</ol>
+<blockquote>
+<p>上面设置的时候设置主机名或者域名的时候设置了gitlab.example.com,这时候怎么解决？</p>
+</blockquote>
+<ul>
+<li><p>去上面那条长命令找到配置文件地址，我的是这个</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;docker&#x2F;gitlab&#x2F;config</span><br></pre></td></tr></table></figure></li>
+<li><p>vim打开进入这个文件<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-gitlab-7.png" alt="图7"></p>
+</li>
+<li><p>搜索这行# external_url ‘GENERATED_EXTERNAL_URL’</p>
+</li>
+<li><p>去掉注释并改成你的ip或域名，保存退出。<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-gitlab-8.png" alt="图8"></p>
+</li>
+<li><p>使配置生效</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker exec gitlab gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure></li>
+<li><p>重启gitlab</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker restart gitlab</span><br></pre></td></tr></table></figure>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-gitlab-9.png" alt="图9"></p>
+</li>
+<li><p>启动gitlab较慢，遇到502多等一会。</p>
+</li>
+<li><p>启动成功，看到clone的url已经修改成了ip<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-gitlab-10.png" alt="图10"></p>
+</li>
+</ul>
+<h2 id="windows上用docker搭建gitlab私库"><a href="#windows上用docker搭建gitlab私库" class="headerlink" title="windows上用docker搭建gitlab私库"></a>windows上用docker搭建gitlab私库</h2><ul>
+<li>注意更改gitlab的config/logs/data的目录到windows的指定目录<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -d --hostname localhost -p 10080:80 -p 10443:443 --name gitlab --restart always -v D:\java\docker\gitlab\config:/etc/gitlab -v D:\java\docker\gitlab\logs:/var/log/gitlab -v D:\java\docker\gitlab\data:/var/data/gitlab gitlab/gitlab-ce:latest</span><br></pre></td></tr></table></figure></li>
+<li>上面的命令执行完后可执行下面命令查看gitlab容器的状态<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure></li>
+<li>如果状态一直是health: starting 而不变成healthy,则打开配置文件夹，如上面长命令中设置的配置文件夹为D:\java\docker\gitlab\config，则打开这个文件夹下的gitlab.rb文件。修改其中配置</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">external_url 'http://你的ipv4地址'</span><br><span class="line">gitlab_rails['gitlab_shell_ssh_port'] = 10022</span><br></pre></td></tr></table></figure>
+<ul>
+<li>再次执行docker ps -a发现状态变成healthy就可以访问了，没变可以重启gitlab容器</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker restart gitlab</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>成功启动后访问localhost:10080就可以设置密码了。默认账户名root</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>docker</tag>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用gogs搭建git服务</title>
     <url>/article/70f8610.html</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://gogs.io/" target="_blank" rel="noopener external nofollow noreferrer"><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/16-gogs-01.png" alt="图1"></a></p>

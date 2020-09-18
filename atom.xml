@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-09-15T23:08:17.604Z</updated>
+  <updated>2020-09-18T12:35:52.248Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -17,11 +17,72 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>结合Hutool的Money类处理业务中的金钱</title>
+    <link href="http://www.yunqing.xyz/article/4b82ae0a.html"/>
+    <id>http://www.yunqing.xyz/article/4b82ae0a.html</id>
+    <published>2020-09-18T12:34:12.000Z</published>
+    <updated>2020-09-18T12:35:52.248Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;货币类中封装了货币金额和币种。目前金额在内部是long类型表示， 单位是所属币种的最小货币单位（对人民币是分）。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;目前，货币实现了以下主要功能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;支持货币对象与double(float)/long(int)/String/BigDecimal之间相互转换。&lt;/li&gt;
+&lt;li&gt;货币类在运算中提供与JDK中的BigDecimal类似的运算接口， BigDecimal的运算接口支持任意指定精度的运算功能，能够支持各种 可能的财务规则。&lt;/li&gt;
+&lt;li&gt;货币类在运算中也提供一组简单运算接口，使用这组运算接口，则在 精度处理上使用缺省的处理规则。&lt;/li&gt;
+&lt;li&gt;推荐使用Money，不建议直接使用BigDecimal的原因之一在于， 使用BigDecimal，同样金额和币种的货币使用BigDecimal存在多种可能 的表示，例如：new BigDecimal(“10.5”)与new BigDecimal(“10.50”) 不相等，因为scale不等。使得Money类，同样金额和币种的货币只有 一种表示方式，new Money(“10.5”)和new Money(“10.50”)应该是相等的。&lt;/li&gt;
+&lt;li&gt;不推荐直接使用BigDecimal的另一原因在于， BigDecimal是Immutable， 一旦创建就不可更改，对BigDecimal进行任意运算都会生成一个新的 BigDecimal对象，因此对于大批量统计的性能不够满意。Money类是 mutable的，对大批量统计提供较好的支持。&lt;/li&gt;
+&lt;li&gt;提供基本的格式化功能。&lt;/li&gt;
+&lt;li&gt;Money类中不包含与业务相关的统计功能和格式化功能。业务相关的功能 建议使用utility类来实现。&lt;/li&gt;
+&lt;li&gt;Money类实现了Serializable接口，支持作为远程调用的参数和返回值。&lt;/li&gt;
+&lt;li&gt;Money类实现了equals和hashCode方法。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="mybatis plus" scheme="http://www.yunqing.xyz/tags/mybatis-plus/"/>
+    
+      <category term="hutool" scheme="http://www.yunqing.xyz/tags/hutool/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker搭建私有gitlab仓库</title>
+    <link href="http://www.yunqing.xyz/article/56db5bfb.html"/>
+    <id>http://www.yunqing.xyz/article/56db5bfb.html</id>
+    <published>2020-09-18T12:31:05.000Z</published>
+    <updated>2020-09-18T12:33:03.552Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;docker在centos安装教程：&quot;&gt;&lt;a href=&quot;#docker在centos安装教程：&quot; class=&quot;headerlink&quot; title=&quot;docker在centos安装教程：&quot;&gt;&lt;/a&gt;docker在centos安装教程：&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/install/linux/docker-ce/centos/&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;官方教程：https://docs.docker.com/install/linux/docker-ce/centos/&lt;/a&gt;&lt;br&gt;1.查询是否安装过&lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;yum list installed | grep docker&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;2.卸载旧版本&lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo yum -y remove docker \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  docker-client \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  docker-client-latest \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  docker-common \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  docker-latest \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  docker-latest-logrotate \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  docker-logrotate \&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  docker-engine&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="docker" scheme="http://www.yunqing.xyz/tags/docker/"/>
+    
+      <category term="git" scheme="http://www.yunqing.xyz/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
     <title>使用gogs搭建git服务</title>
     <link href="http://www.yunqing.xyz/article/70f8610.html"/>
     <id>http://www.yunqing.xyz/article/70f8610.html</id>
     <published>2020-09-15T22:08:26.000Z</published>
-    <updated>2020-09-15T23:08:17.604Z</updated>
+    <updated>2020-09-15T23:08:52.586Z</updated>
     
     <summary type="html">
     
