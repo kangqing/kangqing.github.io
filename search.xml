@@ -1556,6 +1556,10 @@
     <title>hexo之next主题美化</title>
     <url>/article/29e1e123.html</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><ul>
+<li>next7之后为了方便升级，修改主题配置文件/source/_data/next.yml文件</li>
+</ul>
+<p>​    <a href="https://theme-next.js.org/" target="_blank" rel="noopener external nofollow noreferrer">具体参考地址</a></p>
+<ul>
 <li><p>安装<code>nodejs/git/hexo</code>初始化这些基本就不讲了，网上一找一大堆，直接从入手<code>next</code>主题开始.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1.进入博客根目录，从git拉取next主题到themes目录下重命名为next</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
 
