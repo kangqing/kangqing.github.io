@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-09-18T12:45:38.694Z</updated>
+  <updated>2020-09-22T13:25:57.408Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -17,11 +17,93 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>CentOS7防火墙端口设置</title>
+    <link href="http://www.yunqing.xyz/article/1be30850.html"/>
+    <id>http://www.yunqing.xyz/article/1be30850.html</id>
+    <published>2020-09-22T22:09:03.161Z</published>
+    <updated>2020-09-22T13:25:57.408Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Centos7 yum 出现could not retrieve mirrorlist 最终解决方案</title>
+    <link href="http://www.yunqing.xyz/article/22212fda.html"/>
+    <id>http://www.yunqing.xyz/article/22212fda.html</id>
+    <published>2020-09-22T22:09:03.160Z</published>
+    <updated>2020-09-22T22:08:27.235Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案&quot;&gt;&lt;a href=&quot;#Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案&quot; class=&quot;headerlink&quot; title=&quot;Centos7 yum 出现could not retrieve mirrorlist 最终解决方案&quot;&gt;&lt;/a&gt;Centos7 yum 出现could not retrieve mirrorlist 最终解决方案&lt;/h1&gt;&lt;p&gt;首先遇到这个问题是因为安装centos7之后想看ip,用到命令&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ifconfig&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;返回没有这个命令&lt;br&gt;然后想安装net-tools以得到ifconfig命令执行：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;yum install net-tools&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;然后安装不成功报错could not retrieve mirrorlist ….&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Spring Security密码认证源码级讲解</title>
+    <link href="http://www.yunqing.xyz/article/96adc5df.html"/>
+    <id>http://www.yunqing.xyz/article/96adc5df.html</id>
+    <published>2020-09-22T22:09:03.159Z</published>
+    <updated>2020-09-22T22:07:52.348Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;本文根据我的项目进行Security密码认证的源码级别讲解，我们将通过localhost:9090访问来开始进行Debug说明，我已经在源码中打了很多个端点，基本能讲到Security用户名密码认证的全部流程，主要是给自己加深印象，其次分享给大家，如果讲解过程中有什么错误，也请大家不吝指正，谢谢！代码基于springboot2.2.1、security5、jdk8、mysql8.0、maven构建。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Linux vim注释高亮显示</title>
+    <link href="http://www.yunqing.xyz/article/e05daab5.html"/>
+    <id>http://www.yunqing.xyz/article/e05daab5.html</id>
+    <published>2020-09-22T22:09:03.153Z</published>
+    <updated>2020-09-22T22:06:40.402Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Linux-vim注释高亮显示&quot;&gt;&lt;a href=&quot;#Linux-vim注释高亮显示&quot; class=&quot;headerlink&quot; title=&quot;Linux vim注释高亮显示&quot;&gt;&lt;/a&gt;Linux vim注释高亮显示&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;首先解决没有vim命令：&lt;br&gt;把yum切换成清华大学的yum源 &lt;a href=&quot;https://mirrors.cnnic.cn/help/centos/&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;https://mirrors.cnnic.cn/help/centos/&lt;/a&gt;&lt;br&gt;然后执行&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;rpm -qa | grep vim&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;yum install -y vim*&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title>结合Hutool的Money类处理业务中的金钱</title>
     <link href="http://www.yunqing.xyz/article/4b82ae0a.html"/>
     <id>http://www.yunqing.xyz/article/4b82ae0a.html</id>
     <published>2020-09-18T12:34:12.000Z</published>
-    <updated>2020-09-18T12:45:38.694Z</updated>
+    <updated>2020-09-18T13:45:20.296Z</updated>
     
     <summary type="html">
     
@@ -381,82 +463,6 @@
     
     
       <category term="mysql" scheme="http://www.yunqing.xyz/tags/mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mysql必知必会读书笔记（2）</title>
-    <link href="http://www.yunqing.xyz/article/2fb0ac38.html"/>
-    <id>http://www.yunqing.xyz/article/2fb0ac38.html</id>
-    <published>2020-03-22T11:06:52.000Z</published>
-    <updated>2020-03-29T02:03:45.024Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;11-使用数据处理函数&quot;&gt;&lt;a href=&quot;#11-使用数据处理函数&quot; class=&quot;headerlink&quot; title=&quot;11.使用数据处理函数&quot;&gt;&lt;/a&gt;11.使用数据处理函数&lt;/h2&gt;&lt;h3 id=&quot;常用的文本处理函数&quot;&gt;&lt;a href=&quot;#常用的文本处理函数&quot; class=&quot;headerlink&quot; title=&quot;常用的文本处理函数&quot;&gt;&lt;/a&gt;常用的文本处理函数&lt;/h3&gt;&lt;p&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-2fb0ac38-1.png&quot; alt=&quot;22-2fb0ac38-1&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="mysql" scheme="http://www.yunqing.xyz/tags/mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mysql必知必会读书笔记（1）</title>
-    <link href="http://www.yunqing.xyz/article/3d0503d6.html"/>
-    <id>http://www.yunqing.xyz/article/3d0503d6.html</id>
-    <published>2020-03-22T10:56:44.000Z</published>
-    <updated>2020-03-29T02:03:40.030Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;mysql命令行客户端登录&quot;&gt;&lt;a href=&quot;#mysql命令行客户端登录&quot; class=&quot;headerlink&quot; title=&quot;mysql命令行客户端登录&quot;&gt;&lt;/a&gt;mysql命令行客户端登录&lt;/h2&gt;&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;-- 默认端口3306 主机本地localhost&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;mysql -u root -p&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;-- 写全的话&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;mysql -u root -p -h localhost -P 3307&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="mysql" scheme="http://www.yunqing.xyz/tags/mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>第二篇文章致敬梦想</title>
-    <link href="http://www.yunqing.xyz/article/6b624713.html"/>
-    <id>http://www.yunqing.xyz/article/6b624713.html</id>
-    <published>2020-03-18T12:48:23.000Z</published>
-    <updated>2020-09-18T13:09:56.993Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;del&gt;毫无疑问，首篇文章祭给Hello World！&lt;/del&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://52chang.wang&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot; class=&quot;LinkCard&quot;&gt;卡片链接感谢–&amp;gt;长弓不是弓长&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="梦想" scheme="http://www.yunqing.xyz/tags/%E6%A2%A6%E6%83%B3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="http://www.yunqing.xyz/article/4a17b156.html"/>
-    <id>http://www.yunqing.xyz/article/4a17b156.html</id>
-    <published>2020-03-17T13:41:23.000Z</published>
-    <updated>2020-03-29T02:02:39.062Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;Quick-Start&quot;&gt;&lt;a href=&quot;#Quick-Start&quot; class=&quot;headerlink&quot; title=&quot;Quick Start&quot;&gt;&lt;/a&gt;Quick Start&lt;/h2&gt;
-    
-    </summary>
-    
-    
     
   </entry>
   

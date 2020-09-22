@@ -1,6 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CentOS7防火墙端口设置</title>
+    <url>/article/1be30850.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="CentOS7防火墙端口设置"><a href="#CentOS7防火墙端口设置" class="headerlink" title="CentOS7防火墙端口设置"></a>CentOS7防火墙端口设置</h1><p>centos7 防火墙添加开放端口：【单个】<br>firewall-cmd –zone=public –add-port=443/tcp –permanent<br>centos7 防火墙添加开放端口：【范围】<br>firewall-cmd –zone=public –add-port=20000-30000/tcp –permanent<br>【重新载入防火墙配置】<br>firewall-cmd –reload<br>【查看】<br>firewall-cmd –zone=public –list-ports<br>【删除】<br>firewall-cmd –zone=public –remove-port=80/tcp –permanent<br>【重启防火墙】<br>systemctl restart firewalld.service<br>【解释】<br>–zone=public：表示作用域为公共的；<br>–add-port=8080/tcp：添加tcp协议的端口8080；<br>–permanent：永久生效，如果没有此参数，则只能维持当前服务生命周期内，重新启动后失效；</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Centos7 yum 出现could not retrieve mirrorlist 最终解决方案</title>
+    <url>/article/22212fda.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案"><a href="#Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案" class="headerlink" title="Centos7 yum 出现could not retrieve mirrorlist 最终解决方案"></a>Centos7 yum 出现could not retrieve mirrorlist 最终解决方案</h1><p>首先遇到这个问题是因为安装centos7之后想看ip,用到命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
+<p>返回没有这个命令<br>然后想安装net-tools以得到ifconfig命令执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install net-tools</span><br></pre></td></tr></table></figure>
+<p>然后安装不成功报错could not retrieve mirrorlist ….</p>
+<a id="more"></a>
+
+<p> 在尝试过很多方法不管用之后，下面是终极解决方案，需要root用户或者不是root用户则sudo执行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo cd &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts  #进入这个目录，找到下面这个文件</span><br></pre></td></tr></table></figure>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-yum-01.png" alt="图1"></p>
+<ul>
+<li><p>注意这个文件名字可能跟我这个不一样，打开这个文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi ifcfg-eth0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将ONBOOT改为yes，wq!保存退出</p>
+</li>
+</ul>
+<p>重新启动网络</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">service network restart</span><br></pre></td></tr></table></figure>
+<p>解决这个问题之后再返回去执行安装net-tools之后就可以ifconfig了</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Spring Security密码认证源码级讲解</title>
+    <url>/article/96adc5df.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><blockquote>
+<p>本文根据我的项目进行Security密码认证的源码级别讲解，我们将通过localhost:9090访问来开始进行Debug说明，我已经在源码中打了很多个端点，基本能讲到Security用户名密码认证的全部流程，主要是给自己加深印象，其次分享给大家，如果讲解过程中有什么错误，也请大家不吝指正，谢谢！代码基于springboot2.2.1、security5、jdk8、mysql8.0、maven构建。</p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="二、debug启动springboot应用"><a href="#二、debug启动springboot应用" class="headerlink" title="二、debug启动springboot应用"></a>二、debug启动springboot应用</h1><h2 id="1、由于我们在MvcConfig配置文件中进行如下配置，所以访问localhost-9090会跳转home-html"><a href="#1、由于我们在MvcConfig配置文件中进行如下配置，所以访问localhost-9090会跳转home-html" class="headerlink" title="1、由于我们在MvcConfig配置文件中进行如下配置，所以访问localhost:9090会跳转home.html"></a>1、由于我们在MvcConfig配置文件中进行如下配置，所以访问localhost:9090会跳转home.html</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * @author yunqing</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Configuration</span><br><span class="line">public class MvcConfig implements WebMvcConfigurer &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void addViewControllers(ViewControllerRegistry registry) &#123;</span><br><span class="line">		registry.addViewController(&quot;&#x2F;home&quot;).setViewName(&quot;home&quot;);</span><br><span class="line">        &#x2F;&#x2F;注意：这里配置了 &#x2F; 跳转home.html页面</span><br><span class="line">		registry.addViewController(&quot;&#x2F;&quot;).setViewName(&quot;home&quot;);</span><br><span class="line">		registry.addViewController(&quot;&#x2F;hello&quot;).setViewName(&quot;hello&quot;);</span><br><span class="line">		registry.addViewController(&quot;&#x2F;login&quot;).setViewName(&quot;login&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-1、application-yml中配置了端口为9090"><a href="#1-1、application-yml中配置了端口为9090" class="headerlink" title="1.1、application.yml中配置了端口为9090"></a>1.1、application.yml中配置了端口为9090</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 9090</span><br></pre></td></tr></table></figure>
+<h3 id="1-2、我在WebSecurityConfig中配置了不需要认证就可以访问的页面，其中包含-和-home"><a href="#1-2、我在WebSecurityConfig中配置了不需要认证就可以访问的页面，其中包含-和-home" class="headerlink" title="1.2、我在WebSecurityConfig中配置了不需要认证就可以访问的页面，其中包含 / 和/home"></a>1.2、我在WebSecurityConfig中配置了不需要认证就可以访问的页面，其中包含 / 和/home</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Override</span><br><span class="line">    protected void configure(HttpSecurity http) throws Exception &#123;</span><br><span class="line">        http</span><br><span class="line">                .authorizeRequests()</span><br><span class="line">                &#x2F;&#x2F; 所有用户均可访问的资源</span><br><span class="line">                .antMatchers(&quot;&#x2F;css&#x2F;**&quot;, &quot;&#x2F;js&#x2F;**&quot;,&quot;&#x2F;images&#x2F;**&quot;, &quot;&#x2F;webjars&#x2F;**&quot;, &quot;**&#x2F;favicon.ico&quot;, &quot;&#x2F;index&quot;).permitAll()</span><br><span class="line">                .antMatchers(HttpMethod.POST, &quot;&#x2F;user&#x2F;registration&quot;).permitAll()</span><br><span class="line">                .antMatchers(&quot;&#x2F;&quot;, &quot;&#x2F;home&quot;,&quot;&#x2F;user&#x2F;registration&quot;,&quot;&#x2F;hello&quot;).permitAll()</span><br><span class="line">                &#x2F;&#x2F;剩下的任何请求都需要进行认证</span><br><span class="line">                .anyRequest().authenticated()</span><br><span class="line">                .and()</span><br><span class="line">                &#x2F;&#x2F;表单登录</span><br><span class="line">                .formLogin()</span><br><span class="line">                &#x2F;&#x2F;登录请求页面</span><br><span class="line">                .loginPage(&quot;&#x2F;login&quot;)</span><br><span class="line">                &#x2F;&#x2F;自定义登录成功和失败处理器</span><br><span class="line">                .successHandler(ajaxAuthSuccessHandler)</span><br><span class="line">                .failureHandler(ajaxAuthFailHandler)</span><br><span class="line">                .permitAll()</span><br><span class="line">                .and()</span><br><span class="line">                .logout()</span><br><span class="line">                .permitAll();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2、看完上面的基本介绍，接下来我们进入了第一个断点"><a href="#2、看完上面的基本介绍，接下来我们进入了第一个断点" class="headerlink" title="2、看完上面的基本介绍，接下来我们进入了第一个断点"></a>2、看完上面的基本介绍，接下来我们进入了第一个断点</h2><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-01.png" alt="image.png"></p>
+<blockquote>
+<p>可以看到进了断点停在了抽象类AbstractAuthenticationToken,并且权限信息传入ROLE_ANONYMOUS参数，匿名角色，按下一步发现进入了如下AnonymousAuthenticationToken类，可以发现是anonymousUser匿名用户封装了一个匿名认证的Token，通过this.setAuthenticated(true0)设置认证通过。</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-02.png" alt="image.png"></p>
+<blockquote>
+<p>所以得出结论：WebSecurityConfig中我们设置不需认证的资源或者路径，实际上Security使用匿名用户进行认证访问。</p>
+</blockquote>
+<h3 id="2-1、这里扩展一下spring-security过滤器链"><a href="#2-1、这里扩展一下spring-security过滤器链" class="headerlink" title="2.1、这里扩展一下spring security过滤器链"></a>2.1、这里扩展一下spring security过滤器链</h3><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-03.png" alt="image.png"></p>
+<blockquote>
+<p>如上图所示：SecurityContextPersistenceFilter过滤器位于过滤器链的最前端，请求先进这个过滤器，当请求进入，检查session中是否有securityContext,如果有则拿出来放到线程中，请求响应回来最后一个也经过此过滤器，检查线程中是否有SecurityContext，如果有则拿出来存到Session中。这样就可以完成认证结果在多个请求之间共享。</p>
+</blockquote>
+<h3 id="2-2、通过获取共享在多个请求之间的用户信息"><a href="#2-2、通过获取共享在多个请求之间的用户信息" class="headerlink" title="2.2、通过获取共享在多个请求之间的用户信息"></a>2.2、通过获取共享在多个请求之间的用户信息</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * @author yunqing</span><br><span class="line"> * @Date 2019&#x2F;12&#x2F;15 16:44</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Slf4j</span><br><span class="line">@RestController</span><br><span class="line">@RequestMapping(&quot;&#x2F;api&#x2F;account&quot;)</span><br><span class="line">public class SecurityController &#123;</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;&#x2F;me&quot;)</span><br><span class="line">    public Object getAuthentication() &#123;</span><br><span class="line">        return SecurityContextHolder.getContext().getAuthentication();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>记得在SecurityConfig中设置/api/account/me不需要认证，即匿名登录。</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-04.png" alt="image.png"></p>
+<h3 id="2-3、获取当前认证用户信息"><a href="#2-3、获取当前认证用户信息" class="headerlink" title="2.3、获取当前认证用户信息"></a>2.3、获取当前认证用户信息</h3><blockquote>
+<p>直接跳过断点localhost:9090访问到 home.html页</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-05.png" alt="image.png"></p>
+<blockquote>
+<p>访问localhost:9090/api/account/me获取当前认证用户信息，可以看到当前确实是匿名用户</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#返回结果，证明当前认证成功的是匿名用户</span><br><span class="line"></span><br><span class="line">&#123;&quot;authorities&quot;:[&#123;&quot;authority&quot;:&quot;ROLE_ANONYMOUS&quot;&#125;],&quot;details&quot;:</span><br><span class="line">&#123;&quot;remoteAddress&quot;:&quot;0:0:0:0:0:0:0:1&quot;,&quot;sessionId&quot;:&quot;45C0AA46462B773A0606D24C91D70722&quot;&#125;,</span><br><span class="line">&quot;authenticated&quot;:true,&quot;principal&quot;:&quot;anonymousUser&quot;,&quot;keyHash&quot;:431445726,&quot;credentials&quot;:&quot;&quot;,</span><br><span class="line">&quot;name&quot;:&quot;anonymousUser&quot;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3、正式开始讲解数据库中的用户认证"><a href="#3、正式开始讲解数据库中的用户认证" class="headerlink" title="3、正式开始讲解数据库中的用户认证"></a>3、正式开始讲解数据库中的用户认证</h2><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-06.png" alt="image.png"></p>
+<h3 id="3-1、点击Sign-In登录跳转到第一个断点UsernamePasswordAuthenticationFilter"><a href="#3-1、点击Sign-In登录跳转到第一个断点UsernamePasswordAuthenticationFilter" class="headerlink" title="3.1、点击Sign In登录跳转到第一个断点UsernamePasswordAuthenticationFilter"></a>3.1、点击Sign In登录跳转到第一个断点UsernamePasswordAuthenticationFilter</h3><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-07.png" alt="image.png"></p>
+<blockquote>
+<p>断点停到UsernamePasswordAuthenticationFilter，判断当前请求是否是POST请求→获取表单提交的用户密码→根据用户名密码构造一个UsernamePasswordAuthenticationToken→进入我们发现两个构造函数如下图</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-08.png" alt="image.png"></p>
+<blockquote>
+<p>可以发现走的第一个两个参数的构造函数，因为并没有传入authorities角色信息，通过this.setAuthenticated(false)设置未经过认证→返回未认证的token到UsernamePasswordAuthenticationFilter</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-09.png" alt="image.png"></p>
+<blockquote>
+<p>通过this.setDetails(request,authRequest);设置ip、sessionId等信息到UsernamePasswordAuthenticationToken中，如下图所示：</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-10.png" alt="image.png"></p>
+<blockquote>
+<p>返回UsernamePasswordAuthenticationToken到this.getAuthenticationManager().authenticate()进行处理,如下图所示：</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-11.png" alt="image.png"></p>
+<blockquote>
+<p>之后进入ProviderManager中的断点，介绍一下，ProviderManager实现了AuthenticationManager接口，可以看到如下图，var8是一个Providers集合，循环遍历这个集合，找到适合处理UsernamePassword的Provider进行处理用户名密码认证，可以看到当前是处理匿名用户的AnonymousAuthenticationProvider，继续下一步</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-12.png" alt="image.png"></p>
+<blockquote>
+<p>循环直到当前Provider是DaoAuthenticationProvider这个是专门处理用户名密码认证的Provider,然后执行到result = provider.authenticate(authentication)；这个断点的时候，会进入到AbstractUserDetailsAuthenticationProvider 抽象类，它实现了 AuthenticationProvider接口，而DaoAuthenticationProvider又继承了这个抽象类。</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-13.png" alt="image.png"></p>
+<blockquote>
+<p>接下来重点讲解DaoAuthenticationProvider和AbstractUserDetailsAuthenticationProvider 这两个类，主要的认证方法写在了这个抽象类中，如下图断点中this.retrieveUser()方法获取到了一个UserDetails实例，这个this.retrieveUser()方法也是一个抽象方法，他的实现写在了DaoAuthenticationProvider中。</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-14.png" alt="image.png"></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-15.png" alt="image.png"></p>
+<blockquote>
+<p>接下来看this.retrieveUser()方法的实现，终于在实现中看到了调用loadUserByUsername()方法。<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-17.png" alt="image.png"></p>
+</blockquote>
+<blockquote>
+<p>可以看到确实进入了我们自定义的MyUserDetailsService类，这个类就不多解释了，从数据库里取数据验证而已</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-16.png" alt="image.png"></p>
+<blockquote>
+<p>回到AbstractUserDetailsAuthenticationProvider可以看到三个检查，三个检查的实现就在本类中，可以进行查看</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-18.png" alt="image.png"></p>
+<blockquote>
+<p>preAuthenticationCheck检查</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-19.png" alt="image.png"></p>
+<blockquote>
+<p>this.additionalAuthenticationChecks密码检查，实现类在DaoAuthenticationProvider中</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-20.png" alt="image.png"></p>
+<blockquote>
+<p>this.postAuthenticationChecks()还是对UserDetails接口中剩下的一个布尔值进行检查</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-21.png" alt="image.png"></p>
+<blockquote>
+<p>所有检查通过之后，认为认证成功，拿着认证成功的这些信息进入this.createSuccessAuthentication()</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-22.png" alt="image.png"></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-23.png" alt="image.png"></p>
+<blockquote>
+<p>可以看到走的确实是三个参数的构造函数，如下图，通过super.setAuthenticated(true)设置认证状态为成功</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-24.png" alt="image.png"></p>
+<blockquote>
+<p>然后DaoAuthenticationProvider返回一个认证成功的Authentication，经过认证的Authentication会沿着认证的流程返回去，一直返回到UsernamepasswordAuthenticationFilter.</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-25.png" alt="image.png"></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-26.png" alt="image.png"></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-27.png" alt="image.png"></p>
+<blockquote>
+<p>接下来就调用认证成功处理器进行处理，认证信息设置到线程中，用与session共享认证结果</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-28.png" alt="image.png"></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-29.png" alt="image.png"></p>
+<blockquote>
+<p>登陆成功</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-30.png" alt="image.png"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Linux vim注释高亮显示</title>
+    <url>/article/e05daab5.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Linux-vim注释高亮显示"><a href="#Linux-vim注释高亮显示" class="headerlink" title="Linux vim注释高亮显示"></a>Linux vim注释高亮显示</h1><ul>
+<li><p>首先解决没有vim命令：<br>把yum切换成清华大学的yum源 <a href="https://mirrors.cnnic.cn/help/centos/" target="_blank" rel="noopener external nofollow noreferrer">https://mirrors.cnnic.cn/help/centos/</a><br>然后执行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -qa | grep vim</span><br><span class="line">yum install -y vim*</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+</li>
+<li><p>这样就有了vim命令了。<br>这样易于区分注释和不是注释的内容<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-vim-01.png" alt="图1"></p>
+</li>
+<li><p>首先vi命令是不支持高亮显示注释的</p>
+</li>
+<li><p>其次vim 打开文件的时候显示没有找到命令</p>
+</li>
+<li><p>rpm -qa | grep vim发现存在vim的rpm包<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-vim-02.png" alt="图2"></p>
+</li>
+<li><p>安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install vim-enhanced</span><br></pre></td></tr></table></figure></li>
+<li><p>之后进入~目录下新建.vimrc文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi ~&#x2F;.vimrc</span><br></pre></td></tr></table></figure>
+<p>编辑如下内容进去</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hi Comment ctermfg &#x3D;blue</span><br></pre></td></tr></table></figure></li>
+<li><p>完毕！再次用vim 命令打开文件就能高亮显示注释了</p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>结合Hutool的Money类处理业务中的金钱</title>
     <url>/article/4b82ae0a.html</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
