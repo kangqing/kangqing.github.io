@@ -1,35 +1,340 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CentOS7防火墙端口设置</title>
-    <url>/article/1be30850.html</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="CentOS7防火墙端口设置"><a href="#CentOS7防火墙端口设置" class="headerlink" title="CentOS7防火墙端口设置"></a>CentOS7防火墙端口设置</h1><p>centos7 防火墙添加开放端口：【单个】<br>firewall-cmd –zone=public –add-port=443/tcp –permanent<br>centos7 防火墙添加开放端口：【范围】<br>firewall-cmd –zone=public –add-port=20000-30000/tcp –permanent<br>【重新载入防火墙配置】<br>firewall-cmd –reload<br>【查看】<br>firewall-cmd –zone=public –list-ports<br>【删除】<br>firewall-cmd –zone=public –remove-port=80/tcp –permanent<br>【重启防火墙】<br>systemctl restart firewalld.service<br>【解释】<br>–zone=public：表示作用域为公共的；<br>–add-port=8080/tcp：添加tcp协议的端口8080；<br>–permanent：永久生效，如果没有此参数，则只能维持当前服务生命周期内，重新启动后失效；</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Centos7 yum 出现could not retrieve mirrorlist 最终解决方案</title>
-    <url>/article/22212fda.html</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案"><a href="#Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案" class="headerlink" title="Centos7 yum 出现could not retrieve mirrorlist 最终解决方案"></a>Centos7 yum 出现could not retrieve mirrorlist 最终解决方案</h1><p>首先遇到这个问题是因为安装centos7之后想看ip,用到命令</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
-<p>返回没有这个命令<br>然后想安装net-tools以得到ifconfig命令执行：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install net-tools</span><br></pre></td></tr></table></figure>
-<p>然后安装不成功报错could not retrieve mirrorlist ….</p>
+    <title>Linux能ping通windows，windows不能ping通linux</title>
+    <url>/article/98271ffd.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh-root-ip连接linux报错22端口超时。"><a href="#主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh-root-ip连接linux报错22端口超时。" class="headerlink" title="主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh root@ip连接linux报错22端口超时。"></a>主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh root@ip连接linux报错22端口超时。</h3><ul>
+<li>虚拟机设置的网络适配器选择NAT模式<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-linux-01.png" alt="image.png"></li>
+</ul>
 <a id="more"></a>
 
-<p> 在尝试过很多方法不管用之后，下面是终极解决方案，需要root用户或者不是root用户则sudo执行</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo cd &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts  #进入这个目录，找到下面这个文件</span><br></pre></td></tr></table></figure>
-<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-yum-01.png" alt="图1"></p>
 <ul>
-<li><p>注意这个文件名字可能跟我这个不一样，打开这个文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi ifcfg-eth0</span><br></pre></td></tr></table></figure>
+<li>linux查看ip地址ip a s<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-linux-02.png" alt="image.png"></li>
+<li>设置windows的网络连接找到这个VMnet8(前提是VMware虚拟机)<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-linux-03.png" alt="image.png"></li>
+<li>设置ip和虚拟机的ip到同一个网段，如我即可<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-linux-04.png" alt="image.png"></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux 配置国内阿里yum源、docker配置阿里加速镜像</title>
+    <url>/article/9b813418.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>#yum配置阿里镜像源</p>
+<ul>
+<li>访问这个阿里镜像站，点击centos<br><a href="https://developer.aliyun.com/mirror" target="_blank" rel="noopener external nofollow noreferrer">https://developer.aliyun.com/mirror</a><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-01.png" alt="image.png"></li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li>直接按照下图中的3步操作即可<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-02.png" alt="image.png"><h1 id="配置阿里docker镜像加速"><a href="#配置阿里docker镜像加速" class="headerlink" title="配置阿里docker镜像加速"></a>配置阿里docker镜像加速</h1></li>
+<li>访问阿里云这个地址<br><a href="https://promotion.aliyun.com/ntms/act/kubernetes.html" target="_blank" rel="noopener external nofollow noreferrer">https://promotion.aliyun.com/ntms/act/kubernetes.html</a></li>
+<li>镜像搜索docker<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-03.png" alt="image.png"></li>
+<li>直接执行这4条指令即可<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-04.png" alt="image.png"></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>docker</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux安装jdk、Tomcat、maven、nginx、mysql、git、redis</title>
+    <url>/article/3e12f736.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>##Linux版本:阿里云镜像仓库的CentOS7<br><a href="https://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1908.iso" target="_blank" rel="noopener external nofollow noreferrer">CentOS-7-x86_64-DVD-1908.iso</a><br>###安装配置jdk<br>首先检查是否安装过jdk</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -qa | grep jdk</span><br></pre></td></tr></table></figure>
+<p>如果有则删除,XXX为上面命令查到的结果，按个删除</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum remove XXX</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<p>然后去Oracle官网下载jdk,我下载的是1.8的 jdk-8u221-linux-x64.rpm<br>赋予权限：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 jdk-8u221-linux-x64.rpm</span><br></pre></td></tr></table></figure>
+<p>解释：777代表用户、用户组、其他都是7的权限，7代表什么呢？7代表的是读、写、执行三种权限</p>
+<ul>
+<li><p>读4</p>
 </li>
-<li><p>将ONBOOT改为yes，wq!保存退出</p>
+<li><p>写2</p>
+</li>
+<li><p>执行1<br>加起来正好是7<br>接下来安装jdk的命令是：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -ivh jdk-8u221-linux-x64.rpm</span><br></pre></td></tr></table></figure></li>
+<li><p>注意：jdk会被默认安装到 <strong>/usr/java</strong> 的路径下</p>
+</li>
+<li><p>编辑/etc/profile文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<p>按Insert或者I键，切换成编辑模式。<br>找到内容末尾，输入下面一段话。<br>在unset i的前面输入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_221-amd64</span><br><span class="line">export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;jre&#x2F;lib&#x2F;rt.jar:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar</span><br><span class="line">export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin</span><br></pre></td></tr></table></figure>
+<p>###（！！！注意：JAVA_HOME的路径是你实际安装的JDK的路径或者tar解压包的路径我这里是/usr/java/jdk1.8.0_221-amd64，千万别写错了）</p>
+</li>
+<li><p>###然后按Esc       输入:wq保存退出</p>
 </li>
 </ul>
-<p>重新启动网络</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">service network restart</span><br></pre></td></tr></table></figure>
-<p>解决这个问题之后再返回去执行安装net-tools之后就可以ifconfig了</p>
+<p>生效环境变量<br>对于/etc/profile编写完成之后是不够的，还需要最后一个步骤，就是让刚刚我们修改的文件变成有效起来，所以我们再输入一个命令，让修改生效。<br>生效命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<p>验证安装是否成功：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<p>#安装Tomcat<br>1 安装tomcat之前必须安装配置好jdk，因为Tomcat启动需要jdk支持<br>2 下载Tomcat 我是在官网下载的Tomcat9的tar.gz压缩包上传到linux的<br>3 解压缩</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxvf apache-tomcat-9.0.24.tar.gz</span><br></pre></td></tr></table></figure>
+<p>cd 进入解压后的目录pwd获取当前目录路径得到/root/installFile/apache-tomcat-9.0.24</p>
+<p>4 配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<p><strong>按i进入编辑模式</strong><br>接着jdk配置后面加上下面这句话，注意=后面是刚才pwd得到的tomcat解压缩得到的路径</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export CATALINA_HOME&#x3D;&#x2F;root&#x2F;installFile&#x2F;apache-tomcat-9.0.24</span><br></pre></td></tr></table></figure>
+<p>5 按Esc 输入:wq  保存退出<br>6 使配置生效</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<p>7 配置UTF-8字符集<br>进入tomcat下的conf文件下编辑server.xml文件<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-linux-01.png" alt="image.png"><br>找到这块加上</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">URIEncoding&#x3D;&quot;UTF-8&quot;</span><br></pre></td></tr></table></figure>
+<p>:wq保存退出<br>8 进tomcat的bin目录下执行./start.sh启动tomcat</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;start.sh</span><br></pre></td></tr></table></figure>
+<p>Tomcat启动成功<br>之后在windows浏览器输入ip:8080就可以得到如下页面了<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-linux-02.png" alt="image.png"></p>
+<ul>
+<li><strong>注意如果访问不到很大可能是防火墙没开放8080端口</strong><br>###注意：：：centos7的防火墙改成了firewall不再是iptables<br>执行如下操作：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">firewall-cmd --state  &#x2F;&#x2F;看防火墙的状态</span><br><span class="line">systemctl start firewalld.service  &#x2F;&#x2F;如果是关闭状态则启动防火墙，否则跳过此步骤</span><br><span class="line">firewall-cmd --zone&#x3D;public --add-port&#x3D;8080&#x2F;tcp --permanent   &#x2F;&#x2F;开启8080端口</span><br><span class="line">systemctl restart firewalld.service &#x2F;&#x2F;重启防火墙</span><br><span class="line">firewall-cmd --reload &#x2F;&#x2F;重新载入防火墙配置</span><br><span class="line">firewall-cmd --list-all &#x2F;&#x2F;查看防火墙开启的端口列表</span><br></pre></td></tr></table></figure>
+上面开启8080端口的解释</li>
+<li>-zone=public：表示作用域为公共的；</li>
+<li>-add-port=8080/tcp：添加tcp协议的端口8080；</li>
+<li>-permanent：永久生效，如果没有此参数，则只能维持当前服务生命周期内，重新启动后失效；</li>
+</ul>
+<p>9 关闭tomcat执行./shutdown.sh</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;shutdown.sh</span><br></pre></td></tr></table></figure>
+
+<p>#安装maven<br>1 确保安装了jdk<br>2 到apache maven官网下载maven我这里最新的是3.6.2版本<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-linux-03.png" alt="image.png"><br>3 使用xftp上传到linux<br>4 解压缩</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxvf apache-maven-3.6.2-bin.tar.gz</span><br></pre></td></tr></table></figure>
+<p>5 配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<p>按i进入编辑模式<br>加入下面一段话</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export MAVEN_HOME&#x3D;&#x2F;root&#x2F;installFile&#x2F;apache-maven-3.6.2</span><br></pre></td></tr></table></figure>
+<p>然后把maven_home加到path路径后面:$MAVEN_HOME/bin</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;注意把这句话放到最后面不然配置不成功，可能是因为顺序读取没读到Maven_home的定义呢</span><br><span class="line">export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin:$MAVEN_HOME&#x2F;bin</span><br></pre></td></tr></table></figure>
+<p>:wq保存退出<br>使配置生效</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<p>测试是否配置成功</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mvn -version</span><br></pre></td></tr></table></figure>
+<h3 id="在-bashrc里面加一句source-etc-profile-防止每次重启都要执行source-etc-profile"><a href="#在-bashrc里面加一句source-etc-profile-防止每次重启都要执行source-etc-profile" class="headerlink" title="在~/.bashrc里面加一句source /etc/profile     防止每次重启都要执行source /etc/profile"></a>在~/.bashrc里面加一句source /etc/profile     防止每次重启都要执行source /etc/profile</h3><p>#安装nginx<br>1 安装各种依赖的库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install gcc-c++</span><br><span class="line"></span><br><span class="line">yum install pcre pcre-devel</span><br><span class="line"></span><br><span class="line">yum install zlib zlib-devel</span><br><span class="line"></span><br><span class="line">yum install openssl openssl-devel</span><br></pre></td></tr></table></figure>
+<p>2 下载nginx,我下载的是最新的稳定版<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-linux-04.png" alt="image.png"><br>3 解压</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxvf nginx-1.16.1.tar.gz</span><br></pre></td></tr></table></figure>
+<p>4 进入解压后的文件夹</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd nginx-1.16.1</span><br></pre></td></tr></table></figure>
+<p>5 执行三个命令进行安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;configure</span><br><span class="line"></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>6 安装完毕后找到默认的安装路径</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">whereis nginx</span><br></pre></td></tr></table></figure>
+<p>7 进入上面查出来的安装路径</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<p>8 进入sbin目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd sbin</span><br></pre></td></tr></table></figure>
+<p>9 启动nginx</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<p>10 查看nginx进程</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -ef | grep nginx</span><br></pre></td></tr></table></figure>
+<p><strong>一般来说如果防火墙开启了80端口直接在浏览器输入linux的ip地址就能访问到nginx的页面了。</strong><br>开启防火墙80端口的方式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">firewall-cmd --zone&#x3D;public --add-port&#x3D;80&#x2F;tcp --permanent &#x2F;&#x2F;具体意思见上面tomcat那节的解释</span><br><span class="line">systemctl restart firewalld.service &#x2F;&#x2F;重启防火墙</span><br><span class="line">firewall-cmd --reload &#x2F;&#x2F;重新载入防火墙配置</span><br></pre></td></tr></table></figure>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-linux-05.png" alt="image.png"></p>
+<p>#安装mysql<br>1 centos7默认使用的是mariadb为什么看这里<a href="https://blog.csdn.net/H12KJGJ/article/details/79616761" target="_blank" rel="noopener external nofollow noreferrer">https://blog.csdn.net/H12KJGJ/article/details/79616761</a><br>但是我要讲的是安装mysql，所以首先卸载mariadb<br>2 查看mariadb是否存在</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -qa | grep mariadb</span><br></pre></td></tr></table></figure>
+<p>3 删除mariadb</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -e mariadb-libs --nodeps</span><br></pre></td></tr></table></figure>
+<p>4 解压遇到问题</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;这样解压失败</span><br><span class="line">tar -zxvf mysql-8.0.17-1.el7.x86_64.rpm-bundle.tar</span><br><span class="line">提示：</span><br><span class="line">gzip: stdin: not in gzip format</span><br><span class="line">tar: Child returned status 1</span><br><span class="line">tar: Error is not recoverable: exiting now</span><br></pre></td></tr></table></figure>
+<p>然后解决办法就是去掉z如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -xvf mysql-8.0.17-1.el7.x86_64.rpm-bundle.tar</span><br></pre></td></tr></table></figure>
+<p>解压出好几个rpm文件<br>5 执行安装命令，安装这几个rpm文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum localinstall -y  mysql-community-&#123;server,client,common,embedded,libs&#125;-*</span><br></pre></td></tr></table></figure>
+<p>6 安装完后再次查询是否有了mysql</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -qa | grep mysql</span><br></pre></td></tr></table></figure>
+<p>可以看到这几个都安装了<br>mysql-community-common-8.0.17-1.el7.x86_64<br>mysql-community-client-8.0.17-1.el7.x86_64<br>mysql-community-server-8.0.17-1.el7.x86_64<br>mysql-community-embedded-compat-8.0.17-1.el7.x86_64<br>mysql-community-libs-8.0.17-1.el7.x86_64<br>mysql-community-libs-compat-8.0.17-1.el7.x86_64</p>
+<p>7 下面的命令把/var/lib/mysql的拥有者改为当前用户：root</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chown -R root:root &#x2F;var&#x2F;lib&#x2F;mysql</span><br></pre></td></tr></table></figure>
+<p>然后重启mysql</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl restart mysqld.service</span><br></pre></td></tr></table></figure>
+<p><strong>注意：：：</strong>mysql的重启、开始、停止命令分别是<br>systemctl restart mysqld.service<br>systemctl start mysqld.service<br>systemctl stop mysqld.service</p>
+<p>8 生成临时密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep &#39;temporary password&#39; &#x2F;var&#x2F;log&#x2F;mysqld.log</span><br></pre></td></tr></table></figure>
+<p>返回2019-09-20T00:33:37.151972Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: XXX我是临时密码XXX<br>9 登录mysql 执行下面命令然后提示输入上一步的密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure>
+<p>10 登录成功第一件事修改密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER USER &quot;root&quot;@&quot;localhost&quot; IDENTIFIED BY &quot;888888&quot;;</span><br></pre></td></tr></table></figure>
+<p>如果密码过于简单会提示<br>ERROR 1819 (HY000): Your password does not satisfy the current policy requirements<br>但是复杂的密码我是真的记不住啊，所以必须改。<br>我的解决方法是：mysql下执行<br>设置验证密码验证策略为0</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">set global validate_password.policy&#x3D;0;</span><br></pre></td></tr></table></figure>
+<p>设置密码验证长度为4</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">set global validate_password.length&#x3D;4;</span><br></pre></td></tr></table></figure>
+<p>设置简单密码：1234</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER USER &quot;root&quot;@&quot;localhost&quot; IDENTIFIED BY &quot;1234&quot;;</span><br><span class="line">flush privileges; &#x2F;&#x2F;刷新mysql权限</span><br></pre></td></tr></table></figure>
+<p>成功！<br>11 远程登录<br>可能是你的账号不允许从远程登录，只能在localhost。这个时候只要在localhost的那台电脑，登入mysql后更改‘mysql’数据库里的‘user’表里的‘host’项，从‘localhost’改成‘%’就都可以访问了</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">update user set host &#x3D; &#39;%&#39; where user &#x3D; &#39;root&#39;;</span><br><span class="line">flush privileges; &#x2F;&#x2F;刷新mysql权限</span><br></pre></td></tr></table></figure>
+<p>12 首先退出mysql，使用命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">exit;</span><br></pre></td></tr></table></figure>
+<p>开启防火墙的3306端口</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">firewall-cmd --zone&#x3D;public --add-port&#x3D;3306&#x2F;tcp --permanent   &#x2F;&#x2F;开启3306端口</span><br><span class="line">systemctl restart firewalld.service &#x2F;&#x2F;重启防火墙</span><br></pre></td></tr></table></figure>
+
+<p>13 设置mysql 开机启动</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable mysqld</span><br><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+
+<p>14 设置永久表的默认存储引擎和设置字符集<br>找到mysql的配置文件位置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find &#x2F; -name my.cnf</span><br></pre></td></tr></table></figure>
+<p>打开配置文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;my.cnf</span><br></pre></td></tr></table></figure>
+<p>按 i 进入编辑模式在最后加入下面两句话</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">default-storage-engine&#x3D;INNODB</span><br><span class="line">character-set-server&#x3D;utf8</span><br></pre></td></tr></table></figure>
+<p>按Esc键 输入 :wq 保存退出<br>重启mysql</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl restart mysqld.service</span><br></pre></td></tr></table></figure>
+<p>#安装Git<br>1.安装依赖</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install zlib-devel openssl-devel cpio expat-devel gettext-devel curl-devel perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker</span><br></pre></td></tr></table></figure>
+<p>2.删除已有git</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum remove git</span><br></pre></td></tr></table></figure>
+<p>3.下载git安装包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;mirrors.edge.kernel.org&#x2F;pub&#x2F;software&#x2F;scm&#x2F;git&#x2F;git-2.23.0.tar.gz</span><br></pre></td></tr></table></figure>
+<p>4.解压</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxvf git-2.23.0.tar.gz</span><br></pre></td></tr></table></figure>
+<p>5.进入解压后的目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd git-2.23.0</span><br></pre></td></tr></table></figure>
+<p>6.配置git的安装目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;git all</span><br></pre></td></tr></table></figure>
+<p>7.安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;git install</span><br></pre></td></tr></table></figure>
+<p>8.添加环境变量</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;export PATH&#x3D;$PATH:&#x2F;usr&#x2F;local&#x2F;git&#x2F;bin&quot; &gt;&gt; &#x2F;etc&#x2F;bashrc</span><br></pre></td></tr></table></figure>
+<p>9.使环境变量生效</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;bashrc</span><br></pre></td></tr></table></figure>
+<p>10.查看git版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git version</span><br></pre></td></tr></table></figure>
+<p>11.版本回退</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">先查看提交的版本</span><br><span class="line">git log</span><br><span class="line">再选择回退的版本</span><br><span class="line">git reset --hard HEAD 版本号</span><br><span class="line">或者这样回退上一个版本，^几个这个回退几个版本</span><br><span class="line">git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
+<p>#安装redis<br>1.redis官网查看最新版本</p>
+<blockquote>
+<p><a href="https://redis.io/download" target="_blank" rel="noopener external nofollow noreferrer">https://redis.io/download</a></p>
+</blockquote>
+<p>2.下载redis</p>
+<blockquote>
+<p>wget <a href="http://download.redis.io/releases/redis-5.0.5.tar.gz" target="_blank" rel="noopener external nofollow noreferrer">http://download.redis.io/releases/redis-5.0.5.tar.gz</a></p>
+</blockquote>
+<p>3.解压</p>
+<blockquote>
+<p>tar xzf redis-5.0.5.tar.gz</p>
+</blockquote>
+<p>4.解压后，在/usr/local目录下创建redis目录。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;usr&#x2F;local&#x2F;redis</span><br></pre></td></tr></table></figure>
+<p>5.将redis-5.0.5移动到/usr/local/redis目录下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mv redis-5.0.5 &#x2F;usr&#x2F;local&#x2F;redis</span><br></pre></td></tr></table></figure>
+<p>6.进入/usr/local/redis目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;redis</span><br></pre></td></tr></table></figure>
+<p>7.创建两个文件夹</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir etc</span><br><span class="line">mkdir bin</span><br></pre></td></tr></table></figure>
+<p>8.进入解压后的目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd redis-5.0.5</span><br></pre></td></tr></table></figure>
+<p>9.编译</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+<p>编译完成之后，可以看到解压文件redis-5.0.5 中会有对应的src文件夹</p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-linux-06.png" alt="image"></p>
+<p>10.编译成功后，进入src文件夹，执行make install进行Redis安装。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd src</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>11.为了方便管理，将Redis文件中的conf配置文件和常用命令移动到统一文件中<br>回到redis-5.0.5目录，找到redis.conf，将其复制移动到 /usr/local/redis/ect 下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd ..&#x2F;</span><br><span class="line"></span><br><span class="line">mv redis.conf &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;</span><br></pre></td></tr></table></figure>
+<p>12.进入src目录，移动mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-rdb redis-cli redis-server到/usr/local/redis/bin/</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd src</span><br><span class="line"></span><br><span class="line">mv mkreleasehdr.sh redis-benchmark redis-check-aof redis-check-rdb redis-cli redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin&#x2F;</span><br></pre></td></tr></table></figure>
+<p>13.设置后台启动redis</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc</span><br><span class="line">vim redis.conf</span><br></pre></td></tr></table></figure>
+<p>14修改如下几条</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">daemonize yes #表名需要在后台运行</span><br><span class="line">protected-mode no</span><br><span class="line">bind 0.0.0.0 #开启所有访问，不只是本地</span><br><span class="line">requirepass 123456 #设置密码</span><br></pre></td></tr></table></figure>
+<p>其中requirepass不好找直接/requirepass搜索</p>
+<p>15.启动redis服务，并指定启动服务配置文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;redis&#x2F;bin</span><br><span class="line">.&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;redis&#x2F;etc&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
+<p>16.最坑的还是阿里云，怎么也连接不上，访问不到阿里云上安装启动好的redis，防火墙端口什么的都弄好了，就是访问不了。原来要在策略组加上6379。。。。。。。。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">centos7 防火墙添加开放端口：【单个】</span><br><span class="line">firewall-cmd --zone&#x3D;public --add-port&#x3D;6379&#x2F;tcp --permanent</span><br><span class="line">【重新载入防火墙配置】</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-linux-07.png" alt="image.png"></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-linux-08.png" alt="image.png"></p>
 ]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>你了解类的加载机制吗？</title>
+    <url>/article/744a60f8.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>定义：当程序主动使用某个类时，如果该类还没被加载到内存中，那么系统会通过加载、连接、初始化这三个步骤对该类进行初始化，JVM通常将会连续完成这三个步骤，所以一般情况下这三个步骤统称为类的加载。</p>
+<p>实际上类的加载就是将类的class文件读进内存，并为之创建一个java.lang.Class对象。</p>
+<h3 id="类的初始化"><a href="#类的初始化" class="headerlink" title="类的初始化"></a>类的初始化</h3><p>当类被加载之后，系统会生成一个对应的Class文件，接着进入连接阶段，连接阶段负责把类的二进制数据合并到JRE中。之后进入类的初始化阶段，初始化阶段JVM负责对类进行初始化，主要是对类变量进行初始化，两种方式对类变量进行初始化①声明类变量时指定初始化值②是用静态代码块指定初始化值。</p>
+<p>类的初始化包含以下几个步骤：</p>
+<a id="more"></a>
+
+<p>①如果类还没被加载和连接，先进行加载、连接</p>
+<p>②如果类的直接父类还没被初始化则先初始化直接父类，类推到Object类，所以Object类永远是最先被初始化的类</p>
+<p>③系统会依次执行初始化语句。（即前边的初始化值有可能在后面被覆盖）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 男人类继承自人类</span><br><span class="line"> *&#x2F;</span><br><span class="line">class Man extends Person&#123;</span><br><span class="line">    static&#123;</span><br><span class="line">        b &#x3D; 100;</span><br><span class="line">    &#125;</span><br><span class="line">    private static int b &#x3D; 2;</span><br><span class="line"></span><br><span class="line">    private static int c &#x3D; 3;</span><br><span class="line"></span><br><span class="line">    private static int d &#x3D; 4;</span><br><span class="line"></span><br><span class="line">    private static int e;</span><br><span class="line"></span><br><span class="line">    static &#123;</span><br><span class="line">        d &#x3D; 200;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(&quot;a &#x3D; &quot; + Person.a);</span><br><span class="line">        System.out.println(&quot;b &#x3D; &quot; + Man.b);</span><br><span class="line">        System.out.println(&quot;c &#x3D; &quot; + Man.c);</span><br><span class="line">        System.out.println(&quot;d &#x3D; &quot; + Man.d);</span><br><span class="line">        System.out.println(&quot;e &#x3D; &quot; + Man.e);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 人类</span><br><span class="line"> *&#x2F;</span><br><span class="line">class Person &#123;</span><br><span class="line"></span><br><span class="line">    static int a &#x3D; 1;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#输出</span><br><span class="line">a &#x3D; 1</span><br><span class="line">b &#x3D; 2</span><br><span class="line">c &#x3D; 3</span><br><span class="line">d &#x3D; 200</span><br><span class="line">e &#x3D; 0</span><br></pre></td></tr></table></figure>
+<h3 id="类初始化的时机"><a href="#类初始化的时机" class="headerlink" title="类初始化的时机"></a>类初始化的时机</h3><p>当Java程序首次通过下面6个方式使用某个类或接口的时候，会初始化此类或接口。</p>
+<p>①创建类的实例。包括new一个实例，反射创建实例，反序列化创建实例。</p>
+<p>②调用某个类的静态方法（类方法）</p>
+<p>③访问类或者接口的类变量，或者为类变量赋值</p>
+<p>④使用反射强制创建某个类或接口的Class对象，例如Class.for(“Person”)若系统还没初始化Person类，这行代码会初始化Person类，并返回Person类对应的Class对象。</p>
+<p>⑤初始化某个类的子类，该子类的所有父类都会被初始化。</p>
+<p>⑥直接使用java.exe运行某个主类。</p>
+<p>注意：当类变量被final修饰的时候，如果类变量的值在编译时候能确定，在使用该类变量的时候不会初始化该类，因为相当于使用了一个常量。如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">import java.time.LocalDateTime;</span><br><span class="line"></span><br><span class="line">public class finalTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(Dog.b);</span><br><span class="line">        System.out.println(Cat.a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Cat&#123;</span><br><span class="line"></span><br><span class="line">    static&#123;</span><br><span class="line">        System.out.println(&quot;初始化Cat类&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 编译时候确定了a的值</span><br><span class="line">     *&#x2F;</span><br><span class="line">    final static String a &#x3D; &quot;1000&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Dog&#123;</span><br><span class="line">    static&#123;</span><br><span class="line">        System.out.println(&quot;初始化Dog类&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 编译时并没有确定b的值</span><br><span class="line">     *&#x2F;</span><br><span class="line">    final static String b &#x3D; LocalDateTime.now().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#输出</span><br><span class="line">初始化Dog类</span><br><span class="line">2019-11-02T11:22:18.823</span><br><span class="line">1000</span><br></pre></td></tr></table></figure>
+<p>另一注意点：当使用ClassLoader类的loadClass()来加载某个类时候，并不会初始化该类，使用Class的forName()静态初始化方法才会强制初始化该类。</p>
+<h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><p>类的加载由类加载器完成，类加载器通常由JVM提供，JVM提供的类加载器是系统类加载器，其次，开发者可以通过集成ClassLoader类来创建自己的类加载器。</p>
+<p>当JVM启动时，会形成由三个类加载器组成的初始类加载器层次结构：</p>
+<p>①Bootstrap ClassLoader: 根类加载器</p>
+<p>②Extension ClassLoader: 扩展类加载器</p>
+<p>③System ClassLoader: 系统类加载器</p>
+<h3 id="JVM的类加载机制主要有以下三种："><a href="#JVM的类加载机制主要有以下三种：" class="headerlink" title="JVM的类加载机制主要有以下三种："></a>JVM的类加载机制主要有以下三种：</h3><p>①全盘负责：当一个类加载器负责加载某个Class时，该Class所依赖和引用的其他Class也将由该类加载器负责载入。</p>
+<p>②父类委托：先由父类加载器试图加载该Class,只有当父类加载器无法加载该类时，才会从自己的类路径中加载该类。</p>
+<p>③缓存机制：保证所有的加载过的Class都会被缓存，当程序需要使用某个Class时，类加载器先从缓存区中查找，只有在缓存区不存在该Class对象时，系统才会读取该类对应的二进制文件，转换成Class对象，存入缓存区。</p>
+<h3 id="类加载器加载Class大致要经过以下几个步骤："><a href="#类加载器加载Class大致要经过以下几个步骤：" class="headerlink" title="类加载器加载Class大致要经过以下几个步骤："></a>类加载器加载Class大致要经过以下几个步骤：</h3><p>①在缓存区检查该Class是否载入过，如果有则直接第⑧步，否则执行第②步。</p>
+<p>②如果父类加载器不存在（如果父类加载器不存在，则parent一定是根加载器，或者本身就是根加载器，因为根加载器不是java实现的，所以返回null）直接跳第④步，如果父类加载器存在，则执行第③步。</p>
+<p>③请求使用父类加载器去载入目标类，如果成功载入则跳第⑧步，否则执行第⑤步</p>
+<p>④请求使用根类加载器载入目标类，如果成功载入则跳第⑧步，否则跳第⑦步</p>
+<p>⑤当前类加载器尝试寻找Class文件（从与此加载器相关的类路径中寻找）如果找到执行第⑥步，找不到执行第⑦步</p>
+<p>⑥从文件中载入Class,成功载入跳第⑧步</p>
+<p>⑦抛出ClassNotFoundException异常</p>
+<p>⑧返回对应的java.lang.Class对象</p>
+]]></content>
+      <tags>
+        <tag>java基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Callable和Future</title>
+    <url>/article/a7c279ec.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在之前的<a href="http://mp.weixin.qq.com/s?__biz=MzAxODkwMTM2Mg==&mid=2247483733&idx=2&sn=9944140574c0e6a65e7214bdcf12bd05&chksm=9bce7148acb9f85ee0e6adf6294113ebc8f83a34ea7bfac41a6563009e87c23b13059cbefad1&scene=21#wechat_redirect" target="_blank" rel="noopener external nofollow noreferrer">这篇文章</a>我讲了Runable来定义线程中执行的任务，但是有个缺点，不能带返回值，今天就讲如何执行带返回值的线程中任务。</p>
+<p><strong>Callable</strong></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-callable-01.png" alt="image"></p>
+<a id="more"></a>
+
+<p>可以看到，一个函数式接口，只有一个call()方法，此方法用于包含线程执行的代码。</p>
+<p>同样的Callable创建的可返回值得任务也需要交给executorService线程执行，submit进行提交，注意：只能用submit进行提交，因为带返回值，Runnable其实还可以用executor提交。但是我们并不知道返回的结果何时使用，所以他返回一种特殊的Future类型，Future类型可以在需要使用的时候获取任务的结果。话不多说，开干！！！</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">import java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line">public class CallbackTest &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;</span><br><span class="line"></span><br><span class="line">        ExecutorService executorService &#x3D; Executors.newSingleThreadExecutor();</span><br><span class="line"></span><br><span class="line">        Callable&lt;String&gt; callable &#x3D; () -&gt; &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(&quot;callback任务&quot;);</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">            return &quot;200&quot;;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;执行任务放进future---&quot;);</span><br><span class="line">        Future&lt;String&gt; future &#x3D; executorService.submit(callable);</span><br><span class="line">        System.out.println(&quot;执行其他任务&quot;);</span><br><span class="line">        </span><br><span class="line">        System.out.println(&quot;获取future的结果&quot;);</span><br><span class="line">        String result &#x3D; future.get();</span><br><span class="line"></span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#输出</span><br><span class="line">执行任务放进future---</span><br><span class="line">执行其他任务</span><br><span class="line">获取future的结果</span><br><span class="line">callback任务</span><br><span class="line">200</span><br></pre></td></tr></table></figure>
+<p>由上面的输出结果可以看出，提交任务之后会立即得到future，这时候可以执行其他任务，然后使用future.get()方法来检索未来的结果注意：这里的get()方法会阻塞一直到任务执行结束，我们可以使用isDone()来检查任务是否完成，get()方法时候处于阻塞状态。</p>
+<p>如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class CallbackTest &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;</span><br><span class="line"></span><br><span class="line">        ExecutorService executorService &#x3D; Executors.newSingleThreadExecutor();</span><br><span class="line"></span><br><span class="line">        Callable&lt;String&gt; callable &#x3D; () -&gt; &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(&quot;callback任务&quot;);</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">            return &quot;200&quot;;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;执行任务放进future---&quot;);</span><br><span class="line">        Future&lt;String&gt; future &#x3D; executorService.submit(callable);</span><br><span class="line">        </span><br><span class="line">        System.out.println(&quot;执行其他任务&quot;);</span><br><span class="line">        </span><br><span class="line">        while (!future.isDone())&#123;</span><br><span class="line">            System.out.println(&quot;阻塞状态&quot;);</span><br><span class="line">            Thread.sleep(200);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;获取future的结果&quot;);</span><br><span class="line">        String result &#x3D; future.get();</span><br><span class="line"></span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#输出</span><br><span class="line">执行任务放进future---</span><br><span class="line">执行其他任务</span><br><span class="line">阻塞状态</span><br><span class="line">callback任务</span><br><span class="line">阻塞状态</span><br><span class="line">阻塞状态</span><br><span class="line">阻塞状态</span><br><span class="line">阻塞状态</span><br><span class="line">获取future的结果</span><br><span class="line">200</span><br></pre></td></tr></table></figure>
+<p>由这段输出可以看出，提交callable任务之后就立即获取到future，然后就可以执行其他任务，同时可以利用future.isDone()判断当前任务是否执行完毕，如果没执行完毕，get（）方法会阻塞一直到执行完毕在获取结果。</p>
+<p>接下来介绍Future.cancel(mayInterruptIfRunning)方法，mayInterruptIfRunning传入一个boolean类型参数，不管mayInterruptIfRunning的值是true还是false，如果任务还没有开始执行，那么就会停止掉。如果任务已经执行了。那么下次任务就不会执行了。</p>
+<p>但是如果任务里面有用到while (!Thread.interrupted())，那么本次任务会一直执行，只有mayInterruptIfRunning=true马上中断线程才能停止任务。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class CallbackTest &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;</span><br><span class="line"></span><br><span class="line">        ExecutorService executorService &#x3D; new ThreadPoolExecutor(10, 10, 60L, TimeUnit.SECONDS, new ArrayBlockingQueue(10));</span><br><span class="line">        int count &#x3D; 0;</span><br><span class="line"></span><br><span class="line">        Callable&lt;String&gt; callable &#x3D; () -&gt; &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(&quot;callback任务&quot;);</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">            return &quot;200&quot;;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;执行任务放进future---&quot;);</span><br><span class="line">        Future&lt;String&gt; future &#x3D; executorService.submit(callable);</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;执行其他任务&quot;);</span><br><span class="line"></span><br><span class="line">        while (!future.isDone())&#123;</span><br><span class="line">            System.out.println(&quot;阻塞状态&quot;);</span><br><span class="line">            Thread.sleep(200);</span><br><span class="line">            count++;</span><br><span class="line">            if (count &gt; 2)</span><br><span class="line">                future.cancel(false);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;获取future的结果&quot;);</span><br><span class="line">        String result &#x3D; future.get();</span><br><span class="line"></span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#输出</span><br><span class="line">执行任务放进future---</span><br><span class="line">执行其他任务</span><br><span class="line">阻塞状态</span><br><span class="line">callback任务</span><br><span class="line">阻塞状态</span><br><span class="line">阻塞状态</span><br><span class="line">获取future的结果</span><br><span class="line">Exception in thread &quot;main&quot; java.util.concurrent.CancellationException</span><br><span class="line">  at java.util.concurrent.FutureTask.report(FutureTask.java:121)</span><br><span class="line">  at java.util.concurrent.FutureTask.get(FutureTask.java:192)</span><br></pre></td></tr></table></figure>
+<p>如上面的代码抛出异常，这是因为任务没有执行完毕，就被取消了，所以future.get()会抛出异常，可以如下解决，在获取future.get()的时候做一个判断，判断是否取消了任务。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">System.out.println(&quot;获取future的结果&quot;);</span><br><span class="line">    if(!future.isCancelled()) &#123;</span><br><span class="line">        String result &#x3D; future.get();</span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        System.out.println(&quot;任务已取消----&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>添加超时</p>
+<p>future.get()方法将阻止并等待任务完成。如果您在可调用任务中从远程服务调用API，并且远程服务已关闭，则future.get()它将永远阻塞，这将使应用程序无响应。</p>
+<p>为了避免这种情况，您可以在get()方法中添加超时</p>
+<p>future.get(1, TimeUnit.SECONDS);<br>如果任务未在指定时间内完成，则该future.get()方法将抛出TimeoutException。<br><strong>invokeAll</strong></p>
+<p>我们可以通过invokeAll()提交多个任务，等待所有任务完成。将一组Callables传递给invokeAll()方法来执行多个任务。在invokeAll()返回的Future列表。future.get()在所有任务都完成之前，对的任何调用将被阻止。如下面的代码，对future.get()语句的首次调用会阻塞，直到所有任务完成。即结果将在6秒钟后打印出来。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import java.util.Arrays;</span><br><span class="line">import java.util.List;</span><br><span class="line">import java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line">public class InvokeAllTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws InterruptedException, ExecutionException &#123;</span><br><span class="line"></span><br><span class="line">        ExecutorService executorService &#x3D; new ThreadPoolExecutor(10, 10, 60L, TimeUnit.SECONDS, new ArrayBlockingQueue&lt;&gt;(10));</span><br><span class="line"></span><br><span class="line">        Callable&lt;String&gt; task1 &#x3D; () -&gt; &#123;</span><br><span class="line">            Thread.sleep(2000);</span><br><span class="line">            return &quot;任务1耗时2秒&quot;;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        Callable&lt;String&gt; task2 &#x3D; () -&gt; &#123;</span><br><span class="line">            Thread.sleep(4000);</span><br><span class="line">            return &quot;任务2耗时4秒&quot;;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        Callable&lt;String&gt; task3 &#x3D; () -&gt; &#123;</span><br><span class="line">            Thread.sleep(6000);</span><br><span class="line">            return &quot;任务3耗时6秒&quot;;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        List&lt;Future&lt;String&gt;&gt; futures &#x3D; executorService.invokeAll(Arrays.asList(task1, task2, task3));</span><br><span class="line"></span><br><span class="line">        for (Future&lt;String&gt; future : futures) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(future.get());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>invokeAny</strong></p>
+<p>提交多个任务，等待其中任何一个完成.该invokeAny()方法接受的集合Callables并返回最快的Callable的结果。请注意，它不会返回Future。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import java.util.Arrays;</span><br><span class="line">import java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line">public class InvokeAnyTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;</span><br><span class="line">        ExecutorService executorService &#x3D; new ThreadPoolExecutor(10, 10, 60L, TimeUnit.SECONDS, new ArrayBlockingQueue&lt;&gt;(10));</span><br><span class="line"></span><br><span class="line">        Callable&lt;String&gt; task1 &#x3D; () -&gt; &#123;</span><br><span class="line">            Thread.sleep(3000);</span><br><span class="line">            return &quot;任务1执行3秒&quot;;</span><br><span class="line">        &#125;;</span><br><span class="line">        Callable&lt;String&gt; task2 &#x3D; () -&gt; &#123;</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">            return &quot;任务2执行1秒&quot;;</span><br><span class="line">        &#125;;</span><br><span class="line">        Callable&lt;String&gt; task3 &#x3D; () -&gt; &#123;</span><br><span class="line">            Thread.sleep(2000);</span><br><span class="line">            return &quot;任务3执行2秒&quot;;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        String result &#x3D; executorService.invokeAny(Arrays.asList(task1, task2, task3));</span><br><span class="line"></span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#输出</span><br><span class="line">任务2执行1秒</span><br></pre></td></tr></table></figure>
+
+
+<p>可以看到我已经不用Executors创建线程池了，因为阿里巴巴开发手册明确禁止使用Executors创建线程池，那这究竟是为什么呢？请看我的公众号的<a href="https://mp.weixin.qq.com/s?__biz=MzAxODkwMTM2Mg==&mid=2247483755&idx=2&sn=3f6e0e5be619ec33f79392200057f0f9&chksm=9bce7176acb9f860410276413dc88c2789b09bd0defd62ff9167ec5f88f4cf4e6f88d22393dc&token=1258980573&lang=zh_CN#rd" target="_blank" rel="noopener external nofollow noreferrer">这篇文章</a></p>
+]]></content>
+      <tags>
+        <tag>多线程</tag>
+      </tags>
   </entry>
   <entry>
     <title>Spring Security密码认证源码级讲解</title>
@@ -146,11 +451,14 @@
 </blockquote>
 <p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/21-security-30.png" alt="image.png"></p>
 ]]></content>
+      <tags>
+        <tag>spring security</tag>
+      </tags>
   </entry>
   <entry>
     <title>Linux vim注释高亮显示</title>
     <url>/article/e05daab5.html</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Linux-vim注释高亮显示"><a href="#Linux-vim注释高亮显示" class="headerlink" title="Linux vim注释高亮显示"></a>Linux vim注释高亮显示</h1><ul>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><ul>
 <li><p>首先解决没有vim命令：<br>把yum切换成清华大学的yum源 <a href="https://mirrors.cnnic.cn/help/centos/" target="_blank" rel="noopener external nofollow noreferrer">https://mirrors.cnnic.cn/help/centos/</a><br>然后执行</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -qa | grep vim</span><br><span class="line">yum install -y vim*</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
@@ -173,6 +481,46 @@
 </li>
 </ul>
 ]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos7 yum 出现could not retrieve mirrorlist解决方案</title>
+    <url>/article/22212fda.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案"><a href="#Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案" class="headerlink" title="Centos7 yum 出现could not retrieve mirrorlist 最终解决方案"></a>Centos7 yum 出现could not retrieve mirrorlist 最终解决方案</h3><p>首先遇到这个问题是因为安装centos7之后想看ip,用到命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
+<p>返回没有这个命令<br>然后想安装net-tools以得到ifconfig命令执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install net-tools</span><br></pre></td></tr></table></figure>
+<p>然后安装不成功报错could not retrieve mirrorlist ….</p>
+<a id="more"></a>
+
+<p> 在尝试过很多方法不管用之后，下面是终极解决方案，需要root用户或者不是root用户则sudo执行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo cd &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts  #进入这个目录，找到下面这个文件</span><br></pre></td></tr></table></figure>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-yum-01.png" alt="图1"></p>
+<ul>
+<li><p>注意这个文件名字可能跟我这个不一样，打开这个文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi ifcfg-eth0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将ONBOOT改为yes，wq!保存退出</p>
+</li>
+</ul>
+<p>重新启动网络</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">service network restart</span><br></pre></td></tr></table></figure>
+<p>解决这个问题之后再返回去执行安装net-tools之后就可以ifconfig了</p>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS7防火墙端口设置</title>
+    <url>/article/1be30850.html</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>centos7 防火墙添加开放端口：【单个】<br>firewall-cmd –zone=public –add-port=443/tcp –permanent<br>centos7 防火墙添加开放端口：【范围】<br>firewall-cmd –zone=public –add-port=20000-30000/tcp –permanent<br>【重新载入防火墙配置】<br>firewall-cmd –reload<br>【查看】<br>firewall-cmd –zone=public –list-ports<br>【删除】<br>firewall-cmd –zone=public –remove-port=80/tcp –permanent<br>【重启防火墙】<br>systemctl restart firewalld.service<br>【解释】<br>–zone=public：表示作用域为公共的；<br>–add-port=8080/tcp：添加tcp协议的端口8080；<br>–permanent：永久生效，如果没有此参数，则只能维持当前服务生命周期内，重新启动后失效；</p>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
   </entry>
   <entry>
     <title>结合Hutool的Money类处理业务中的金钱</title>

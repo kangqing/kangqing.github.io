@@ -24,27 +24,20 @@
     var CONFIG = {"hostname":"www.yunqing.xyz","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"E2L6TPNSLL","apiKey":"adcc95c4546f58dccc7d759f415bdf20","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"搜索关键字文章","hits_empty":"我们没有找到任何搜索结果: ${query}","hits_stats":"查找到 ${hits} 个结果，用时 ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"perspectiveLeftIn","post_header":"perspectiveLeftIn","post_body":"slideLeftBigIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="云晴&#39;s WORLD">
-<meta property="og:url" content="http://www.yunqing.xyz/tags/redis/index.html">
+  <meta name="description" content="定义：当程序主动使用某个类时，如果该类还没被加载到内存中，那么系统会通过加载、连接、初始化这三个步骤对该类进行初始化，JVM通常将会连续完成这三个步骤，所以一般情况下这三个步骤统称为类的加载。 实际上类的加载就是将类的class文件读进内存，并为之创建一个java.lang.Class对象。 类的初始化当类被加载之后，系统会生成一个对应的Class文件，接着进入连接阶段，连接阶段负责把类的二进制数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你了解类的加载机制吗？">
+<meta property="og:url" content="http://www.yunqing.xyz/article/744a60f8.html">
 <meta property="og:site_name" content="云晴&#39;s WORLD">
+<meta property="og:description" content="定义：当程序主动使用某个类时，如果该类还没被加载到内存中，那么系统会通过加载、连接、初始化这三个步骤对该类进行初始化，JVM通常将会连续完成这三个步骤，所以一般情况下这三个步骤统称为类的加载。 实际上类的加载就是将类的class文件读进内存，并为之创建一个java.lang.Class对象。 类的初始化当类被加载之后，系统会生成一个对应的Class文件，接着进入连接阶段，连接阶段负责把类的二进制数">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-22T22:27:59.000Z">
+<meta property="article:modified_time" content="2020-09-22T23:27:55.595Z">
 <meta property="article:author" content="云晴">
-<meta property="article:tag" content="java">
-<meta property="article:tag" content="git">
-<meta property="article:tag" content="spring">
-<meta property="article:tag" content="springboot">
-<meta property="article:tag" content="mybatis">
-<meta property="article:tag" content="mysql">
-<meta property="article:tag" content="docker">
-<meta property="article:tag" content="开发">
-<meta property="article:tag" content="编程">
-<meta property="article:tag" content="程序员">
-<meta property="article:tag" content="程序猿">
-<meta property="article:tag" content="python">
+<meta property="article:tag" content="java基础">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://www.yunqing.xyz/tags/redis/">
+<link rel="canonical" href="http://www.yunqing.xyz/article/744a60f8.html">
 
 
 <script id="page-configurations">
@@ -52,12 +45,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: redis | 云晴's WORLD</title>
+  <title>你了解类的加载机制吗？ | 云晴's WORLD</title>
   
 
 
@@ -211,77 +204,210 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post">
             
 
+  <div class="posts-expand">
+      
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yunqing.xyz/article/744a60f8.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+      <meta itemprop="name" content="云晴">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云晴's WORLD">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          你了解类的加载机制吗？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-23 06:27:59 / 修改时间：07:27:55" itemprop="dateCreated datePublished" datetime="2020-09-23T06:27:59+08:00">2020-09-23</time>
+            </span>
+
+          
+            <span id="/article/744a60f8.html" class="post-meta-item leancloud_visitors" data-flag-title="你了解类的加载机制吗？" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">redis
-          <small>标签</small>
-        </h2>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/article/744a60f8.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/article/744a60f8.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
-    </div>
+        <p>定义：当程序主动使用某个类时，如果该类还没被加载到内存中，那么系统会通过加载、连接、初始化这三个步骤对该类进行初始化，JVM通常将会连续完成这三个步骤，所以一般情况下这三个步骤统称为类的加载。</p>
+<p>实际上类的加载就是将类的class文件读进内存，并为之创建一个java.lang.Class对象。</p>
+<h3 id="类的初始化"><a href="#类的初始化" class="headerlink" title="类的初始化"></a>类的初始化</h3><p>当类被加载之后，系统会生成一个对应的Class文件，接着进入连接阶段，连接阶段负责把类的二进制数据合并到JRE中。之后进入类的初始化阶段，初始化阶段JVM负责对类进行初始化，主要是对类变量进行初始化，两种方式对类变量进行初始化①声明类变量时指定初始化值②是用静态代码块指定初始化值。</p>
+<p>类的初始化包含以下几个步骤：</p>
+<a id="more"></a>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-06-07T22:35:58+08:00"
-              content="2020-06-07">
-          06-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/article/dc5eed37.html" itemprop="url">
-            <span itemprop="name">java链接Lettuce客户端操作</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-04-09T22:16:11+08:00"
-              content="2020-04-09">
-          04-09
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/article/8f6dc9b4.html" itemprop="url">
-            <span itemprop="name">使用redis特性来创建每日流水号</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+<p>①如果类还没被加载和连接，先进行加载、连接</p>
+<p>②如果类的直接父类还没被初始化则先初始化直接父类，类推到Object类，所以Object类永远是最先被初始化的类</p>
+<p>③系统会依次执行初始化语句。（即前边的初始化值有可能在后面被覆盖）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 男人类继承自人类</span><br><span class="line"> *&#x2F;</span><br><span class="line">class Man extends Person&#123;</span><br><span class="line">    static&#123;</span><br><span class="line">        b &#x3D; 100;</span><br><span class="line">    &#125;</span><br><span class="line">    private static int b &#x3D; 2;</span><br><span class="line"></span><br><span class="line">    private static int c &#x3D; 3;</span><br><span class="line"></span><br><span class="line">    private static int d &#x3D; 4;</span><br><span class="line"></span><br><span class="line">    private static int e;</span><br><span class="line"></span><br><span class="line">    static &#123;</span><br><span class="line">        d &#x3D; 200;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(&quot;a &#x3D; &quot; + Person.a);</span><br><span class="line">        System.out.println(&quot;b &#x3D; &quot; + Man.b);</span><br><span class="line">        System.out.println(&quot;c &#x3D; &quot; + Man.c);</span><br><span class="line">        System.out.println(&quot;d &#x3D; &quot; + Man.d);</span><br><span class="line">        System.out.println(&quot;e &#x3D; &quot; + Man.e);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 人类</span><br><span class="line"> *&#x2F;</span><br><span class="line">class Person &#123;</span><br><span class="line"></span><br><span class="line">    static int a &#x3D; 1;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#输出</span><br><span class="line">a &#x3D; 1</span><br><span class="line">b &#x3D; 2</span><br><span class="line">c &#x3D; 3</span><br><span class="line">d &#x3D; 200</span><br><span class="line">e &#x3D; 0</span><br></pre></td></tr></table></figure>
+<h3 id="类初始化的时机"><a href="#类初始化的时机" class="headerlink" title="类初始化的时机"></a>类初始化的时机</h3><p>当Java程序首次通过下面6个方式使用某个类或接口的时候，会初始化此类或接口。</p>
+<p>①创建类的实例。包括new一个实例，反射创建实例，反序列化创建实例。</p>
+<p>②调用某个类的静态方法（类方法）</p>
+<p>③访问类或者接口的类变量，或者为类变量赋值</p>
+<p>④使用反射强制创建某个类或接口的Class对象，例如Class.for(“Person”)若系统还没初始化Person类，这行代码会初始化Person类，并返回Person类对应的Class对象。</p>
+<p>⑤初始化某个类的子类，该子类的所有父类都会被初始化。</p>
+<p>⑥直接使用java.exe运行某个主类。</p>
+<p>注意：当类变量被final修饰的时候，如果类变量的值在编译时候能确定，在使用该类变量的时候不会初始化该类，因为相当于使用了一个常量。如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import java.time.LocalDateTime;</span><br><span class="line"></span><br><span class="line">public class finalTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(Dog.b);</span><br><span class="line">        System.out.println(Cat.a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Cat&#123;</span><br><span class="line"></span><br><span class="line">    static&#123;</span><br><span class="line">        System.out.println(&quot;初始化Cat类&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 编译时候确定了a的值</span><br><span class="line">     *&#x2F;</span><br><span class="line">    final static String a &#x3D; &quot;1000&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Dog&#123;</span><br><span class="line">    static&#123;</span><br><span class="line">        System.out.println(&quot;初始化Dog类&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 编译时并没有确定b的值</span><br><span class="line">     *&#x2F;</span><br><span class="line">    final static String b &#x3D; LocalDateTime.now().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#输出</span><br><span class="line">初始化Dog类</span><br><span class="line">2019-11-02T11:22:18.823</span><br><span class="line">1000</span><br></pre></td></tr></table></figure>
+<p>另一注意点：当使用ClassLoader类的loadClass()来加载某个类时候，并不会初始化该类，使用Class的forName()静态初始化方法才会强制初始化该类。</p>
+<h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><p>类的加载由类加载器完成，类加载器通常由JVM提供，JVM提供的类加载器是系统类加载器，其次，开发者可以通过集成ClassLoader类来创建自己的类加载器。</p>
+<p>当JVM启动时，会形成由三个类加载器组成的初始类加载器层次结构：</p>
+<p>①Bootstrap ClassLoader: 根类加载器</p>
+<p>②Extension ClassLoader: 扩展类加载器</p>
+<p>③System ClassLoader: 系统类加载器</p>
+<h3 id="JVM的类加载机制主要有以下三种："><a href="#JVM的类加载机制主要有以下三种：" class="headerlink" title="JVM的类加载机制主要有以下三种："></a>JVM的类加载机制主要有以下三种：</h3><p>①全盘负责：当一个类加载器负责加载某个Class时，该Class所依赖和引用的其他Class也将由该类加载器负责载入。</p>
+<p>②父类委托：先由父类加载器试图加载该Class,只有当父类加载器无法加载该类时，才会从自己的类路径中加载该类。</p>
+<p>③缓存机制：保证所有的加载过的Class都会被缓存，当程序需要使用某个Class时，类加载器先从缓存区中查找，只有在缓存区不存在该Class对象时，系统才会读取该类对应的二进制文件，转换成Class对象，存入缓存区。</p>
+<h3 id="类加载器加载Class大致要经过以下几个步骤："><a href="#类加载器加载Class大致要经过以下几个步骤：" class="headerlink" title="类加载器加载Class大致要经过以下几个步骤："></a>类加载器加载Class大致要经过以下几个步骤：</h3><p>①在缓存区检查该Class是否载入过，如果有则直接第⑧步，否则执行第②步。</p>
+<p>②如果父类加载器不存在（如果父类加载器不存在，则parent一定是根加载器，或者本身就是根加载器，因为根加载器不是java实现的，所以返回null）直接跳第④步，如果父类加载器存在，则执行第③步。</p>
+<p>③请求使用父类加载器去载入目标类，如果成功载入则跳第⑧步，否则执行第⑤步</p>
+<p>④请求使用根类加载器载入目标类，如果成功载入则跳第⑧步，否则跳第⑦步</p>
+<p>⑤当前类加载器尝试寻找Class文件（从与此加载器相关的类路径中寻找）如果找到执行第⑥步，找不到执行第⑦步</p>
+<p>⑥从文件中载入Class,成功载入跳第⑧步</p>
+<p>⑦抛出ClassNotFoundException异常</p>
+<p>⑧返回对应的java.lang.Class对象</p>
 
     </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\article\e7c4a452.html" rel="bookmark">阿里巴巴开发手册为什么这么规定？</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>赞赏作者一杯奶茶</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    <i class="fa fa-qrcode fa-2x" style="line-height:35px;"></i>
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/weixin.png" alt="云晴 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/alipay.png" alt="云晴 支付宝">
+        <p>支付宝</p>
+      </div>
+
   </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>云晴
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.yunqing.xyz/article/744a60f8.html" title="你了解类的加载机制吗？">http://www.yunqing.xyz/article/744a60f8.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%9F%BA%E7%A1%80/" rel="tag"># java基础</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/article/a7c279ec.html" rel="prev" title="Callable和Future">
+      <i class="fa fa-chevron-left"></i> Callable和Future
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/article/3e12f736.html" rel="next" title="Linux安装jdk、Tomcat、maven、nginx、mysql、git、redis">
+      Linux安装jdk、Tomcat、maven、nginx、mysql、git、redis <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
   
   
   
 
-  
-
+  </div>
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -328,6 +454,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#类的初始化"><span class="nav-number">1.</span> <span class="nav-text">类的初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类初始化的时机"><span class="nav-number">2.</span> <span class="nav-text">类初始化的时机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器"><span class="nav-number">3.</span> <span class="nav-text">类加载器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM的类加载机制主要有以下三种："><span class="nav-number">4.</span> <span class="nav-text">JVM的类加载机制主要有以下三种：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载器加载Class大致要经过以下几个步骤："><span class="nav-number">5.</span> <span class="nav-text">类加载器加载Class大致要经过以下几个步骤：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

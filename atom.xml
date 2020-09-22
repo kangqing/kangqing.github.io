@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-09-22T13:25:57.408Z</updated>
+  <updated>2020-09-22T23:27:55.576Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -17,11 +17,186 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Linux能ping通windows，windows不能ping通linux</title>
+    <link href="http://www.yunqing.xyz/article/98271ffd.html"/>
+    <id>http://www.yunqing.xyz/article/98271ffd.html</id>
+    <published>2020-09-22T23:24:49.000Z</published>
+    <updated>2020-09-22T23:27:55.576Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh-root-ip连接linux报错22端口超时。&quot;&gt;&lt;a href=&quot;#主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh-root-ip连接linux报错22端口超时。&quot; class=&quot;headerlink&quot; title=&quot;主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh root@ip连接linux报错22端口超时。&quot;&gt;&lt;/a&gt;主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh root@ip连接linux报错22端口超时。&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;虚拟机设置的网络适配器选择NAT模式&lt;br&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-linux-01.png&quot; alt=&quot;image.png&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 配置国内阿里yum源、docker配置阿里加速镜像</title>
+    <link href="http://www.yunqing.xyz/article/9b813418.html"/>
+    <id>http://www.yunqing.xyz/article/9b813418.html</id>
+    <published>2020-09-22T23:20:49.000Z</published>
+    <updated>2020-09-22T23:27:55.561Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;#yum配置阿里镜像源&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;访问这个阿里镜像站，点击centos&lt;br&gt;&lt;a href=&quot;https://developer.aliyun.com/mirror&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;https://developer.aliyun.com/mirror&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-01.png&quot; alt=&quot;image.png&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="docker" scheme="http://www.yunqing.xyz/tags/docker/"/>
+    
+      <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux安装jdk、Tomcat、maven、nginx、mysql、git、redis</title>
+    <link href="http://www.yunqing.xyz/article/3e12f736.html"/>
+    <id>http://www.yunqing.xyz/article/3e12f736.html</id>
+    <published>2020-09-22T23:13:44.000Z</published>
+    <updated>2020-09-22T23:27:55.565Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##Linux版本:阿里云镜像仓库的CentOS7&lt;br&gt;&lt;a href=&quot;https://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1908.iso&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;CentOS-7-x86_64-DVD-1908.iso&lt;/a&gt;&lt;br&gt;###安装配置jdk&lt;br&gt;首先检查是否安装过jdk&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;rpm -qa | grep jdk&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;如果有则删除,XXX为上面命令查到的结果，按个删除&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;yum remove XXX&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>你了解类的加载机制吗？</title>
+    <link href="http://www.yunqing.xyz/article/744a60f8.html"/>
+    <id>http://www.yunqing.xyz/article/744a60f8.html</id>
+    <published>2020-09-22T22:27:59.000Z</published>
+    <updated>2020-09-22T23:27:55.595Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;定义：当程序主动使用某个类时，如果该类还没被加载到内存中，那么系统会通过加载、连接、初始化这三个步骤对该类进行初始化，JVM通常将会连续完成这三个步骤，所以一般情况下这三个步骤统称为类的加载。&lt;/p&gt;
+&lt;p&gt;实际上类的加载就是将类的class文件读进内存，并为之创建一个java.lang.Class对象。&lt;/p&gt;
+&lt;h3 id=&quot;类的初始化&quot;&gt;&lt;a href=&quot;#类的初始化&quot; class=&quot;headerlink&quot; title=&quot;类的初始化&quot;&gt;&lt;/a&gt;类的初始化&lt;/h3&gt;&lt;p&gt;当类被加载之后，系统会生成一个对应的Class文件，接着进入连接阶段，连接阶段负责把类的二进制数据合并到JRE中。之后进入类的初始化阶段，初始化阶段JVM负责对类进行初始化，主要是对类变量进行初始化，两种方式对类变量进行初始化①声明类变量时指定初始化值②是用静态代码块指定初始化值。&lt;/p&gt;
+&lt;p&gt;类的初始化包含以下几个步骤：&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="java基础" scheme="http://www.yunqing.xyz/tags/java%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Callable和Future</title>
+    <link href="http://www.yunqing.xyz/article/a7c279ec.html"/>
+    <id>http://www.yunqing.xyz/article/a7c279ec.html</id>
+    <published>2020-09-22T22:22:31.000Z</published>
+    <updated>2020-09-22T23:27:55.585Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在之前的&lt;a href=&quot;http://mp.weixin.qq.com/s?__biz=MzAxODkwMTM2Mg==&amp;mid=2247483733&amp;idx=2&amp;sn=9944140574c0e6a65e7214bdcf12bd05&amp;chksm=9bce7148acb9f85ee0e6adf6294113ebc8f83a34ea7bfac41a6563009e87c23b13059cbefad1&amp;scene=21#wechat_redirect&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;这篇文章&lt;/a&gt;我讲了Runable来定义线程中执行的任务，但是有个缺点，不能带返回值，今天就讲如何执行带返回值的线程中任务。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Callable&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-callable-01.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="多线程" scheme="http://www.yunqing.xyz/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring Security密码认证源码级讲解</title>
+    <link href="http://www.yunqing.xyz/article/96adc5df.html"/>
+    <id>http://www.yunqing.xyz/article/96adc5df.html</id>
+    <published>2020-09-22T15:22:04.000Z</published>
+    <updated>2020-09-22T22:18:33.189Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;本文根据我的项目进行Security密码认证的源码级别讲解，我们将通过localhost:9090访问来开始进行Debug说明，我已经在源码中打了很多个端点，基本能讲到Security用户名密码认证的全部流程，主要是给自己加深印象，其次分享给大家，如果讲解过程中有什么错误，也请大家不吝指正，谢谢！代码基于springboot2.2.1、security5、jdk8、mysql8.0、maven构建。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="spring security" scheme="http://www.yunqing.xyz/tags/spring-security/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux vim注释高亮显示</title>
+    <link href="http://www.yunqing.xyz/article/e05daab5.html"/>
+    <id>http://www.yunqing.xyz/article/e05daab5.html</id>
+    <published>2020-09-22T13:22:04.000Z</published>
+    <updated>2020-09-22T22:14:59.059Z</updated>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;&lt;p&gt;首先解决没有vim命令：&lt;br&gt;把yum切换成清华大学的yum源 &lt;a href=&quot;https://mirrors.cnnic.cn/help/centos/&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;https://mirrors.cnnic.cn/help/centos/&lt;/a&gt;&lt;br&gt;然后执行&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;rpm -qa | grep vim&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;yum install -y vim*&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Centos7 yum 出现could not retrieve mirrorlist解决方案</title>
+    <link href="http://www.yunqing.xyz/article/22212fda.html"/>
+    <id>http://www.yunqing.xyz/article/22212fda.html</id>
+    <published>2020-09-22T13:06:04.000Z</published>
+    <updated>2020-09-22T22:12:54.668Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案&quot;&gt;&lt;a href=&quot;#Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案&quot; class=&quot;headerlink&quot; title=&quot;Centos7 yum 出现could not retrieve mirrorlist 最终解决方案&quot;&gt;&lt;/a&gt;Centos7 yum 出现could not retrieve mirrorlist 最终解决方案&lt;/h3&gt;&lt;p&gt;首先遇到这个问题是因为安装centos7之后想看ip,用到命令&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ifconfig&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;返回没有这个命令&lt;br&gt;然后想安装net-tools以得到ifconfig命令执行：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;yum install net-tools&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;然后安装不成功报错could not retrieve mirrorlist ….&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CentOS7防火墙端口设置</title>
     <link href="http://www.yunqing.xyz/article/1be30850.html"/>
     <id>http://www.yunqing.xyz/article/1be30850.html</id>
-    <published>2020-09-22T22:09:03.161Z</published>
-    <updated>2020-09-22T13:25:57.408Z</updated>
+    <published>2020-09-22T13:02:04.000Z</published>
+    <updated>2020-09-22T22:14:16.460Z</updated>
     
     <summary type="html">
     
@@ -37,64 +212,7 @@
     
     
     
-  </entry>
-  
-  <entry>
-    <title>Centos7 yum 出现could not retrieve mirrorlist 最终解决方案</title>
-    <link href="http://www.yunqing.xyz/article/22212fda.html"/>
-    <id>http://www.yunqing.xyz/article/22212fda.html</id>
-    <published>2020-09-22T22:09:03.160Z</published>
-    <updated>2020-09-22T22:08:27.235Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案&quot;&gt;&lt;a href=&quot;#Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案&quot; class=&quot;headerlink&quot; title=&quot;Centos7 yum 出现could not retrieve mirrorlist 最终解决方案&quot;&gt;&lt;/a&gt;Centos7 yum 出现could not retrieve mirrorlist 最终解决方案&lt;/h1&gt;&lt;p&gt;首先遇到这个问题是因为安装centos7之后想看ip,用到命令&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ifconfig&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;返回没有这个命令&lt;br&gt;然后想安装net-tools以得到ifconfig命令执行：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;yum install net-tools&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;然后安装不成功报错could not retrieve mirrorlist ….&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Security密码认证源码级讲解</title>
-    <link href="http://www.yunqing.xyz/article/96adc5df.html"/>
-    <id>http://www.yunqing.xyz/article/96adc5df.html</id>
-    <published>2020-09-22T22:09:03.159Z</published>
-    <updated>2020-09-22T22:07:52.348Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;本文根据我的项目进行Security密码认证的源码级别讲解，我们将通过localhost:9090访问来开始进行Debug说明，我已经在源码中打了很多个端点，基本能讲到Security用户名密码认证的全部流程，主要是给自己加深印象，其次分享给大家，如果讲解过程中有什么错误，也请大家不吝指正，谢谢！代码基于springboot2.2.1、security5、jdk8、mysql8.0、maven构建。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Linux vim注释高亮显示</title>
-    <link href="http://www.yunqing.xyz/article/e05daab5.html"/>
-    <id>http://www.yunqing.xyz/article/e05daab5.html</id>
-    <published>2020-09-22T22:09:03.153Z</published>
-    <updated>2020-09-22T22:06:40.402Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Linux-vim注释高亮显示&quot;&gt;&lt;a href=&quot;#Linux-vim注释高亮显示&quot; class=&quot;headerlink&quot; title=&quot;Linux vim注释高亮显示&quot;&gt;&lt;/a&gt;Linux vim注释高亮显示&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;首先解决没有vim命令：&lt;br&gt;把yum切换成清华大学的yum源 &lt;a href=&quot;https://mirrors.cnnic.cn/help/centos/&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;https://mirrors.cnnic.cn/help/centos/&lt;/a&gt;&lt;br&gt;然后执行&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;rpm -qa | grep vim&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;yum install -y vim*&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
+      <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
     
   </entry>
   
@@ -351,118 +469,6 @@
     
     
       <category term="redis" scheme="http://www.yunqing.xyz/tags/redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用redis特性来创建每日流水号</title>
-    <link href="http://www.yunqing.xyz/article/8f6dc9b4.html"/>
-    <id>http://www.yunqing.xyz/article/8f6dc9b4.html</id>
-    <published>2020-04-09T14:16:11.000Z</published>
-    <updated>2020-09-18T13:10:46.076Z</updated>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;这里需求是创建每日的流水号，例如：每向数据库中添加一条数据，其编号设置为yyyyMMdd0001、yyyyMMdd0002这样的格式，日期加后四位为当日流水号，也就是当日第几个添加的数据。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="redis" scheme="http://www.yunqing.xyz/tags/redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>基于mybatis plus讲解一些知识点</title>
-    <link href="http://www.yunqing.xyz/article/cf7f7e62.html"/>
-    <id>http://www.yunqing.xyz/article/cf7f7e62.html</id>
-    <published>2020-04-05T13:33:58.000Z</published>
-    <updated>2020-09-18T13:10:23.286Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;mybatis-plus之主键生成策略&quot;&gt;&lt;a href=&quot;#mybatis-plus之主键生成策略&quot; class=&quot;headerlink&quot; title=&quot;mybatis plus之主键生成策略&quot;&gt;&lt;/a&gt;mybatis plus之主键生成策略&lt;/h2&gt;&lt;h3 id=&quot;1-自增策略&quot;&gt;&lt;a href=&quot;#1-自增策略&quot; class=&quot;headerlink&quot; title=&quot;1.自增策略&quot;&gt;&lt;/a&gt;1.自增策略&lt;/h3&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@TableId&lt;/span&gt;(value = &lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt;, type = IdType.AUTO)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String id;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;2-雪花生成器（推）&quot;&gt;&lt;a href=&quot;#2-雪花生成器（推）&quot; class=&quot;headerlink&quot; title=&quot;2.雪花生成器（推）&quot;&gt;&lt;/a&gt;2.雪花生成器（推）&lt;/h3&gt;   &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@TableId&lt;/span&gt;(value = &lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt;, type = IdType.ASSIGN_ID)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String id;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="mybatis plus" scheme="http://www.yunqing.xyz/tags/mybatis-plus/"/>
-    
-      <category term="乐观锁" scheme="http://www.yunqing.xyz/tags/%E4%B9%90%E8%A7%82%E9%94%81/"/>
-    
-      <category term="悲观锁" scheme="http://www.yunqing.xyz/tags/%E6%82%B2%E8%A7%82%E9%94%81/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hexo之next主题美化</title>
-    <link href="http://www.yunqing.xyz/article/29e1e123.html"/>
-    <id>http://www.yunqing.xyz/article/29e1e123.html</id>
-    <published>2020-03-28T14:08:42.000Z</published>
-    <updated>2020-03-29T08:52:35.007Z</updated>
-    
-    <summary type="html">
-    
-      &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;安装&lt;code&gt;nodejs/git/hexo&lt;/code&gt;初始化这些基本就不讲了，网上一找一大堆，直接从入手&lt;code&gt;next&lt;/code&gt;主题开始.&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# 1.进入博客根目录，从git拉取next主题到themes目录下重命名为next&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;git &lt;span class=&quot;built_in&quot;&gt;clone&lt;/span&gt; https://github.com/theme-next/hexo-theme-next themes/next&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="hexo美化" scheme="http://www.yunqing.xyz/tags/hexo%E7%BE%8E%E5%8C%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用Docker安装nginx和vsftpd搭建文件服务器</title>
-    <link href="http://www.yunqing.xyz/article/11c2cd82.html"/>
-    <id>http://www.yunqing.xyz/article/11c2cd82.html</id>
-    <published>2020-03-26T12:48:23.000Z</published>
-    <updated>2020-09-18T13:10:54.167Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;用Docker安装nginx和vsftpd搭建文件服务器&quot;&gt;&lt;a href=&quot;#用Docker安装nginx和vsftpd搭建文件服务器&quot; class=&quot;headerlink&quot; title=&quot;用Docker安装nginx和vsftpd搭建文件服务器&quot;&gt;&lt;/a&gt;用Docker安装nginx和vsftpd搭建文件服务器&lt;/h2&gt;&lt;h3 id=&quot;讲真的我这辈子绝对不会学docker—————–能香，哈哈！&quot;&gt;&lt;a href=&quot;#讲真的我这辈子绝对不会学docker—————–能香，哈哈！&quot; class=&quot;headerlink&quot; title=&quot;讲真的我这辈子绝对不会学docker—————–能香，哈哈！&quot;&gt;&lt;/a&gt;讲真的我这辈子绝对不会学docker—————–能香，哈哈！&lt;/h3&gt;&lt;p&gt;docker在centos7的安装方式建议看官网教程，不然docker安装nginx很可能出错。&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/3b28f3416dda&quot; target=&quot;_blank&quot; rel=&quot;noopener external nofollow noreferrer&quot;&gt;安装docker可以直接参照我简书上的安装过程&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="docker" scheme="http://www.yunqing.xyz/tags/docker/"/>
-    
-      <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
-    
-      <category term="nginx" scheme="http://www.yunqing.xyz/tags/nginx/"/>
-    
-      <category term="vsftpd" scheme="http://www.yunqing.xyz/tags/vsftpd/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mysql必知必会读书笔记（3）</title>
-    <link href="http://www.yunqing.xyz/article/970ccb5d.html"/>
-    <id>http://www.yunqing.xyz/article/970ccb5d.html</id>
-    <published>2020-03-23T12:39:52.000Z</published>
-    <updated>2020-03-29T02:03:54.921Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;21-创建和操纵表&quot;&gt;&lt;a href=&quot;#21-创建和操纵表&quot; class=&quot;headerlink&quot; title=&quot;21.创建和操纵表&quot;&gt;&lt;/a&gt;21.创建和操纵表&lt;/h2&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;CREATE TABLE &amp;#96;t_class&amp;#96; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#96;id&amp;#96; INT NOT NULL Auto_Increment, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#96;name&amp;#96; VARCHAR ( 20 ) NOT NULL, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	PRIMARY KEY ( &amp;#96;id&amp;#96; ) &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;) ENGINE &amp;#x3D; INNODB;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="mysql" scheme="http://www.yunqing.xyz/tags/mysql/"/>
     
   </entry>
   

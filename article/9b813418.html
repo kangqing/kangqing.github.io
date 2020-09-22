@@ -24,27 +24,26 @@
     var CONFIG = {"hostname":"www.yunqing.xyz","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"E2L6TPNSLL","apiKey":"adcc95c4546f58dccc7d759f415bdf20","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"搜索关键字文章","hits_empty":"我们没有找到任何搜索结果: ${query}","hits_stats":"查找到 ${hits} 个结果，用时 ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"perspectiveLeftIn","post_header":"perspectiveLeftIn","post_body":"slideLeftBigIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="云晴&#39;s WORLD">
-<meta property="og:url" content="http://www.yunqing.xyz/tags/redis/index.html">
+  <meta name="description" content="#yum配置阿里镜像源  访问这个阿里镜像站，点击centoshttps:&#x2F;&#x2F;developer.aliyun.com&#x2F;mirror">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 配置国内阿里yum源、docker配置阿里加速镜像">
+<meta property="og:url" content="http://www.yunqing.xyz/article/9b813418.html">
 <meta property="og:site_name" content="云晴&#39;s WORLD">
+<meta property="og:description" content="#yum配置阿里镜像源  访问这个阿里镜像站，点击centoshttps:&#x2F;&#x2F;developer.aliyun.com&#x2F;mirror">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-01.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-02.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-03.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-04.png">
+<meta property="article:published_time" content="2020-09-22T23:20:49.000Z">
+<meta property="article:modified_time" content="2020-09-22T23:27:55.561Z">
 <meta property="article:author" content="云晴">
-<meta property="article:tag" content="java">
-<meta property="article:tag" content="git">
-<meta property="article:tag" content="spring">
-<meta property="article:tag" content="springboot">
-<meta property="article:tag" content="mybatis">
-<meta property="article:tag" content="mysql">
 <meta property="article:tag" content="docker">
-<meta property="article:tag" content="开发">
-<meta property="article:tag" content="编程">
-<meta property="article:tag" content="程序员">
-<meta property="article:tag" content="程序猿">
-<meta property="article:tag" content="python">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-01.png">
 
-<link rel="canonical" href="http://www.yunqing.xyz/tags/redis/">
+<link rel="canonical" href="http://www.yunqing.xyz/article/9b813418.html">
 
 
 <script id="page-configurations">
@@ -52,12 +51,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: redis | 云晴's WORLD</title>
+  <title>Linux 配置国内阿里yum源、docker配置阿里加速镜像 | 云晴's WORLD</title>
   
 
 
@@ -211,77 +210,197 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post">
             
 
+  <div class="posts-expand">
+      
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yunqing.xyz/article/9b813418.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+      <meta itemprop="name" content="云晴">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云晴's WORLD">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux 配置国内阿里yum源、docker配置阿里加速镜像
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-23 07:20:49 / 修改时间：07:27:55" itemprop="dateCreated datePublished" datetime="2020-09-23T07:20:49+08:00">2020-09-23</time>
+            </span>
+
+          
+            <span id="/article/9b813418.html" class="post-meta-item leancloud_visitors" data-flag-title="Linux 配置国内阿里yum源、docker配置阿里加速镜像" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">redis
-          <small>标签</small>
-        </h2>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/article/9b813418.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/article/9b813418.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>175</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
-    </div>
+        <p>#yum配置阿里镜像源</p>
+<ul>
+<li>访问这个阿里镜像站，点击centos<br><a href="https://developer.aliyun.com/mirror" target="_blank" rel="noopener external nofollow noreferrer">https://developer.aliyun.com/mirror</a><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-01.png" alt="image.png"></li>
+</ul>
+<a id="more"></a>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-06-07T22:35:58+08:00"
-              content="2020-06-07">
-          06-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/article/dc5eed37.html" itemprop="url">
-            <span itemprop="name">java链接Lettuce客户端操作</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-04-09T22:16:11+08:00"
-              content="2020-04-09">
-          04-09
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/article/8f6dc9b4.html" itemprop="url">
-            <span itemprop="name">使用redis特性来创建每日流水号</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+<ul>
+<li>直接按照下图中的3步操作即可<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-02.png" alt="image.png"><h1 id="配置阿里docker镜像加速"><a href="#配置阿里docker镜像加速" class="headerlink" title="配置阿里docker镜像加速"></a>配置阿里docker镜像加速</h1></li>
+<li>访问阿里云这个地址<br><a href="https://promotion.aliyun.com/ntms/act/kubernetes.html" target="_blank" rel="noopener external nofollow noreferrer">https://promotion.aliyun.com/ntms/act/kubernetes.html</a></li>
+<li>镜像搜索docker<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-03.png" alt="image.png"></li>
+<li>直接执行这4条指令即可<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-04.png" alt="image.png"></li>
+</ul>
 
     </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\article\11c2cd82.html" rel="bookmark">用Docker安装nginx和vsftpd搭建文件服务器</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\article\56db5bfb.html" rel="bookmark">Docker搭建私有gitlab仓库</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\article\70f8610.html" rel="bookmark">使用gogs搭建git服务</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\article\e5086296.html" rel="bookmark">Docker安装redis</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\article\b0daabb.html" rel="bookmark">Docker安装mysql</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>赞赏作者一杯奶茶</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    <i class="fa fa-qrcode fa-2x" style="line-height:35px;"></i>
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/weixin.png" alt="云晴 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/alipay.png" alt="云晴 支付宝">
+        <p>支付宝</p>
+      </div>
+
   </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>云晴
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.yunqing.xyz/article/9b813418.html" title="Linux 配置国内阿里yum源、docker配置阿里加速镜像">http://www.yunqing.xyz/article/9b813418.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/article/3e12f736.html" rel="prev" title="Linux安装jdk、Tomcat、maven、nginx、mysql、git、redis">
+      <i class="fa fa-chevron-left"></i> Linux安装jdk、Tomcat、maven、nginx、mysql、git、redis
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/article/98271ffd.html" rel="next" title="Linux能ping通windows，windows不能ping通linux">
+      Linux能ping通windows，windows不能ping通linux <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
   
   
   
 
-  
-
+  </div>
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -328,6 +447,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#配置阿里docker镜像加速"><span class="nav-number">1.</span> <span class="nav-text">配置阿里docker镜像加速</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
