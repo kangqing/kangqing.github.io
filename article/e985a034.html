@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="mask-icon" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico" color="#222">
+  <meta name="baidu-site-verification" content="JBKkqXL0ZXuox1dk">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.yunqing.xyz","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"E2L6TPNSLL","apiKey":"adcc95c4546f58dccc7d759f415bdf20","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"搜索关键字文章","hits_empty":"我们没有找到任何搜索结果: ${query}","hits_stats":"查找到 ${hits} 个结果，用时 ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"perspectiveLeftIn","post_header":"perspectiveLeftIn","post_body":"slideLeftBigIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="#一、为什么使用Swagger2当下很多公司都采取前后端分离的开发模式，前端和后端的工作由不同的工程师完成。在这种开发模式下，维持一份及时更新且完整的 Rest API 文档将会极大的提高我们的工作效率。传统意义上的文档都是后端开发人员手动编写的，相信大家也都知道这种方式很难保证文档的及时性，这种文档久而久之也就会失去其参考意义，反而还会加大我们的沟通成本。而 Swagger 给我们提供了一个全新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Swagger2自动生成API接口文档">
+<meta property="og:url" content="http://www.yunqing.xyz/article/e985a034.html">
+<meta property="og:site_name" content="云晴&#39;s WORLD">
+<meta property="og:description" content="#一、为什么使用Swagger2当下很多公司都采取前后端分离的开发模式，前端和后端的工作由不同的工程师完成。在这种开发模式下，维持一份及时更新且完整的 Rest API 文档将会极大的提高我们的工作效率。传统意义上的文档都是后端开发人员手动编写的，相信大家也都知道这种方式很难保证文档的及时性，这种文档久而久之也就会失去其参考意义，反而还会加大我们的沟通成本。而 Swagger 给我们提供了一个全新">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-01.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-02.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-03.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-04.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-05.png">
+<meta property="article:published_time" content="2020-09-23T13:32:52.000Z">
+<meta property="article:modified_time" content="2020-09-23T13:36:12.111Z">
+<meta property="article:author" content="云晴">
+<meta property="article:tag" content="swagger2">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-01.png">
+
+<link rel="canonical" href="http://www.yunqing.xyz/article/e985a034.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用Swagger2自动生成API接口文档 | 云晴's WORLD</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2501c3b103bbe9c0c72d60da10b158bd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <script src="/live2d-widget/autoload.js"></script>
+<link rel="alternate" href="/atom.xml" title="云晴's WORLD" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">云晴's WORLD</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">贩卖快乐！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>阅读</a>
+
+  </li>
+        <li class="menu-item menu-item-movies">
+
+    <a href="/movies/" rel="section"><i class="fa fa-fw fa-video-camera"></i>观影</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yunqing.xyz/article/e985a034.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+      <meta itemprop="name" content="云晴">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云晴's WORLD">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用Swagger2自动生成API接口文档
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-23 21:32:52 / 修改时间：21:36:12" itemprop="dateCreated datePublished" datetime="2020-09-23T21:32:52+08:00">2020-09-23</time>
+            </span>
+
+          
+            <span id="/article/e985a034.html" class="post-meta-item leancloud_visitors" data-flag-title="使用Swagger2自动生成API接口文档" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/article/e985a034.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/article/e985a034.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>15 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>#一、为什么使用Swagger2<br>当下很多公司都采取前后端分离的开发模式，前端和后端的工作由不同的工程师完成。在这种开发模式下，维持一份及时更新且完整的 Rest API 文档将会极大的提高我们的工作效率。传统意义上的文档都是后端开发人员手动编写的，相信大家也都知道这种方式很难保证文档的及时性，这种文档久而久之也就会失去其参考意义，反而还会加大我们的沟通成本。而 Swagger 给我们提供了一个全新的维护 API 文档的方式，下面我们就来了解一下它的优点：</p>
+<a id="more"></a>
+
+<p>1、代码变，文档变。只需要少量的注解，Swagger 就可以根据代码自动生成 API 文档，很好的保证了文档的时效性。</p>
+<p>2、跨语言性，支持 40 多种语言。</p>
+<p>3、Swagger UI 呈现出来的是一份可交互式的 API 文档，我们可以直接在文档页面尝试 API 的调用，省去了准备复杂的调用参数的过程。</p>
+<p>4、还可以将文档规范导入相关的工具（例如 Postman、SoapUI）, 这些工具将会为我们自动地创建自动化测试。</p>
+<p>#二、配置使用Swagger2</p>
+<p>##1、在pom.xml加入swagger2相关依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--swagger2的依赖--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;io.springfox&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;springfox-swagger2&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;2.9.2&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;io.springfox&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;springfox-swagger-ui&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;2.9.2&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>##2、新建Swagger2Config配置类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">import io.swagger.annotations.Api;</span><br><span class="line">import org.springframework.context.annotation.Bean;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line">import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;</span><br><span class="line">import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;</span><br><span class="line">import springfox.documentation.builders.ApiInfoBuilder;</span><br><span class="line">import springfox.documentation.builders.PathSelectors;</span><br><span class="line">import springfox.documentation.builders.RequestHandlerSelectors;</span><br><span class="line">import springfox.documentation.service.*;</span><br><span class="line">import springfox.documentation.spi.DocumentationType;</span><br><span class="line">import springfox.documentation.spi.service.contexts.SecurityContext;</span><br><span class="line">import springfox.documentation.spring.web.plugins.Docket;</span><br><span class="line">import springfox.documentation.swagger2.annotations.EnableSwagger2;</span><br><span class="line"></span><br><span class="line">import java.util.ArrayList;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * @author yunqing</span><br><span class="line"> * @date 2019&#x2F;12&#x2F;17 10:23</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Configuration</span><br><span class="line">@EnableSwagger2</span><br><span class="line">public class Swagger2Config extends WebMvcConfigurationSupport &#123;</span><br><span class="line">    @Bean</span><br><span class="line">    public Docket createRestApi()&#123;</span><br><span class="line">        return new Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">                .apiInfo(apiInfo())</span><br><span class="line">                .select()</span><br><span class="line">                &#x2F;&#x2F;为当前包下controller生成API文档</span><br><span class="line">&#x2F;&#x2F;                .apis(RequestHandlerSelectors.basePackage(&quot;com.troila&quot;))</span><br><span class="line">                &#x2F;&#x2F;为有@Api注解的Controller生成API文档</span><br><span class="line">&#x2F;&#x2F;                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))</span><br><span class="line">                &#x2F;&#x2F;为有@ApiOperation注解的方法生成API文档</span><br><span class="line">&#x2F;&#x2F;                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))</span><br><span class="line">                &#x2F;&#x2F;为任何接口生成API文档</span><br><span class="line">                .apis(RequestHandlerSelectors.any())</span><br><span class="line">                .paths(PathSelectors.any())</span><br><span class="line">                .build();</span><br><span class="line">                &#x2F;&#x2F;添加登录认证</span><br><span class="line">                &#x2F;*.securitySchemes(securitySchemes())</span><br><span class="line">                .securityContexts(securityContexts());*&#x2F;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private ApiInfo apiInfo() &#123;</span><br><span class="line">        Contact contact &#x3D; new Contact(&quot;yunqing&quot;, &quot;&quot;, &quot;yunqing****@gmail.com&quot;);</span><br><span class="line">        return new ApiInfoBuilder()</span><br><span class="line">                .title(&quot;SwaggerUI演示&quot;)</span><br><span class="line">                .description(&quot;接口文档，描述词省略200字&quot;)</span><br><span class="line">                .contact(contact)</span><br><span class="line">                .version(&quot;1.0&quot;)</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 配置swagger2的静态资源路径</span><br><span class="line">     * @param registry</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Override</span><br><span class="line">    protected void addResourceHandlers(ResourceHandlerRegistry registry) &#123;</span><br><span class="line">        &#x2F;&#x2F; 解决静态资源无法访问</span><br><span class="line">        registry.addResourceHandler(&quot;&#x2F;**&quot;)</span><br><span class="line">                .addResourceLocations(&quot;classpath:&#x2F;static&#x2F;&quot;);</span><br><span class="line">        &#x2F;&#x2F; 解决swagger无法访问</span><br><span class="line">        registry.addResourceHandler(&quot;&#x2F;swagger-ui.html&quot;)</span><br><span class="line">                .addResourceLocations(&quot;classpath:&#x2F;META-INF&#x2F;resources&#x2F;&quot;);</span><br><span class="line">        &#x2F;&#x2F; 解决swagger的js文件无法访问</span><br><span class="line">        registry.addResourceHandler(&quot;&#x2F;webjars&#x2F;**&quot;)</span><br><span class="line">                .addResourceLocations(&quot;classpath:&#x2F;META-INF&#x2F;resources&#x2F;webjars&#x2F;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 给API文档接口添加安全认证</span><br><span class="line">     *&#x2F;</span><br><span class="line">    &#x2F;*private List&lt;ApiKey&gt; securitySchemes() &#123;</span><br><span class="line">        List&lt;ApiKey&gt; apiKeys &#x3D; new ArrayList&lt;&gt;();</span><br><span class="line">        apiKeys.add(new ApiKey(&quot;Authorization&quot;, &quot;Authorization&quot;, &quot;header&quot;));</span><br><span class="line">        return apiKeys;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private List&lt;SecurityContext&gt; securityContexts() &#123;</span><br><span class="line">        List&lt;SecurityContext&gt; securityContexts &#x3D; new ArrayList&lt;&gt;();</span><br><span class="line">        securityContexts.add(SecurityContext.builder()</span><br><span class="line">                .securityReferences(defaultAuth())</span><br><span class="line">                .forPaths(PathSelectors.regex(&quot;^(?!auth).*$&quot;)).build());</span><br><span class="line">        return securityContexts;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private List&lt;SecurityReference&gt; defaultAuth() &#123;</span><br><span class="line">        AuthorizationScope authorizationScope &#x3D; new AuthorizationScope(&quot;global&quot;, &quot;accessEverything&quot;);</span><br><span class="line">        AuthorizationScope[] authorizationScopes &#x3D; new AuthorizationScope[1];</span><br><span class="line">        authorizationScopes[0] &#x3D; authorizationScope;</span><br><span class="line">        List&lt;SecurityReference&gt; securityReferences &#x3D; new ArrayList&lt;&gt;();</span><br><span class="line">        securityReferences.add(new SecurityReference(&quot;Authorization&quot;, authorizationScopes));</span><br><span class="line">        return securityReferences;</span><br><span class="line">    &#125;*&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>##3、在shiro配置类中放行swagger2相关资源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;swagger2免拦截</span><br><span class="line">filterChainDefinitionMap.put(&quot;&#x2F;swagger-ui.html**&quot;, &quot;anon&quot;);</span><br><span class="line">filterChainDefinitionMap.put(&quot;&#x2F;v2&#x2F;api-docs&quot;, &quot;anon&quot;);</span><br><span class="line">filterChainDefinitionMap.put(&quot;&#x2F;swagger-resources&#x2F;**&quot;, &quot;anon&quot;);</span><br><span class="line">filterChainDefinitionMap.put(&quot;&#x2F;webjars&#x2F;**&quot;, &quot;anon&quot;);</span><br></pre></td></tr></table></figure>
+
+
+<p>##4、配置为哪部分接口生成API文档</p>
+<blockquote>
+<p>主要是在Swagger2Config配置类中进行createRestApi()方法中进行配置，下面提供四种配置：</p>
+</blockquote>
+<p>①为任何接口生成API文档，这种方式不必在接口方法上加任何注解，方便的同时也会因为没有添加任何注解所以生成的API文档也没有注释，可读性不高。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">    public Docket createRestApi()&#123;</span><br><span class="line">        return new Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">                .apiInfo(apiInfo())</span><br><span class="line">                .select()</span><br><span class="line">                &#x2F;&#x2F;为任何接口生成API文档</span><br><span class="line">                .apis(RequestHandlerSelectors.any())</span><br><span class="line">                .paths(PathSelectors.any())</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>②为当前配置的包下controller生成API文档</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.apis(RequestHandlerSelectors.basePackage(&quot;com.troila&quot;))</span><br></pre></td></tr></table></figure>
+<p>③为有@Api注解的Controller生成API文档</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.apis(RequestHandlerSelectors.withClassAnnotation(Api.class))</span><br></pre></td></tr></table></figure>
+<p>④为有@ApiOperation注解的方法生成API文档</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))</span><br></pre></td></tr></table></figure>
+<p>#三、Swagger2注解详解<br>##1、@Api ：请求类的说明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Api：放在请求的类上，与 @Controller 并列，说明类的作用，如用户模块，订单类等。</span><br><span class="line">	tags&#x3D;&quot;说明该类的作用&quot;</span><br><span class="line">	value&#x3D;&quot;该参数没什么意义，所以不需要配置&quot;</span><br></pre></td></tr></table></figure>
+<p>###举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Api(tags &#x3D; &quot;账户相关模块&quot;)</span><br><span class="line">@RestController</span><br><span class="line">@RequestMapping(&quot;&#x2F;api&#x2F;account&quot;)</span><br><span class="line">public class AccountController &#123;</span><br><span class="line">	&#x2F;&#x2F;TODO</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>##2、@ApiOperation：方法的说明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@ApiOperation：&quot;用在请求的方法上，说明方法的作用&quot;</span><br><span class="line">	value&#x3D;&quot;说明方法的作用&quot;</span><br><span class="line">	notes&#x3D;&quot;方法的备注说明&quot;</span><br></pre></td></tr></table></figure>
+<p>###举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@ApiOperation(value &#x3D; &quot;修改密码&quot;, notes &#x3D; &quot;方法的备注说明，如果有可以写在这里&quot;)</span><br><span class="line">@PostMapping(&quot;&#x2F;changepass&quot;)</span><br><span class="line">public AjaxResult changePassword(@AutosetParam SessionInfo sessionInfo,</span><br><span class="line">        @RequestBody @Valid PasswordModel passwordModel) &#123;</span><br><span class="line">	&#x2F;&#x2F;TODO</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>##3、@ApiImplicitParams、@ApiImplicitParam：方法参数的说明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@ApiImplicitParams：用在请求的方法上，包含一组参数说明</span><br><span class="line">	@ApiImplicitParam：对单个参数的说明	    </span><br><span class="line">	    name：参数名</span><br><span class="line">	    value：参数的汉字说明、解释</span><br><span class="line">	    required：参数是否必须传</span><br><span class="line">	    paramType：参数放在哪个地方</span><br><span class="line">	        · header --&gt; 请求参数的获取：@RequestHeader</span><br><span class="line">	        · query --&gt; 请求参数的获取：@RequestParam</span><br><span class="line">	        · path（用于restful接口）--&gt; 请求参数的获取：@PathVariable</span><br><span class="line">	        · body（请求体）--&gt;  @RequestBody User user</span><br><span class="line">	        · form（普通表单提交）	   </span><br><span class="line">	    dataType：参数类型，默认String，其它值dataType&#x3D;&quot;int&quot;	   </span><br><span class="line">	    defaultValue：参数的默认值</span><br></pre></td></tr></table></figure>
+<p>###举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@ApiOperation(value&#x3D;&quot;用户登录&quot;,notes&#x3D;&quot;随边说点啥&quot;)</span><br><span class="line">@ApiImplicitParams(&#123;</span><br><span class="line">        @ApiImplicitParam(name&#x3D;&quot;mobile&quot;,value&#x3D;&quot;手机号&quot;,required&#x3D;true,paramType&#x3D;&quot;form&quot;),</span><br><span class="line">        @ApiImplicitParam(name&#x3D;&quot;password&quot;,value&#x3D;&quot;密码&quot;,required&#x3D;true,paramType&#x3D;&quot;form&quot;),</span><br><span class="line">        @ApiImplicitParam(name&#x3D;&quot;age&quot;,value&#x3D;&quot;年龄&quot;,required&#x3D;true,paramType&#x3D;&quot;form&quot;,dataType&#x3D;&quot;Integer&quot;)</span><br><span class="line">&#125;)</span><br><span class="line">@PostMapping(&quot;&#x2F;login&quot;)</span><br><span class="line">public AjaxResult login(@RequestParam String mobile, @RequestParam String password,</span><br><span class="line">                        @RequestParam Integer age)&#123;</span><br><span class="line">    &#x2F;&#x2F;TODO</span><br><span class="line">    return AjaxResult.OK();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>###单个参数举例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@ApiOperation(&quot;根据部门Id删除&quot;)</span><br><span class="line">@ApiImplicitParam(name&#x3D;&quot;depId&quot;,value&#x3D;&quot;部门id&quot;,required&#x3D;true,paramType&#x3D;&quot;query&quot;)</span><br><span class="line">@GetMapping(&quot;&#x2F;delete&quot;)</span><br><span class="line">public AjaxResult delete(String depId) &#123;</span><br><span class="line">	&#x2F;&#x2F;TODO</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-01.png" alt="image.png"><br>##4、@ApiResponses、@ApiResponse：方法返回值的说明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ApiResponses：方法返回对象的说明</span><br><span class="line">	@ApiResponse：每个参数的说明</span><br><span class="line">	    code：数字，例如400</span><br><span class="line">	    message：信息，例如&quot;请求参数没填好&quot;</span><br><span class="line">	    response：抛出异常的类</span><br></pre></td></tr></table></figure>
+<p>###举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@ApiOperation(value &#x3D; &quot;修改密码&quot;, notes &#x3D; &quot;方法的备注说明，如果有可以写在这里&quot;)</span><br><span class="line">@ApiResponses(&#123;</span><br><span class="line">        @ApiResponse(code &#x3D; 400, message &#x3D; &quot;请求参数没填好&quot;),</span><br><span class="line">        @ApiResponse(code &#x3D; 404, message &#x3D; &quot;请求路径找不到&quot;)</span><br><span class="line">&#125;)</span><br><span class="line">@PostMapping(&quot;&#x2F;changepass&quot;)</span><br><span class="line">public AjaxResult changePassword(@AutosetParam SessionInfo sessionInfo,</span><br><span class="line">        @RequestBody @Valid PasswordModel passwordModel) &#123;</span><br><span class="line">	&#x2F;&#x2F;TODO</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>##5、@ApiModel：用于JavaBean上面，表示一个JavaBean</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@ApiModel：用于JavaBean的类上面，表示此 JavaBean 整体的信息</span><br><span class="line">	（这种一般用在post创建的时候，使用 @RequestBody 这样的场景，请求参数无法使用 @ApiImplicitParam 注解进行描述的时候 ）</span><br></pre></td></tr></table></figure>
+<p>##6. @ApiModelProperty：用在JavaBean的属性上面，说明属性的含义<br>###@ApiModel和 @ApiModelProperty举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@ApiModel(&quot;修改密码所需参数封装类&quot;)</span><br><span class="line">public class PasswordModel</span><br><span class="line">&#123;</span><br><span class="line">    @ApiModelProperty(&quot;账户Id&quot;)</span><br><span class="line">    private String accountId;</span><br><span class="line">&#x2F;&#x2F;TODO</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>##总结：API文档浏览地址</p>
+<blockquote>
+<p>配置好Swagger2并适当添加注解后，启动SpringBoot应用，</p>
+</blockquote>
+<blockquote>
+<p>访问<a href="http://localhost:8080/swagger-ui.html" target="_blank" rel="noopener external nofollow noreferrer">http://localhost:8080/swagger-ui.html</a> 即可浏览API文档。</p>
+</blockquote>
+<blockquote>
+<p>另外，我们需要为了API文档的可读性，适当的使用以上几种注解就可以。</p>
+</blockquote>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-02.png" alt="image.png"></p>
+<p>#四、把Swagger2的API接口导入Postman<br>1、访问<a href="http://localhost:8080/swagger-ui.html" target="_blank" rel="noopener external nofollow noreferrer">http://localhost:8080/swagger-ui.html</a> 文档的首页，复制下面这个地址<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-03.png" alt="image.png"></p>
+<p>2.打开postman–&gt;import–&gt;import Form Link</p>
+<p> <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-04.png" alt="image.png"><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-swagger-05.png" alt="image.png"></p>
+
+    </div>
+
+    
+    
+    
+      
+
+        <div class="reward-container">
+  <div>赞赏作者一杯奶茶</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    <i class="fa fa-qrcode fa-2x" style="line-height:35px;"></i>
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/weixin.png" alt="云晴 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/alipay.png" alt="云晴 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>云晴
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.yunqing.xyz/article/e985a034.html" title="使用Swagger2自动生成API接口文档">http://www.yunqing.xyz/article/e985a034.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/swagger2/" rel="tag"># swagger2</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/article/4b6abea5.html" rel="prev" title="POI导出到Excel文档">
+      <i class="fa fa-chevron-left"></i> POI导出到Excel文档
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="云晴"
+      src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+  <p class="site-author-name" itemprop="name">云晴</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kangqing" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kangqing" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/yunqing_71" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;yunqing_71" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-external-link"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yunqing_71@163.com" title="E-Mail → mailto:yunqing_71@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/yunqing-98" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;yunqing-98" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-external-link"></i>知乎</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener external nofollow noreferrer" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<div>
+    <strong style="color:red">欢迎订阅本站</strong>
+    <img width=110px height=110px src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/weixingongzhonghao.jpg"/>
+</dic>
+<div style="padding-top:20px">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener external nofollow noreferrer" target="_blank">津ICP备20001588号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">云晴</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">117k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:14</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-ribbon@1/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'lIk2gGNugY8zCgwtqt303RVa-gzGzoHsz',
+      appKey     : 'uyHwBgO9UcmCYIUdzciDj6Wv',
+      placeholder: "匿名也可以留言哦0.0",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/linkcard.js"></script>
+</body>
+</html>

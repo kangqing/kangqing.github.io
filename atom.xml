@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-09-22T23:27:55.576Z</updated>
+  <updated>2020-09-23T13:36:12.111Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -15,6 +15,44 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用Swagger2自动生成API接口文档</title>
+    <link href="http://www.yunqing.xyz/article/e985a034.html"/>
+    <id>http://www.yunqing.xyz/article/e985a034.html</id>
+    <published>2020-09-23T13:32:52.000Z</published>
+    <updated>2020-09-23T13:36:12.111Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;#一、为什么使用Swagger2&lt;br&gt;当下很多公司都采取前后端分离的开发模式，前端和后端的工作由不同的工程师完成。在这种开发模式下，维持一份及时更新且完整的 Rest API 文档将会极大的提高我们的工作效率。传统意义上的文档都是后端开发人员手动编写的，相信大家也都知道这种方式很难保证文档的及时性，这种文档久而久之也就会失去其参考意义，反而还会加大我们的沟通成本。而 Swagger 给我们提供了一个全新的维护 API 文档的方式，下面我们就来了解一下它的优点：&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="swagger2" scheme="http://www.yunqing.xyz/tags/swagger2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>POI导出到Excel文档</title>
+    <link href="http://www.yunqing.xyz/article/4b6abea5.html"/>
+    <id>http://www.yunqing.xyz/article/4b6abea5.html</id>
+    <published>2020-09-23T13:29:55.000Z</published>
+    <updated>2020-09-23T13:31:41.016Z</updated>
+    
+    <summary type="html">
+    
+      &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;String fileName &amp;#x3D; ExcelUtil&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .encodeFilename( &amp;quot;questionManage&amp;quot; + CommonUtils.dateFormat(new Date(), &amp;quot;yyyyMMdd&amp;quot;) + &amp;quot;.xlsx&amp;quot;, request);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        response.setContentType(&amp;quot;application&amp;#x2F;octet-stream;charset&amp;#x3D;iso-8859-1&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        response.setHeader(&amp;quot;Content-Disposition&amp;quot;, &amp;quot;attachment;filename&amp;#x3D;&amp;quot; + fileName);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#x2F;&amp;#x2F; 客户端不缓存&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        response.addHeader(&amp;quot;Pargam&amp;quot;, &amp;quot;no-cache&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        response.addHeader(&amp;quot;Cache-Control&amp;quot;, &amp;quot;no-cache&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="POI导出" scheme="http://www.yunqing.xyz/tags/POI%E5%AF%BC%E5%87%BA/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux能ping通windows，windows不能ping通linux</title>
@@ -421,54 +459,6 @@
     
     
       <category term="Stream()流" scheme="http://www.yunqing.xyz/tags/Stream-%E6%B5%81/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Postman使用的几个小技巧</title>
-    <link href="http://www.yunqing.xyz/article/b811dc66.html"/>
-    <id>http://www.yunqing.xyz/article/b811dc66.html</id>
-    <published>2020-06-11T13:16:23.000Z</published>
-    <updated>2020-09-18T13:11:37.927Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Postman使用的几个小技巧&quot;&gt;&lt;a href=&quot;#Postman使用的几个小技巧&quot; class=&quot;headerlink&quot; title=&quot;Postman使用的几个小技巧&quot;&gt;&lt;/a&gt;Postman使用的几个小技巧&lt;/h2&gt;&lt;h3 id=&quot;1-环境变量&quot;&gt;&lt;a href=&quot;#1-环境变量&quot; class=&quot;headerlink&quot; title=&quot;1.环境变量&quot;&gt;&lt;/a&gt;1.环境变量&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;调用方式 &lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202006/11-b811dc66-1.png&quot; alt=&quot;image-20200611212208754&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="Postman" scheme="http://www.yunqing.xyz/tags/Postman/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>java链接Lettuce客户端操作</title>
-    <link href="http://www.yunqing.xyz/article/dc5eed37.html"/>
-    <id>http://www.yunqing.xyz/article/dc5eed37.html</id>
-    <published>2020-06-07T14:35:58.000Z</published>
-    <updated>2020-09-18T13:11:21.082Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;java使用Lettuce客户端连接redis学习基本redis指令&quot;&gt;&lt;a href=&quot;#java使用Lettuce客户端连接redis学习基本redis指令&quot; class=&quot;headerlink&quot; title=&quot;java使用Lettuce客户端连接redis学习基本redis指令&quot;&gt;&lt;/a&gt;java使用Lettuce客户端连接redis学习基本redis指令&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;参考try.redis.io进行以下几种存储类型的指令学习&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;string、list、set、zset、hash&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;由于Springboot 2.0 中redis客户端使用了Lettue,所以没使用jedis进行学习，依赖由于项目中引入了以下依赖，所以就不用别的了。&lt;/p&gt;
-&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;org.springframework.boot&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;spring-boot-starter-data-redis&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;&amp;lt;!--因为Springboot 2.0 中redis客户端使用了Lettue, 其依赖于commons--&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;org.apache.commons&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;commons-pool2&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="redis" scheme="http://www.yunqing.xyz/tags/redis/"/>
     
   </entry>
   
