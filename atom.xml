@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-09-23T13:36:12.111Z</updated>
+  <updated>2020-09-27T12:27:37.465Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -17,11 +17,38 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>如何理解MySQL事务的隔离级别</title>
+    <link href="http://www.yunqing.xyz/article/32904982.html"/>
+    <id>http://www.yunqing.xyz/article/32904982.html</id>
+    <published>2020-09-27T12:06:04.000Z</published>
+    <updated>2020-09-27T12:27:37.465Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;如何理解MySQL事务的隔离级别&quot;&gt;&lt;a href=&quot;#如何理解MySQL事务的隔离级别&quot; class=&quot;headerlink&quot; title=&quot;如何理解MySQL事务的隔离级别&quot;&gt;&lt;/a&gt;如何理解MySQL事务的隔离级别&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;读未提交（READ UNCOMMITTED）&lt;/li&gt;
+&lt;li&gt;读已提交（READ COMMITTED）&lt;/li&gt;
+&lt;li&gt;可重复读（REPEATABLE READ）&lt;/li&gt;
+&lt;li&gt;可串行化（SERIALIZABLE）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;MySQL的默认事务的隔离级别是&lt;strong&gt;&lt;code&gt;可重复读&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="mysql" scheme="http://www.yunqing.xyz/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
     <title>使用Swagger2自动生成API接口文档</title>
     <link href="http://www.yunqing.xyz/article/e985a034.html"/>
     <id>http://www.yunqing.xyz/article/e985a034.html</id>
     <published>2020-09-23T13:32:52.000Z</published>
-    <updated>2020-09-23T13:36:12.111Z</updated>
+    <updated>2020-09-23T13:44:04.088Z</updated>
     
     <summary type="html">
     
@@ -40,7 +67,7 @@
     <link href="http://www.yunqing.xyz/article/4b6abea5.html"/>
     <id>http://www.yunqing.xyz/article/4b6abea5.html</id>
     <published>2020-09-23T13:29:55.000Z</published>
-    <updated>2020-09-23T13:31:41.016Z</updated>
+    <updated>2020-09-23T13:44:04.083Z</updated>
     
     <summary type="html">
     
@@ -437,28 +464,6 @@
     
     
       <category term="多线程" scheme="http://www.yunqing.xyz/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何使用Java8 Stream()流处理集合</title>
-    <link href="http://www.yunqing.xyz/article/67ce2364.html"/>
-    <id>http://www.yunqing.xyz/article/67ce2364.html</id>
-    <published>2020-07-03T13:14:12.000Z</published>
-    <updated>2020-09-18T13:10:35.731Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Java 8 API添加了一个新的抽象称为流Stream，可以让你以一种声明的方式处理数据。&lt;/p&gt;
-&lt;p&gt;Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象。&lt;/p&gt;
-&lt;p&gt;Stream API可以极大提高Java程序员的生产力，让程序员写出高效率、干净、简洁的代码。&lt;/p&gt;
-&lt;p&gt;这种风格将要处理的元素集合看作一种流， 流在管道中传输， 并且可以在管道的节点上进行处理， 比如筛选， 排序，聚合等。&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="Stream()流" scheme="http://www.yunqing.xyz/tags/Stream-%E6%B5%81/"/>
     
   </entry>
   
