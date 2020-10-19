@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2020-10-01T02:03:57.402Z</updated>
+  <updated>2020-10-19T13:48:59.439Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>git&amp;github</title>
+    <link href="http://www.yunqing.xyz/article/76b8d906.html"/>
+    <id>http://www.yunqing.xyz/article/76b8d906.html</id>
+    <published>2020-10-12T09:53:10.000Z</published>
+    <updated>2020-10-19T13:48:59.439Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="git" scheme="http://www.yunqing.xyz/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Docker结合jenkins完成快捷打包部署</title>
     <link href="http://www.yunqing.xyz/article/bf74aa2b.html"/>
     <id>http://www.yunqing.xyz/article/bf74aa2b.html</id>
     <published>2020-09-29T22:47:29.000Z</published>
-    <updated>2020-10-01T02:03:57.402Z</updated>
+    <updated>2020-10-01T05:22:10.683Z</updated>
     
     <summary type="html">
     
@@ -453,25 +478,6 @@
     
     
       <category term="docker" scheme="http://www.yunqing.xyz/tags/docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>阿里巴巴开发手册为什么这么规定？</title>
-    <link href="http://www.yunqing.xyz/article/e7c4a452.html"/>
-    <id>http://www.yunqing.xyz/article/e7c4a452.html</id>
-    <published>2020-08-12T13:06:04.000Z</published>
-    <updated>2020-09-18T13:10:11.524Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202008/20200812210827.png&quot; alt=&quot;12-e7c4a452-0&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="java基础" scheme="http://www.yunqing.xyz/tags/java%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
