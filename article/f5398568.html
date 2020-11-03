@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico">
+  <link rel="mask-icon" href="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/favicon.ico" color="#222">
+  <meta name="baidu-site-verification" content="JBKkqXL0ZXuox1dk">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.yunqing.xyz","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"E2L6TPNSLL","apiKey":"adcc95c4546f58dccc7d759f415bdf20","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"搜索关键字文章","hits_empty":"我们没有找到任何搜索结果: ${query}","hits_stats":"查找到 ${hits} 个结果，用时 ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"perspectiveLeftIn","post_header":"perspectiveLeftIn","post_body":"slideLeftBigIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.什么是Nginx？Nginx是一个高性能的HTTP反向代理服务器，特点是占用内存小，并发能力强。Nginx是专为性能优化而开发的，性能是其最重要的考量，实现上非常注重效率，能经受高负载的考验，有报告表明能支持高达50000个并发连接数。详细介绍见 https:&#x2F;&#x2F;lnmp.org&#x2F;nginx.html 2.什么是反向代理？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx学习笔记">
+<meta property="og:url" content="http://www.yunqing.xyz/article/f5398568.html">
+<meta property="og:site_name" content="云晴&#39;s WORLD">
+<meta property="og:description" content="1.什么是Nginx？Nginx是一个高性能的HTTP反向代理服务器，特点是占用内存小，并发能力强。Nginx是专为性能优化而开发的，性能是其最重要的考量，实现上非常注重效率，能经受高负载的考验，有报告表明能支持高达50000个并发连接数。详细介绍见 https:&#x2F;&#x2F;lnmp.org&#x2F;nginx.html 2.什么是反向代理？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-1.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-2.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-3.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-4.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-5.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-6.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8020666-cbe8dbe8969f5304.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-7.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-8.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-9.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-10.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-11.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-12.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-13.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-14.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-15.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-16.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-17.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-18.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-19.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-20.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-21.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-22.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-23.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-24.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-25.png">
+<meta property="og:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-26.png">
+<meta property="article:published_time" content="2020-11-03T13:43:55.000Z">
+<meta property="article:modified_time" content="2020-11-03T14:01:34.643Z">
+<meta property="article:author" content="云晴">
+<meta property="article:tag" content="nginx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-1.png">
+
+<link rel="canonical" href="http://www.yunqing.xyz/article/f5398568.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Nginx学习笔记 | 云晴's WORLD</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2501c3b103bbe9c0c72d60da10b158bd";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <script src="/live2d-widget/autoload.js"></script>
+<link rel="alternate" href="/atom.xml" title="云晴's WORLD" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">云晴's WORLD</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">贩卖快乐！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-books">
+
+    <a href="/books/" rel="section"><i class="fa fa-fw fa-book"></i>阅读</a>
+
+  </li>
+        <li class="menu-item menu-item-movies">
+
+    <a href="/movies/" rel="section"><i class="fa fa-fw fa-video-camera"></i>观影</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.yunqing.xyz/article/f5398568.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+      <meta itemprop="name" content="云晴">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云晴's WORLD">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Nginx学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-03 21:43:55 / 修改时间：22:01:34" itemprop="dateCreated datePublished" datetime="2020-11-03T21:43:55+08:00">2020-11-03</time>
+            </span>
+
+          
+            <span id="/article/f5398568.html" class="post-meta-item leancloud_visitors" data-flag-title="Nginx学习笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/article/f5398568.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/article/f5398568.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>19 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>1.什么是Nginx？<br>Nginx是一个高性能的HTTP反向代理服务器，特点是占用内存小，并发能力强。Nginx是专为性能优化而开发的，性能是其最重要的考量，实现上非常注重效率，能经受高负载的考验，有报告表明能支持高达50000个并发连接数。<br><strong>详细介绍见</strong> <a href="https://lnmp.org/nginx.html" target="_blank" rel="noopener external nofollow noreferrer">https://lnmp.org/nginx.html</a></p>
+<p>2.什么是反向代理？</p>
+<a id="more"></a>
+
+<p>（1）正向代理：<br>在客户端（浏览器）配置代理服务器，通过代理服务器进行互联网访问。<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-1.png" alt=""><br>（2）反向代理：<br>客户端不需要做任何配置，只需要把请求发送到反向代理服务器，反向代理服务器去选择目标服务器获取数据后，再返回给客户端，此时反向代理服务器和目标服务器在客户端眼里就是一个服务器，暴露的是代理服务器的地址，隐藏了真实服务器的IP地址。<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-2.png" alt=""></p>
+<p>3.负载均衡<br>例如双11当天，并发量相当庞大，达到一个顶级的配置的服务器也承担不了的并发量，这样就增加服务器的数量，然后将请求分发到各个服务器上，将负载分发到不同的服务器就是负载均衡。<br><strong>如下图，反向代理服务器通过负载均衡把15个请求平均分担到3个服务器。</strong><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-3.png" alt=""></p>
+<p>4.动静分离<br>为了加快网站的解析速度，可以把动态页面和静态页面由不同的服务器来解析，加快解析速度，降低单个服务器的压力。<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-4.png" alt=""></p>
+<p>#Nginx的常用命令<br>1.使用nginx命令的前提条件是进入到nginx的目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin</span><br></pre></td></tr></table></figure>
+<p>2.查看nginx的版本号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;nginx -v</span><br></pre></td></tr></table></figure>
+<p>3.启动nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;nginx</span><br></pre></td></tr></table></figure>
+<p>4.关闭nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;nginx -s stop</span><br></pre></td></tr></table></figure>
+<p>5.重新加载nginx<br>修改nginx配置文件之后，不必重启nginx,重新加载nginx就行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;nginx -s reload</span><br></pre></td></tr></table></figure>
+<p>#Nginx配置文件<br>1.位置在：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
+<p>2.nginx配置文件组成<br>(1) 三部分组成</p>
+<ul>
+<li><p>第一部分：全局块<br>从开始到events块之间的部分内容，主要设置一些影响nginx服务器整体运行的配置指令，例如 worker_processes   1  值越大，可以支持的并发数量也越多。</p>
+</li>
+<li><p>第二部分：events块<br>events块设计的指令主要影响nginx服务器与用户的网络连接，例如worker_connections  1024 支持的最大连接数，对nginx的性能影响较大，应该灵活配置。</p>
+</li>
+<li><p>第三部分：http块<br>①http全局块<br>http全局块配置的指令包括文件引入、MIME-TYPE定义、日志自定义、连接超时时间、单链接请求数上限等。<br>②server块<br>最核心需要配置的部分。</p>
+</li>
+</ul>
+<p>#Nginx配置实例-反向代理<br>1.实现效果<br>（1）打开浏览器访问<a href="http://www.123.com,跳转到Linux系统tomcat的主页面。" target="_blank" rel="noopener external nofollow noreferrer">www.123.com,跳转到Linux系统tomcat的主页面。</a></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-5.png" alt=""></p>
+<p>2.准备工作<br>（1）Linux安装nginx<br>（2）Linux安装Tomcat</p>
+<p>3.访问过程分析<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-6.png" alt=""></p>
+<p>4.具体配置<br>（1）首先修改hosts文件，最后一行加上这个。因为浏览器解析域名会先到hosts文件中找对应的ip地址，没找到才会去网络中根据DNS解析。这样<a href="http://www.123.com就会被解析到ip为192.168.186.128的Linux服务器上了。" target="_blank" rel="noopener external nofollow noreferrer">www.123.com就会被解析到ip为192.168.186.128的Linux服务器上了。</a><br><img src="https://upload-images.jianshu.io/upload_images/8020666-cbe8dbe8969f5304.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>（2）在nginx配置文件中进行配置反向代理。<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-7.png" alt=""><br>nginx的配置文件中这样配置到，如红线画的部分，当访问192.168.186.128的80端口的时候，请求会被转发到<a href="http://127.0.0.1:8080上。" rel="external nofollow noreferrer">http://127.0.0.1:8080上。</a><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-8.png" alt=""></p>
+<p>#Nginx反向代理实例2<br>1.实现效果<br>使用nginx监听9001端口，反向代理根据不同的访问路径跳转到不同端口的服务中。</p>
+<p>访问<a href="http://192.168.186.128:9001/edu/" target="_blank" rel="noopener external nofollow noreferrer">http://192.168.186.128:9001/edu/</a> 直接跳转127.0.0.1:8080<br>访问<a href="http://192.168.186.128:9001/vod/" target="_blank" rel="noopener external nofollow noreferrer">http://192.168.186.128:9001/vod/</a> 直接跳转127.0.0.1:8081</p>
+<p>2.准备工作<br>（1）准备两个Tomcat服务器，一个8080端口，一个8081端口<br>（2）创建文件夹和测试页面分别在两个tomcat的webapps文件中创建edu文件夹和vod文件夹，里面分别放入相应的测试页面文件。<br><strong>这块遇到了一个大坑，就是一台centos7的机器同时开两个Tomcat的问题，网上试了很多教程都不行。</strong></p>
+<h1 id="begin-一台CentOS7同时启动两个Tomcat教程"><a href="#begin-一台CentOS7同时启动两个Tomcat教程" class="headerlink" title="begin 一台CentOS7同时启动两个Tomcat教程"></a><strong><strong><em>begin 一台CentOS7同时启动两个Tomcat教程</em></strong></strong></h1><ul>
+<li>首先我用的tomcat9版本，解压缩重命名分别放在了以下两个位置，解压后重命名为了tomcat和tomcat1<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line">和</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;tomcat1</span><br></pre></td></tr></table></figure></li>
+<li>其次，修改/etc/profile文件，注意看tomcat部分<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_221-amd64</span><br><span class="line">export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;jre&#x2F;lib&#x2F;rt.jar:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar</span><br><span class="line">export MAVEN_HOME&#x3D;&#x2F;root&#x2F;installFile&#x2F;apache-maven-3.6.2</span><br><span class="line">export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin:$MAVEN_HOME&#x2F;bin</span><br><span class="line">########## tomcat ###########</span><br><span class="line">export CATALINA_BASE&#x3D;&#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line">export CATALINA_BASE&#x3D;&#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line">export TOMCAT_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line">########## tomcat ############</span><br><span class="line">########## tomcat1 ###########</span><br><span class="line">export CATALINA_BASE2&#x3D;&#x2F;usr&#x2F;local&#x2F;tomcat1</span><br><span class="line">export CATALINA_BASE2&#x3D;&#x2F;usr&#x2F;local&#x2F;tomcat1</span><br><span class="line">export TOMCAT_HOME2&#x3D;&#x2F;usr&#x2F;local&#x2F;tomcat1</span><br><span class="line">##########tomcat1#############</span><br></pre></td></tr></table></figure></li>
+<li>修改tomcat的配置<br>第一个tomcat不用做修改，修改第二个tomcat，如果有多个，则第一个不用修改，其余都要。<br>修改这个文件 vim /usr/local/tomcat1/bin/catalina.sh<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># OS specific support. $var must be set to either true or false.</span><br></pre></td></tr></table></figure>
+注释和内容之间的上面这句话后面添加：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export CATALINA_BASE&#x3D;$CATALINA_BASE2</span><br><span class="line">export CATALINA_HOME&#x3D;$CATALINA_HOME2</span><br></pre></td></tr></table></figure></li>
+<li>修改/usr/local/tomcat1/conf/server.xml文件，把端口号改成8081，第一个tomcat不用改，其余的都要改。<br>我更改的3个地方，可以改成其他端口，自己决定<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;Server port&#x3D;&quot;8005&quot; shutdown&#x3D;&quot;SHUTDOWN&quot;&gt; #8005修改成8015</span><br><span class="line"></span><br><span class="line">&lt;Connector port&#x3D;&quot;8080&quot; protocol&#x3D;&quot;HTTP&#x2F;1.1&quot; #8080修改成8081</span><br><span class="line">connectionTimeout&#x3D;&quot;20000&quot;</span><br><span class="line">redirectPort&#x3D;&quot;8443&quot;  URIEncoding&#x3D;&quot;UTF-8&quot; &#x2F;&gt;</span><br><span class="line"> #添加URIEncoding&#x3D;&quot;UTF-8&quot; 防止乱码</span><br><span class="line"></span><br><span class="line">&lt;Connector port&#x3D;&quot;8009&quot; protocol&#x3D;&quot;AJP&#x2F;1.3&quot; redirectPort&#x3D;&quot;8443&quot;&#x2F;&gt;    #8009修改成8019</span><br></pre></td></tr></table></figure></li>
+<li>设置开机自启（注意此部分取自网络，未经亲测）<br>原文链接：<a href="https://blog.csdn.net/zhizhenjie/article/details/82662980" target="_blank" rel="noopener external nofollow noreferrer">https://blog.csdn.net/zhizhenjie/article/details/82662980</a><br>1、因为启动tomcat会调用tomcat安装文件中的startup.sh，而它调用了catalina.sh,然后catalina.sh则调用了setclasspath.sh。所以需要在setclaspath.sh中添加JAVA_HOME和JRE_HOME两个环境变量<br>分别编辑两个tomcat中的setclasspath.sh文件：<br>vi /usr/local/tomcat8/bin/setclasspath.sh</li>
+</ul>
+<p>在 # Set JAVA_HOME or JRE_HOME…下边添加javahome：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> # -----------------------------------------------------------------------------</span><br><span class="line"> #  Set JAVA_HOME or JRE_HOME if not already set, ensure any provided settings</span><br><span class="line"> #  are valid and consistent with the selected start-up options and set up the</span><br><span class="line"> #  endorsed directory.</span><br><span class="line"> # -----------------------------------------------------------------------------</span><br><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;jdk1.8.0_181</span><br><span class="line">export JRE_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;jdk1.8.0_181&#x2F;jre</span><br></pre></td></tr></table></figure>
+<p>2、在/usr/lib/systemd/system目录下增加tomcat.service文件，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description&#x3D;tomcat</span><br><span class="line">After&#x3D;network.target</span><br><span class="line">[Service]</span><br><span class="line">Type&#x3D;oneshot</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;tomcat8&#x2F;bin&#x2F;startup.sh</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;tomcat8.1&#x2F;bin&#x2F;startup.sh</span><br><span class="line">ExecStop&#x3D;&#x2F;usr&#x2F;local&#x2F;tomcat8&#x2F;bin&#x2F;shutdown.sh</span><br><span class="line">ExecStop&#x3D;&#x2F;usr&#x2F;local&#x2F;tomcat8.1&#x2F;bin&#x2F;shutdown.sh</span><br><span class="line">ExecReload&#x3D;&#x2F;bin&#x2F;kill -s HUP $MAINPID</span><br><span class="line">RemainAfterExit&#x3D;yes</span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br></pre></td></tr></table></figure>
+<p>将两个tomcat的启动程序都添加进去，</p>
+<p>然后执行systemctl enable tomcat 使生效；开机启动就设置好了。</p>
+<h1 id="stop-一台CentOS7同时启动两个Tomcat教程"><a href="#stop-一台CentOS7同时启动两个Tomcat教程" class="headerlink" title="stop  一台CentOS7同时启动两个Tomcat教程"></a><strong><strong><em>stop  一台CentOS7同时启动两个Tomcat教程</em></strong></strong></h1><p>3.具体配置<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-9.png" alt=""><br>记得开放对外访问端口9001和8080和8081</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone&#x3D;public --add-port&#x3D;8081&#x2F;tcp --permanent   &#x2F;&#x2F;开启8081端口</span><br><span class="line">firewall-cmd --zone&#x3D;public --add-port&#x3D;9001&#x2F;tcp --permanent   &#x2F;&#x2F;开启9001端口</span><br><span class="line">systemctl restart firewalld.service &#x2F;&#x2F;重启防火墙</span><br><span class="line">firewall-cmd --reload &#x2F;&#x2F;重新载入防火墙配置</span><br></pre></td></tr></table></figure>
+<p>4.亲测效果<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-10.png" alt=""><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-11.png" alt=""></p>
+<p>5.location指令具体说明<br>  该指令用于匹配 URL。<br>  语法如下： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location [ &#x3D; | ~ | ~* | ^~ ] uri &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  1、= ：用于不含正则表达式的 uri 前，要求请求字符串与 uri 严格匹配，如果匹配 成功，就停止继续向下搜索并立即处理该请求。<br>  2、<del>：用于表示 uri 包含正则表达式，并且区分大小写。<br>  3、</del><em>：用于表示 uri 包含正则表达式，并且不区分大小写。<br>  4、^~：用于不含正则表达式的 uri 前，要求 Nginx 服务器找到标识 uri 和请求字 符串匹配度最高的 location 后，立即使用此 location 处理请求，而不再使用 location 块中的正则 uri 和请求字符串做匹配。<br>  注意：如果 uri 包含正则表达式，则必须要有 ~ 或者 ~</em> 标识。 </p>
+<p>#Nginx配置实例-负载均衡<br><strong>1.实现效果</strong><br>浏览器输入<a href="http://192.168.186.128:8080/edu/index.html经过nginx负载均衡，平均分配到8080和8081端口中。" target="_blank" rel="noopener external nofollow noreferrer">http://192.168.186.128:8080/edu/index.html经过nginx负载均衡，平均分配到8080和8081端口中。</a><br><strong>2.准备工作</strong></p>
+<ul>
+<li>准备两台tomcat一台8080，一台8081,上面已经准备好了。</li>
+<li>在两台tomcat的webapps的文件夹下都创建edu文件夹，里面都创建index.html文件。</li>
+</ul>
+<p><strong>3.在nginx中配置负载均衡</strong><br>①如下图，在http里面加上<br>upstream myserver {<br>  //这里面是负载均衡服务器的列表；<br>}<br>②然后把server里的server_name改成域名或者ip，相当于访问这个域名的这个端口，就负载均衡平均分配给上面配置的负载均衡服务器列表。<br>③把location里加上 proxy_pass=<a href="http://myserver" target="_blank" rel="noopener external nofollow noreferrer">http://myserver</a>;</p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-12.png" alt=""></p>
+<p><strong>4.亲测结果</strong></p>
+<ul>
+<li>最好用Edge测试，用google可能缓存原因吧，一直不变。</li>
+<li>我这里做了host映射，所以可以直接访问<a href="http://www.123.com相当于访问192.168.186.128" target="_blank" rel="noopener external nofollow noreferrer">www.123.com相当于访问192.168.186.128</a></li>
+<li>地址不变，刷新，发现8080一次，8081一次，以此类推，负载均衡成功！！！<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-13.png" alt="image.png"><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-14.png" alt="image.png"></li>
+</ul>
+<p><strong>5.nginx分配服务器的策略</strong><br>①轮询（默认策略）<br>每个请求按照时间顺序注意分配到后端服务器，如果后端服务器down掉，能够自动剔除。<br>②weight 权重策略<br>weight权重默认为1 权重越高，分配的客户端请求越多。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">upstream myserver &#123;</span><br><span class="line">        server    192.168.186.128:8080    weight&#x3D;5;</span><br><span class="line">        server    192.168.186.128:8081    weight&#x3D;10;  #权重高于上面8080的，所以分配的请求也多一倍</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>③ip_hash<br>每个请求按照用户的ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决session共享问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream myserver &#123;</span><br><span class="line">        ip_hash;</span><br><span class="line">        server    192.168.186.128:8080;</span><br><span class="line">        server    192.168.186.128:8081; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>④fair  (第三方方式)<br>按照后端服务器的响应时间分配，响应时间越短，优先分配。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream myserver &#123;</span><br><span class="line">        server    192.168.186.128:8080;</span><br><span class="line">        server    192.168.186.128:8081; </span><br><span class="line">        fair;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>#Nginx配置实例-动静分离<br><strong>1.什么是动静分离？</strong><br>Nginx 动静分离简单来说就是把动态跟静态请求分开，不能理解成只是单纯的把动态页面和 静态页面物理分离。严格意义上说应该是动态请求跟静态请求分开，可以理解成使用 Nginx 处理静态页面，Tomcat 处理动态页面。动静分离从目前实现角度来讲大致分为两种：</p>
+<ul>
+<li><p>一种是纯粹把静态文件独立成单独的域名，放在独立的服务器上，也是目前主流推崇的方案；<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-15.png" alt="捕获.PNG"></p>
+</li>
+<li><p>另外一种方法就是动态跟静态文件混合在一起发布，通过 nginx 来分开。 </p>
+</li>
+<li><p>通过 location 指定不同的后缀名实现不同的请求转发。通过 expires 参数设置，可以使 浏览器缓存过期时间，减少与服务器之前的请求和流量。具体 Expires 定义：是给一个资 源设定一个过期时间，也就是说无需去服务端验证，直接通过浏览器自身确认是否过期即可， 所以不会产生额外的流量。此种方法非常适合不经常变动的资源。<strong>（如果经常更新的文件， 不建议使用 Expires 来缓存）</strong>，我这里设置 3d，表示在这 3 天之内访问这个 URL，发送 一个请求，比对服务器该文件最后更新时间没有变化，则不会从服务器抓取，返回状态码 304，如果有修改，则直接从服务器重新下载，返回状态码 200。 </p>
+</li>
+</ul>
+<p><strong>2.准备工作</strong><br>（1）在Linux系统中创建静态资源，用于进行访问<br>根目录 / 下创建data文件夹，下面创建www文件夹存放a.html，image文件夹存放01.jpg文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;data&#x2F;www&#x2F;a.html</span><br><span class="line">&#x2F;data&#x2F;image&#x2F;01.jpg</span><br></pre></td></tr></table></figure>
+<p>（2）实现的效果，不使用tomcat，通过nginx配置访问静态资源。<br>（3）nginx的配置<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-16.png" alt="image.png"></p>
+<p><strong>3.亲测效果</strong></p>
+<ul>
+<li><p>如下图所示：访问192.168.186.128/image把下面的目录都列出来了就是这句配置起的作用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">autoindex    on;</span><br></pre></td></tr></table></figure>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-17.png" alt="image.png"></p>
+</li>
+<li><p>访问192.168.186.128/image/01.jpg<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-18.png" alt="image.png"></p>
+</li>
+<li><p>访问192.168.186.128/www/a.html<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-19.png" alt="image.png"></p>
+</li>
+<li><p>如果加expires 参数也是加在location里面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location  &#x2F;image&#x2F; &#123;</span><br><span class="line">        root   &#x2F;data&#x2F;;</span><br><span class="line">        autoindex    on;</span><br><span class="line">        expires     3d; &#x2F;&#x2F;3天缓存过期时间</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>#Nginx配置实例-高可用</p>
+</li>
+</ul>
+<p><strong>1.什么是高可用？</strong></p>
+<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-20.png" alt="image.png"><br>（1）需要两台nginx服务器（<strong>我这里两台服务器的ip是192.168.8.128和192.168.8.129</strong>）<br>（2）需要keepalived相当于路由检测nginx服务器是否可以正常工作。<br>（3）需要虚拟ip绑定主从两台nginx服务器，用户访问的是虚拟ip。</p>
+<p><strong>2.准备工作</strong><br>（1）需要两台服务器<br>（2）在两台服务器安装nginx</p>
+<p>（3）在两台服务器安装keepalived<br><strong>3.两台服务器都安装keepalived</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y keepalived</span><br></pre></td></tr></table></figure>
+<ul>
+<li>yum安装keepalived的默认安装目录是<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;keepalived&#x2F;keepalived.conf</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>4.完成高可用的主从配置</strong><br>（1）两台服务器都修改/etc/keepalived/keepalived.conf配置文件内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#*******************************标记的是主从配置可能不同的地方</span><br><span class="line">global_defs &#123;   #全局定义</span><br><span class="line">  notification_email &#123;</span><br><span class="line">    acassen@firewall.loc</span><br><span class="line">    failover@firewall.loc</span><br><span class="line">    sysadmin@firewall.loc</span><br><span class="line">  &#125;    </span><br><span class="line">  notification_email_from Alexandre.Cassen@firewall.loc    </span><br><span class="line">  smtp_server 192.168.8.128  #******************************************</span><br><span class="line">  smtp_connect_timeout 30    </span><br><span class="line">  router_id LVS_DEVEL</span><br><span class="line">&#125;   </span><br><span class="line"></span><br><span class="line">vrrp_script chk_http_port &#123;      </span><br><span class="line">  script &quot;&#x2F;usr&#x2F;local&#x2F;src&#x2F;nginx_check.sh&quot;      </span><br><span class="line">  interval 2      #（检测脚本执行的间隔）      </span><br><span class="line">  weight 2</span><br><span class="line">&#125;   </span><br><span class="line">vrrp_instance VI_1 &#123;     </span><br><span class="line">  state MASTER   # 主服务器为 MASTER 从服务器为 BACKUP       *******************************</span><br><span class="line">  interface ens33  #网卡     ipconfig查看    *********************************************</span><br><span class="line">  virtual_router_id 51   # 主、备机的 virtual_router_id 必须相同     </span><br><span class="line">  priority 100     # 主、从机取不同的优先级，主机值较大，备份机值较小     ************************</span><br><span class="line">  advert_int 1     </span><br><span class="line">  authentication &#123;         </span><br><span class="line">    auth_type PASS         </span><br><span class="line">    auth_pass 1111     </span><br><span class="line">  &#125;     </span><br><span class="line">  virtual_ipaddress &#123;         </span><br><span class="line">    192.168.17.50 # VRRP H 虚拟地址     </span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（2）两台服务器都在/usr/local/src中添加一个脚本文件nginx_check.sh内容如下<br>这个脚本就是检查nginx是否正常运行的脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">A&#x3D;&#96;ps -C nginx �Cno-header |wc -l&#96;</span><br><span class="line">if [ $A -eq 0 ];then</span><br><span class="line">    &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx</span><br><span class="line">    sleep 2</span><br><span class="line">    if [ &#96;ps -C nginx --no-header |wc -l&#96; -eq 0 ];then</span><br><span class="line">        killall keepalived</span><br><span class="line">    fi</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>（3）把两台服务器的nginx和keepalived都启动起来。<br>keepalived的启动命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start keepalived.service</span><br></pre></td></tr></table></figure>
+<p><strong>5.亲测效果</strong><br>（1）在浏览器中输入设置的虚拟ip看是否能访问，我这里设置的是192.168.8.50<br>发现可以访问到nginx的欢迎页面，通过ip a这个命令可以看到如下图，已经绑定了这个虚拟ip.<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-21.png" alt="image.png"><br>访问这个虚拟ip192.168.8.50进入nginx主页<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-22.png" alt="image.png"><br>（2）把主服务器192.168.8.128的nginx和keepalived停止</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop keepalived.service  &#x2F;&#x2F;停止keepalived</span><br><span class="line">.&#x2F;nginx -s stop   &#x2F;&#x2F;停止nginx必须在nginx的sbin目录下执行</span><br><span class="line">ps -ef | grep nginx &#x2F;&#x2F;查看是否停掉了</span><br><span class="line">ps -ef | grep keepalived</span><br><span class="line"></span><br><span class="line">kill -9 PID &#x2F;&#x2F;如果没停掉则用进程号停掉</span><br></pre></td></tr></table></figure>
+<p>（3）停掉主服务器后会自动切换到从服务器的nginx<br>继续访问192.168.8.50还是能访问到nginx主页<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-23.png" alt="image.png"></p>
+<p><strong>配置文件详解</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">#全局定义</span><br><span class="line">global_defs &#123;   </span><br><span class="line">  notification_email &#123;</span><br><span class="line">    acassen@firewall.loc</span><br><span class="line">    failover@firewall.loc</span><br><span class="line">    sysadmin@firewall.loc</span><br><span class="line">  &#125;    </span><br><span class="line">  notification_email_from Alexandre.Cassen@firewall.loc    </span><br><span class="line">  smtp_server 192.168.8.128  </span><br><span class="line">  smtp_connect_timeout 30    </span><br><span class="line">  router_id LVS_DEVEL    #最重要是这个LVS_DEVEL能访问到主机，</span><br><span class="line">                                          #因为在hosts文件中配置了127.0.0.1   LVS_DEVEL</span><br><span class="line">&#125;   </span><br><span class="line">#脚本文件</span><br><span class="line">vrrp_script chk_http_port &#123;      </span><br><span class="line">  script &quot;&#x2F;usr&#x2F;local&#x2F;src&#x2F;nginx_check.sh&quot;      </span><br><span class="line">  interval 2      #（检测脚本执行的间隔）      </span><br><span class="line">  weight -20   #设置当前服务器的权重，当主服务器挂掉权重降低20，也就是自动切换到从服务器</span><br><span class="line">&#125;   </span><br><span class="line">#虚拟ip设置</span><br><span class="line">vrrp_instance VI_1 &#123;     </span><br><span class="line">  state MASTER   # 主服务器为 MASTER 从服务器为 BACKUP       </span><br><span class="line">  interface ens33  #网卡     </span><br><span class="line">  virtual_router_id 51   # 主、备机的 virtual_router_id 必须相同     </span><br><span class="line">  priority 100     # 主、从机取不同的优先级，主机值较大，备份机值较小     </span><br><span class="line">  advert_int 1     #每隔一秒发送心跳，判断主机是否活着</span><br><span class="line">  authentication &#123;      #校验方式   </span><br><span class="line">    auth_type PASS         </span><br><span class="line">    auth_pass 1111     </span><br><span class="line">  &#125;     </span><br><span class="line">  virtual_ipaddress &#123;         </span><br><span class="line">    192.168.17.50 # VRRP H 虚拟地址     可以绑定多个</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>#Nginx的基本原理<br><strong>1.master和worker</strong><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-24.png" alt="image.png"></p>
+<ul>
+<li>可以通过查看进程ps -ef | grep nginx看到如下图所示：<br>matser相当于领导：分配任务<br>worker相当于工人：执行领导分配的任务<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-25.png" alt="image.png"></li>
+</ul>
+<p><strong>2.worker如何进行工作的</strong><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202011/03-nginx-26.png" alt="image.png"></p>
+<ul>
+<li>当master有任务了，由多个worker的争抢机制来得到任务。</li>
+</ul>
+<p><strong>3.一个master多个worker这种机制的好处</strong><br>（1）可以使用./nginx -s reload 热部署，不用停止nginx更新配置，当worker抢到任务继续执行，执行完才更新配置，其他没有任务的收到./nginx -s reload命令直接更新配置。<br>（2）每个worker都是一个独立的进程，所以不需要加锁，省掉了加锁带来的开销。一个worker挂掉了，其他的worker会正常工作，继续进行争抢，降低了服务中断的风险。</p>
+<p><strong>4.设置多少个worker合适？</strong></p>
+<p>Nginx和redis类似都采用了io多路复用机制，每个worker都是一个独立的进程，但每个进程里只有一个主线程，通过异步非阻塞的方式处理请求，即使上千万个请求也不在话下，每个worker的线程可以把CPU的性能发挥到极致。所以worker数量和CPU核心数相等时最为适宜的，设置少了浪费CPU，设置多了会造成CPU频繁切换上下文造成损耗。</p>
+<ul>
+<li>因为windows中没有了io多路复用机制，所以功能虽然能实现，但是性能不能发挥极致，所以一般nginx和redis都是安装到Linux中。</li>
+</ul>
+<p><strong>5.连接数worker_connection</strong><br>（1）发送一个请求占用worker几个连接数？</p>
+<ul>
+<li>两个或四个。</li>
+<li>因为如果只访问静态资源就两个连接（往返），如果是动态资源worker还需要访问tomcat，又一个往返。</li>
+</ul>
+<p>（2）nginx中有1个master,4个worker,每个worker支持最大连接数1024，所以问支持的最大并发数是多少？</p>
+<ul>
+<li>普通的静态访问最大并发数是： worker_connections * worker_processes /2，</li>
+<li>而如果是 HTTP 作 为反向代理来说，最大并发数量应该是 worker_connections *  worker_processes/4。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\article\11c2cd82.html" rel="bookmark">用Docker安装nginx和vsftpd搭建文件服务器</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>赞赏作者一杯奶茶</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    <i class="fa fa-qrcode fa-2x" style="line-height:35px;"></i>
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/weixin.png" alt="云晴 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/alipay.png" alt="云晴 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>云晴
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.yunqing.xyz/article/f5398568.html" title="Nginx学习笔记">http://www.yunqing.xyz/article/f5398568.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/nginx/" rel="tag"># nginx</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/article/76b8d906.html" rel="prev" title="git&github">
+      <i class="fa fa-chevron-left"></i> git&github
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#begin-一台CentOS7同时启动两个Tomcat教程"><span class="nav-number">1.</span> <span class="nav-text">begin 一台CentOS7同时启动两个Tomcat教程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#stop-一台CentOS7同时启动两个Tomcat教程"><span class="nav-number">2.</span> <span class="nav-text">stop  一台CentOS7同时启动两个Tomcat教程</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="云晴"
+      src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/logo1.jpg">
+  <p class="site-author-name" itemprop="name">云晴</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kangqing" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kangqing" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/yunqing_71" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;yunqing_71" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-external-link"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yunqing_71@163.com" title="E-Mail → mailto:yunqing_71@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/yunqing-98" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;yunqing-98" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-fw fa-external-link"></i>知乎</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener external nofollow noreferrer" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<div>
+    <strong style="color:red">欢迎订阅本站</strong>
+    <img width=110px height=110px src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/weixingongzhonghao.jpg"/>
+</dic>
+<div style="padding-top:20px">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener external nofollow noreferrer" target="_blank">津ICP备20001588号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">云晴</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">138k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:50</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-ribbon@1/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'lIk2gGNugY8zCgwtqt303RVa-gzGzoHsz',
+      appKey     : 'uyHwBgO9UcmCYIUdzciDj6Wv',
+      placeholder: "匿名也可以留言哦0.0",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/linkcard.js"></script>
+</body>
+</html>
