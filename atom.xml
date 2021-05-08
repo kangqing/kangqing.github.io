@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>黑白问道</title>
+  
+  <subtitle>贩卖快乐！</subtitle>
+  <link href="http://www.yunqing.xyz/atom.xml" rel="self"/>
+  
+  <link href="http://www.yunqing.xyz/"/>
+  <updated>2021-05-08T13:22:00.495Z</updated>
+  <id>http://www.yunqing.xyz/</id>
+  
+  <author>
+    <name>云晴</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Git常用命令系列</title>
+    <link href="http://www.yunqing.xyz/article/e65492dc.html"/>
+    <id>http://www.yunqing.xyz/article/e65492dc.html</id>
+    <published>2021-05-08T13:15:42.000Z</published>
+    <updated>2021-05-08T13:22:00.495Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;Git 后悔药，指的是我们操作本地代码之后想要恢复之前的代码，所需要做的一系列操作，好像是做事后悔了，想要吃后悔药一样，生活中虽没有后悔药，但是 git 的世界中是存在的哦！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;系列一：add-之前，也就是还没有添加到暂存区之前&quot;&gt;&lt;a href=&quot;#系列一：add-之前，也就是还没有添加到暂存区之前&quot; class=&quot;headerlink&quot; title=&quot;系列一：add 之前，也就是还没有添加到暂存区之前&quot;&gt;&lt;/a&gt;系列一：add 之前，也就是还没有添加到暂存区之前&lt;/h2&gt;&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# 注意跟切换分支不要搞混了，这个有两个横线，放弃对单个文件的修改&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; checkout -- filename
+
+&lt;span class=&quot;token comment&quot;&gt;# 放弃对所有文件的修改&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; checkout &lt;span class=&quot;token builtin class-name&quot;&gt;.&lt;/span&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;</summary>
+    
+    
+    
+    
+    <category term="git" scheme="http://www.yunqing.xyz/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JDK新特性</title>
+    <link href="http://www.yunqing.xyz/article/286fffa8.html"/>
+    <id>http://www.yunqing.xyz/article/286fffa8.html</id>
+    <published>2021-02-03T14:08:42.000Z</published>
+    <updated>2021-02-03T14:32:21.855Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;JDK-新特性&quot;&gt;&lt;a href=&quot;#JDK-新特性&quot; class=&quot;headerlink&quot; title=&quot;JDK 新特性&quot;&gt;&lt;/a&gt;JDK 新特性&lt;/h1&gt;&lt;p&gt;Oracle 对 Java 8 的官方支持时间持续到 2020 年 12</summary>
+        
+      
+    
+    
+    
+    
+    <category term="java基础" scheme="http://www.yunqing.xyz/tags/java%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx学习笔记</title>
+    <link href="http://www.yunqing.xyz/article/f5398568.html"/>
+    <id>http://www.yunqing.xyz/article/f5398568.html</id>
+    <published>2020-11-03T13:43:55.000Z</published>
+    <updated>2020-11-05T14:57:50.867Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;1.什么是Nginx？&lt;br&gt;Nginx是一个高性能的HTTP反向代理服务器，特点是占用内存小，并发能力强。Nginx是专为性能优化而开发的，性能是其最重要的考量，实现上非常注重效率，能经受高负载的考验，有报告表明能支持高达50000个并发连接数。&lt;br&gt;&lt;strong&gt;详细介绍见&lt;/strong&gt; &lt;a href=&quot;https://lnmp.org/nginx.html&quot;&gt;https://lnmp.org/nginx.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;2.什么是反向代理？&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="nginx" scheme="http://www.yunqing.xyz/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>git&amp;github</title>
+    <link href="http://www.yunqing.xyz/article/76b8d906.html"/>
+    <id>http://www.yunqing.xyz/article/76b8d906.html</id>
+    <published>2020-10-12T09:53:10.000Z</published>
+    <updated>2020-10-19T13:48:59.439Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;基本配置&quot;&gt;&lt;a href=&quot;#基本配置&quot; class=&quot;headerlink&quot; title=&quot;基本配置&quot;&gt;&lt;/a&gt;基本配置&lt;/h2&gt;&lt;pre class=&quot;line-numbers language-bash&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="git" scheme="http://www.yunqing.xyz/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker结合jenkins完成快捷打包部署</title>
+    <link href="http://www.yunqing.xyz/article/bf74aa2b.html"/>
+    <id>http://www.yunqing.xyz/article/bf74aa2b.html</id>
+    <published>2020-09-29T22:47:29.000Z</published>
+    <updated>2020-10-01T05:22:10.683Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;安装jenkins&quot;&gt;&lt;a href=&quot;#安装jenkins&quot; class=&quot;headerlink&quot; title=&quot;安装jenkins&quot;&gt;&lt;/a&gt;安装jenkins&lt;/h2&gt;&lt;p&gt;我这里选择的是docker方式安装，根据官方建议使用的额镜像是&lt;code&gt;jenkinsci/blueocean&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;建议使用的Docker映像是&lt;a href=&quot;https://hub.docker.com/r/jenkinsci/blueocean/&quot;&gt;&lt;code&gt;jenkinsci/blueocean&lt;/code&gt; image&lt;/a&gt;(来自 the &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Docker Hub repository&lt;/a&gt;)。 该镜像包含当前的&lt;a href=&quot;https://www.jenkins.io/download&quot;&gt;长期支持 (LTS) 的Jenkins版本&lt;/a&gt; （可以投入使用） ，捆绑了所有Blue Ocean插件和功能。这意味着你不需要单独安装Blue Ocean插件。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;拉取镜像&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;docker pull jenkinsci/blueocean&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;</summary>
+    
+    
+    
+    
+    <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+    <category term="docker" scheme="http://www.yunqing.xyz/tags/docker/"/>
+    
+    <category term="jenkins" scheme="http://www.yunqing.xyz/tags/jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何理解MySQL事务的隔离级别</title>
+    <link href="http://www.yunqing.xyz/article/32904982.html"/>
+    <id>http://www.yunqing.xyz/article/32904982.html</id>
+    <published>2020-09-27T12:06:04.000Z</published>
+    <updated>2020-09-27T12:27:37.465Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;如何理解MySQL事务的隔离级别&quot;&gt;&lt;a href=&quot;#如何理解MySQL事务的隔离级别&quot; class=&quot;headerlink&quot; title=&quot;如何理解MySQL事务的隔离级别&quot;&gt;&lt;/a&gt;如何理解MySQL事务的隔离级别&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;读未提交（READ UNCOMMITTED）&lt;/li&gt;
+&lt;li&gt;读已提交（READ COMMITTED）&lt;/li&gt;
+&lt;li&gt;可重复读（REPEATABLE READ）&lt;/li&gt;
+&lt;li&gt;可串行化（SERIALIZABLE）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;MySQL的默认事务的隔离级别是**&lt;code&gt;可重复读&lt;/code&gt;**&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    
+    <category term="mysql" scheme="http://www.yunqing.xyz/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Swagger2自动生成API接口文档</title>
+    <link href="http://www.yunqing.xyz/article/e985a034.html"/>
+    <id>http://www.yunqing.xyz/article/e985a034.html</id>
+    <published>2020-09-23T13:32:52.000Z</published>
+    <updated>2020-09-23T13:44:04.088Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;#一、为什么使用Swagger2&lt;br&gt;当下很多公司都采取前后端分离的开发模式，前端和后端的工作由不同的工程师完成。在这种开发模式下，维持一份及时更新且完整的 Rest API 文档将会极大的提高我们的工作效率。传统意义上的文档都是后端开发人员手动编写的，相信大家也都知道这种方式很难保证文档的及时性，这种文档久而久之也就会失去其参考意义，反而还会加大我们的沟通成本。而 Swagger 给我们提供了一个全新的维护 API 文档的方式，下面我们就来了解一下它的优点：&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="swagger2" scheme="http://www.yunqing.xyz/tags/swagger2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>POI导出到Excel文档</title>
+    <link href="http://www.yunqing.xyz/article/4b6abea5.html"/>
+    <id>http://www.yunqing.xyz/article/4b6abea5.html</id>
+    <published>2020-09-23T13:29:55.000Z</published>
+    <updated>2020-09-23T13:44:04.083Z</updated>
+    
+    
+    <summary type="html">&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;String fileName = ExcelUtil
+                .encodeFilename( &quot;questionManage&quot; + CommonUtils.dateFormat(new Date(), &quot;yyyyMMdd&quot;) + &quot;.xlsx&quot;, request);
+        response.setContentType(&quot;application/octet-stream;charset=iso-8859-1&quot;);
+        response.setHeader(&quot;Content-Disposition&quot;, &quot;attachment;filename=&quot; + fileName);
+        // 客户端不缓存
+        response.addHeader(&quot;Pargam&quot;, &quot;no-cache&quot;);
+        response.addHeader(&quot;Cache-Control&quot;, &quot;no-cache&quot;);&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;</summary>
+    
+    
+    
+    
+    <category term="POI导出" scheme="http://www.yunqing.xyz/tags/POI%E5%AF%BC%E5%87%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux能ping通windows，windows不能ping通linux</title>
+    <link href="http://www.yunqing.xyz/article/98271ffd.html"/>
+    <id>http://www.yunqing.xyz/article/98271ffd.html</id>
+    <published>2020-09-22T23:24:49.000Z</published>
+    <updated>2020-09-22T23:27:55.576Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh-root-ip连接linux报错22端口超时。&quot;&gt;&lt;a href=&quot;#主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh-root-ip连接linux报错22端口超时。&quot; class=&quot;headerlink&quot; title=&quot;主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh root@ip连接linux报错22端口超时。&quot;&gt;&lt;/a&gt;主要是解决Linux能ping通windows，windows不能ping通linux，这种情况下使用ssh root@ip连接linux报错22端口超时。&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;虚拟机设置的网络适配器选择NAT模式&lt;br&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/22-linux-01.png&quot; alt=&quot;image.png&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    
+    <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 配置国内阿里yum源、docker配置阿里加速镜像</title>
+    <link href="http://www.yunqing.xyz/article/9b813418.html"/>
+    <id>http://www.yunqing.xyz/article/9b813418.html</id>
+    <published>2020-09-22T23:20:49.000Z</published>
+    <updated>2020-09-22T23:27:55.561Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;#yum配置阿里镜像源&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;访问这个阿里镜像站，点击centos&lt;br&gt;&lt;a href=&quot;https://developer.aliyun.com/mirror&quot;&gt;https://developer.aliyun.com/mirror&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-yum-01.png&quot; alt=&quot;image.png&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    
+    <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+    <category term="docker" scheme="http://www.yunqing.xyz/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux安装jdk、Tomcat、maven、nginx、mysql、git、redis</title>
+    <link href="http://www.yunqing.xyz/article/3e12f736.html"/>
+    <id>http://www.yunqing.xyz/article/3e12f736.html</id>
+    <published>2020-09-22T23:13:44.000Z</published>
+    <updated>2020-09-22T23:27:55.565Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;##Linux版本:阿里云镜像仓库的CentOS7&lt;br&gt;&lt;a href=&quot;https://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1908.iso&quot;&gt;CentOS-7-x86_64-DVD-1908.iso&lt;/a&gt;&lt;br&gt;###安装配置jdk&lt;br&gt;首先检查是否安装过jdk&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;rpm -qa | grep jdk&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果有则删除,XXX为上面命令查到的结果，按个删除&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;yum remove XXX&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;</summary>
+    
+    
+    
+    
+    <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>你了解类的加载机制吗？</title>
+    <link href="http://www.yunqing.xyz/article/744a60f8.html"/>
+    <id>http://www.yunqing.xyz/article/744a60f8.html</id>
+    <published>2020-09-22T22:27:59.000Z</published>
+    <updated>2020-09-22T23:27:55.595Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;定义：当程序主动使用某个类时，如果该类还没被加载到内存中，那么系统会通过加载、连接、初始化这三个步骤对该类进行初始化，JVM通常将会连续完成这三个步骤，所以一般情况下这三个步骤统称为类的加载。&lt;/p&gt;
+&lt;p&gt;实际上类的加载就是将类的class文件读进内存，并为之创建一个java.lang.Class对象。&lt;/p&gt;
+&lt;h3 id=&quot;类的初始化&quot;&gt;&lt;a href=&quot;#类的初始化&quot; class=&quot;headerlink&quot; title=&quot;类的初始化&quot;&gt;&lt;/a&gt;类的初始化&lt;/h3&gt;&lt;p&gt;当类被加载之后，系统会生成一个对应的Class文件，接着进入连接阶段，连接阶段负责把类的二进制数据合并到JRE中。之后进入类的初始化阶段，初始化阶段JVM负责对类进行初始化，主要是对类变量进行初始化，两种方式对类变量进行初始化①声明类变量时指定初始化值②是用静态代码块指定初始化值。&lt;/p&gt;
+&lt;p&gt;类的初始化包含以下几个步骤：&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="java基础" scheme="http://www.yunqing.xyz/tags/java%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Callable和Future</title>
+    <link href="http://www.yunqing.xyz/article/a7c279ec.html"/>
+    <id>http://www.yunqing.xyz/article/a7c279ec.html</id>
+    <published>2020-09-22T22:22:31.000Z</published>
+    <updated>2020-09-22T23:27:55.585Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在之前的&lt;a href=&quot;http://mp.weixin.qq.com/s?__biz=MzAxODkwMTM2Mg==&amp;amp;mid=2247483733&amp;amp;idx=2&amp;amp;sn=9944140574c0e6a65e7214bdcf12bd05&amp;amp;chksm=9bce7148acb9f85ee0e6adf6294113ebc8f83a34ea7bfac41a6563009e87c23b13059cbefad1&amp;amp;scene=21#wechat_redirect&quot;&gt;这篇文章&lt;/a&gt;我讲了Runable来定义线程中执行的任务，但是有个缺点，不能带返回值，今天就讲如何执行带返回值的线程中任务。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Callable&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/23-callable-01.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="多线程" scheme="http://www.yunqing.xyz/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring Security密码认证源码级讲解</title>
+    <link href="http://www.yunqing.xyz/article/96adc5df.html"/>
+    <id>http://www.yunqing.xyz/article/96adc5df.html</id>
+    <published>2020-09-22T15:22:04.000Z</published>
+    <updated>2020-09-22T22:18:33.189Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;本文根据我的项目进行Security密码认证的源码级别讲解，我们将通过localhost:9090访问来开始进行Debug说明，我已经在源码中打了很多个端点，基本能讲到Security用户名密码认证的全部流程，主要是给自己加深印象，其次分享给大家，如果讲解过程中有什么错误，也请大家不吝指正，谢谢！代码基于springboot2.2.1、security5、jdk8、mysql8.0、maven构建。&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    
+    <category term="spring security" scheme="http://www.yunqing.xyz/tags/spring-security/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux vim注释高亮显示</title>
+    <link href="http://www.yunqing.xyz/article/e05daab5.html"/>
+    <id>http://www.yunqing.xyz/article/e05daab5.html</id>
+    <published>2020-09-22T13:22:04.000Z</published>
+    <updated>2020-09-22T22:14:59.059Z</updated>
+    
+    
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;首先解决没有vim命令：&lt;br&gt;把yum切换成清华大学的yum源 &lt;a href=&quot;https://mirrors.cnnic.cn/help/centos/&quot;&gt;https://mirrors.cnnic.cn/help/centos/&lt;/a&gt;&lt;br&gt;然后执行&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;rpm -qa | grep vim
+yum install -y vim*&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;&lt;/ul&gt;</summary>
+    
+    
+    
+    
+    <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Centos7 yum 出现could not retrieve mirrorlist解决方案</title>
+    <link href="http://www.yunqing.xyz/article/22212fda.html"/>
+    <id>http://www.yunqing.xyz/article/22212fda.html</id>
+    <published>2020-09-22T13:06:04.000Z</published>
+    <updated>2020-09-22T22:12:54.668Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案&quot;&gt;&lt;a href=&quot;#Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案&quot; class=&quot;headerlink&quot; title=&quot;Centos7 yum 出现could not retrieve mirrorlist 最终解决方案&quot;&gt;&lt;/a&gt;Centos7 yum 出现could not retrieve mirrorlist 最终解决方案&lt;/h3&gt;&lt;p&gt;首先遇到这个问题是因为安装centos7之后想看ip,用到命令&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;ifconfig&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;返回没有这个命令&lt;br&gt;然后想安装net-tools以得到ifconfig命令执行：&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;yum install net-tools&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后安装不成功报错could not retrieve mirrorlist ….&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS7防火墙端口设置</title>
+    <link href="http://www.yunqing.xyz/article/1be30850.html"/>
+    <id>http://www.yunqing.xyz/article/1be30850.html</id>
+    <published>2020-09-22T13:02:04.000Z</published>
+    <updated>2020-09-29T23:05:57.209Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#centos7</summary>
+        
+      
+    
+    
+    
+    
+    <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>结合Hutool的Money类处理业务中的金钱</title>
+    <link href="http://www.yunqing.xyz/article/4b82ae0a.html"/>
+    <id>http://www.yunqing.xyz/article/4b82ae0a.html</id>
+    <published>2020-09-18T12:34:12.000Z</published>
+    <updated>2020-09-18T13:45:20.296Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;货币类中封装了货币金额和币种。目前金额在内部是long类型表示， 单位是所属币种的最小货币单位（对人民币是分）。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;目前，货币实现了以下主要功能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;支持货币对象与double(float)/long(int)/String/BigDecimal之间相互转换。&lt;/li&gt;
+&lt;li&gt;货币类在运算中提供与JDK中的BigDecimal类似的运算接口， BigDecimal的运算接口支持任意指定精度的运算功能，能够支持各种 可能的财务规则。&lt;/li&gt;
+&lt;li&gt;货币类在运算中也提供一组简单运算接口，使用这组运算接口，则在 精度处理上使用缺省的处理规则。&lt;/li&gt;
+&lt;li&gt;推荐使用Money，不建议直接使用BigDecimal的原因之一在于， 使用BigDecimal，同样金额和币种的货币使用BigDecimal存在多种可能 的表示，例如：new BigDecimal(“10.5”)与new BigDecimal(“10.50”) 不相等，因为scale不等。使得Money类，同样金额和币种的货币只有 一种表示方式，new Money(“10.5”)和new Money(“10.50”)应该是相等的。&lt;/li&gt;
+&lt;li&gt;不推荐直接使用BigDecimal的另一原因在于， BigDecimal是Immutable， 一旦创建就不可更改，对BigDecimal进行任意运算都会生成一个新的 BigDecimal对象，因此对于大批量统计的性能不够满意。Money类是 mutable的，对大批量统计提供较好的支持。&lt;/li&gt;
+&lt;li&gt;提供基本的格式化功能。&lt;/li&gt;
+&lt;li&gt;Money类中不包含与业务相关的统计功能和格式化功能。业务相关的功能 建议使用utility类来实现。&lt;/li&gt;
+&lt;li&gt;Money类实现了Serializable接口，支持作为远程调用的参数和返回值。&lt;/li&gt;
+&lt;li&gt;Money类实现了equals和hashCode方法。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    
+    <category term="mybatis plus" scheme="http://www.yunqing.xyz/tags/mybatis-plus/"/>
+    
+    <category term="hutool" scheme="http://www.yunqing.xyz/tags/hutool/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker搭建私有gitlab仓库</title>
+    <link href="http://www.yunqing.xyz/article/56db5bfb.html"/>
+    <id>http://www.yunqing.xyz/article/56db5bfb.html</id>
+    <published>2020-09-18T12:31:05.000Z</published>
+    <updated>2020-09-18T13:11:06.907Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;docker在centos安装教程：&quot;&gt;&lt;a href=&quot;#docker在centos安装教程：&quot; class=&quot;headerlink&quot; title=&quot;docker在centos安装教程：&quot;&gt;&lt;/a&gt;docker在centos安装教程：&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/install/linux/docker-ce/centos/&quot;&gt;官方教程：https://docs.docker.com/install/linux/docker-ce/centos/&lt;/a&gt;&lt;br&gt;1.查询是否安装过&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-shell&quot; data-language=&quot;shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;yum list installed &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;grep&lt;/span&gt; docker&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;2.卸载旧版本&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-shell&quot; data-language=&quot;shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; yum -y remove docker &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+                  docker-client &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+                  docker-client-latest &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+                  docker-common &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+                  docker-latest &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+                  docker-latest-logrotate &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+                  docker-logrotate &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+                  docker-engine&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;</summary>
+    
+    
+    
+    
+    <category term="docker" scheme="http://www.yunqing.xyz/tags/docker/"/>
+    
+    <category term="git" scheme="http://www.yunqing.xyz/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用gogs搭建git服务</title>
+    <link href="http://www.yunqing.xyz/article/70f8610.html"/>
+    <id>http://www.yunqing.xyz/article/70f8610.html</id>
+    <published>2020-09-15T22:08:26.000Z</published>
+    <updated>2020-09-18T13:10:40.209Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;a href=&quot;https://gogs.io/&quot;&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/16-gogs-01.png&quot; alt=&quot;图1&quot;&gt;&lt;/a&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="docker" scheme="http://www.yunqing.xyz/tags/docker/"/>
+    
+    <category term="git" scheme="http://www.yunqing.xyz/tags/git/"/>
+    
+  </entry>
+  
+</feed>
