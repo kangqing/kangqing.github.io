@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Docker安装redis, java,git,spring,springboot,mybatis,mysql,docker,开发,编程,程序员,程序猿,python">
+    <meta name="keywords" content="MySQL递归查询, java,git,spring,springboot,mybatis,mysql,docker,开发,编程,程序员,程序猿,python">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Docker安装redis | 黑白问道</title>
+    <title>MySQL递归查询 | 黑白问道</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -365,7 +365,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Docker安装redis</h1>
+                    <h1 class="description center-align post-title">MySQL递归查询</h1>
                 </div>
             </div>
         </div>
@@ -481,8 +481,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/docker/">
-                                <span class="chip bg-color">docker</span>
+                            <a href="/tags/mysql/">
+                                <span class="chip bg-color">mysql</span>
                             </a>
                         
                     </div>
@@ -497,21 +497,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-09-02
+                    2021-08-02
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-09-18
+                    2021-08-02
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    718
+                    706
                 </div>
                 
 
@@ -541,64 +541,53 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="直接用中间大佬给的那条命令即可"><a href="#直接用中间大佬给的那条命令即可" class="headerlink" title="直接用中间大佬给的那条命令即可"></a>直接用中间大佬给的那条命令即可</h3><ul>
-<li><p>拉取redis镜像</p>
-<pre class="line-numbers language-none"><code class="language-none">docker pull redis<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
-<li><p>从官网获取 <a target="_blank" rel="noopener" href="http://download.redis.io/redis-stable/redis.conf">redis.conf</a> 配置文件,放到挂载目录/usr/local/docker/redis/redis.conf并修改以下前2项。</p>
-</li>
-<li><p>注意下面3项：</p>
-<pre class="line-numbers language-none"><code class="language-none">bind 127.0.0.1 #注释掉这部分，因为不注释掉的话限制redis只能本地访问
-protected-mode no #改成no, 默认yes开启保护模式，限制为只能本地访问，所以改成no
-daemonize no #不修改，就用默认no值，如果改为yes意为以守护进程方式启动，可后台运行，除非kill进程（可选），改为yes会使配置文件方式启动redis失败，所以不修改<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<a id="more"></a>
-</li>
-<li><p>docker启动redis</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run -p <span class="token number">6379</span>:6379 --name redis -v /usr/local/docker/redis/redis.conf:/etc/redis/redis.conf -v /usr/local/docker/redis/data:/data -d redis redis-server /etc/redis/redis.conf --appendonly <span class="token function">yes</span>
+                <pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 递归查询 id = 2 的所有子级菜单, m.parent_id = '2',则不包括 id = 2 那条， 如果包括 m.id = `2`
+with recursive tmp AS (
+    select m.* from menu_resource m where m.parent_id = '2'
+    union all
+    select menu.* from menu_resource menu inner join tmp t on t.id = menu.parent_id
+) select * from tmp;
 
-<span class="token comment">#*************大佬给的方法，不用配置redis.config************************</span>
-docker run -d --privileged<span class="token operator">=</span>true --restart<span class="token operator">=</span>always -p <span class="token number">6379</span>:6379 -v /usr/local/docker/redis/data:/data --name redis redis:latest redis-server --appendonly <span class="token function">yes</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
-<li><p>解释：</p>
-<blockquote>
-<p>-p 6379:6379 映射本地6379端口 ：容器6379端口<br>–name redis 给容器命名redis<br>-v /usr/local/docker/redis/redis.conf:/etc/redis/redis.conf 挂载目录，冒号前是本地linux目录，冒号后是容器内目录<br>-d redis 表示后台启动redis<br>redis-server /etc/redis/redis.conf  以配置文件启动redis，加载容器内的conf文件，最终找到的是挂载的目录/usr/local/docker/redis/redis.conf<br>–appendonly yes 开启redis 持久化</p>
-</blockquote>
-</li>
-</ul>
-<ul>
-<li><p>查看容器运行状况</p>
-<pre class="line-numbers language-none"><code class="language-none">docker ps -a<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-redis-1.png" alt="图1"></p>
-</li>
-<li><p>使用 docker exec -it redis /bin/bash进入redis</p>
-</li>
-<li><p>使用 redis-cli 可以测试连接<br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202009/02-docker-redis-2.png" alt="图2"></p>
-</li>
-</ul>
-<p>#记录遇到的错误</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#docker ps</span>
-查看容器状态的时候redis的状态一直是restarting一直重启
-<span class="token comment">#查看redis的日志</span>
-docker logs redis
-<span class="token comment">#发现这么一行Bad file format reading the append only file: make a backup of your AOF file, then use ./redis-check-aof --fix &lt;filename&gt;，理解的意思是aof文件损坏，想了一下原因，昨晚更新windows了...八成这个原因</span>
-<span class="token comment">#解决办法：直接删除容器，删除镜像，重新下载镜像重启</span>
-docker stop redis
-docker <span class="token function">rm</span> redis
-docker rmi redis:latest
-docker pull redis
-docker run -d --privileged<span class="token operator">=</span>true --restart<span class="token operator">=</span>always -p <span class="token number">6379</span>:6379 -v d:<span class="token punctuation">\</span>docker<span class="token punctuation">\</span>redis<span class="token punctuation">\</span>data:/data --name redis redis:latest redis-server --appendonly <span class="token function">yes</span>
-<span class="token comment">#注意要删除d:/docker/redis/data目录下的aof文件，估计只删除这个文件重新run容器就行，但是没再尝试</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#创建容器的时候报错WARNING: IPv4 forwarding is disabled. Networking will not work.</span>
-<span class="token comment">#这个错导致连接不上redis，但是在容器内部docker exec -it redis bash     redis-cli能够使用</span>
-<span class="token comment">#我启动redis容器的命令</span>
-docker run -d --privileged<span class="token operator">=</span>true --restart<span class="token operator">=</span>always -p <span class="token number">6379</span>:6379 -v /usr/docker/redis/data:/data --name redis redis:latest redis-server --appendonly <span class="token function">yes</span>
-<span class="token comment">#解决办法</span>
-<span class="token function">vim</span>  /usr/lib/sysctl.d/00-system.conf
-<span class="token comment">#添加下面这行</span>
-net.ipv4.ip_forward<span class="token operator">=</span><span class="token number">1</span>
-<span class="token comment">#重启network</span>
-systemctl restart network
-<span class="token comment">#删除错误的重启重新执行启动redis的命令</span>
-docker stop redis
-docker <span class="token function">rm</span> redis<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+-- 递归查询 id = 2 的所有父级菜单
+with recursive tmp AS (
+    select m.* from menu_resource m where m.id = '2'
+    union all
+    select menu.* from menu_resource menu inner join tmp t on t.parent_id = menu.id
+) select * from tmp;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<a id="more"></a>
+
+<h2 id="SQL生成脚本"><a href="#SQL生成脚本" class="headerlink" title="SQL生成脚本"></a>SQL生成脚本</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create table menu_resource
+(
+    id          bigint auto_increment
+        primary key,
+    parent_id   bigint                             null comment '父节点id',
+    name        varchar(32)                        null comment '节点名称',
+    method      varchar(20)                        null comment '方法（get、post等）',
+    url         varchar(255)                       null comment '访问地址',
+    icon        varchar(255)                       null comment '图标样式',
+    status      int                                null comment '状态：0-禁用，1-启用',
+    type        int                                null comment '类型：01=菜单， 02=按钮',
+    grades      int                                null comment '层级',
+    seq         int                                null comment '排序号',
+    version     bigint                             null comment '乐观锁版本号',
+    del_code    int                                null comment '逻辑删除',
+    create_time datetime default CURRENT_TIMESTAMP null comment '创建时间',
+    update_time datetime                           null comment '修改时间'
+)
+    comment '菜单权限表' charset = utf8;
+
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (1, 0, '首页', null, '', null, 1, 1, 1, null, null, 0, '2019-07-20 15:58:07', null);
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (2, 1, '系统管理', null, null, null, 1, 1, 1, null, null, 0, '2019-07-20 15:58:48', null);
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (3, 2, '用户管理', null, null, null, 1, 1, 2, null, null, 0, '2019-07-20 15:59:09', null);
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (4, 2, '角色管理', null, null, null, 1, 1, 2, null, null, 0, '2019-07-20 15:59:21', null);
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (10, 3, '新增用户', 'POST', '/user/add', null, 1, 2, 3, null, null, 0, '2019-07-20 15:59:54', null);
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (11, 3, '删除用户', 'DELETE', '/user/delete', null, 1, 2, 3, null, null, 0, '2019-07-20 16:00:15', null);
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (12, 3, '查询用户', 'GET', '/user/list', null, 1, 2, 3, null, null, 0, '2019-07-20 16:01:23', null);
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (13, 1, '查询Hello', 'GET', '/hello', null, 1, 2, 3, null, null, 0, '2021-01-07 22:14:06', null);
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (14, 1, '操作日志管理', 'GET', '/sys_oper_log', null, 1, 2, 3, null, null, 0, '2021-01-11 13:42:51', null);
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (15, 2, '操作日志分页查询', 'GET', '/sys_oper_log/list', null, 1, 2, 3, null, null, 0, '2021-01-11 13:47:25', null);
+INSERT INTO mall.menu_resource (id, parent_id, name, method, url, icon, status, type, grades, seq, version, del_code, create_time, update_time) VALUES (16, 2, '导出操作日志', 'GET', '/sys_oper_log/export', null, 1, 2, 3, null, null, 0, '2021-01-11 13:48:10', null);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -624,7 +613,7 @@ docker <span class="token function">rm</span> redis<span aria-hidden="true" clas
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://www.yunqing.xyz/article/e5086296.html">http://www.yunqing.xyz/article/e5086296.html</a>
+                    <a href="http://www.yunqing.xyz/article/fb13700a.html">http://www.yunqing.xyz/article/fb13700a.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -662,8 +651,8 @@ docker <span class="token function">rm</span> redis<span aria-hidden="true" clas
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/docker/">
-                                    <span class="chip bg-color">docker</span>
+                                <a href="/tags/mysql/">
+                                    <span class="chip bg-color">mysql</span>
                                 </a>
                             
                         </div>
@@ -1101,29 +1090,32 @@ docker <span class="token function">rm</span> redis<span aria-hidden="true" clas
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/article/42812f47.html">
+                <a href="/article/fb13700a.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="MySQL查询性能优化">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="MySQL递归查询">
                         
-                        <span class="card-title">MySQL查询性能优化</span>
+                        <span class="card-title">MySQL递归查询</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            1.为什么查询速度会慢？​        首先对一个查询的生命周期简化分析，大致可以按照顺序分为：从客户端、到服务器、然后在服务器进行解析、生成执行计划、执行、并返回结果给客户端。其中的执行可以被认为是查询的生命周期中最重要的部分，执行主要
+                            -- 递归查询 id = 2 的所有子级菜单, m.parent_id = '2',则不包括 id = 2 那条， 如果包括 m.id = `2`
+with recursive tmp AS (
+    select m.* from me
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-05
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -1132,6 +1124,7 @@ docker <span class="token function">rm</span> redis<span aria-hidden="true" clas
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -1150,25 +1143,27 @@ docker <span class="token function">rm</span> redis<span aria-hidden="true" clas
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/article/b0daabb.html">
+                <a href="/article/e65492dc.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Docker安装mysql">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Git常用命令系列">
                         
-                        <span class="card-title">Docker安装mysql</span>
+                        <span class="card-title">Git常用命令系列</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
                             
-去dockerhub 查找mysql的镜像版本https://hub.docker.com/
+Git 后悔药，指的是我们操作本地代码之后想要恢复之前的代码，所需要做的一系列操作，好像是做事后悔了，想要吃后悔药一样，生活中虽没有后悔药，但是 git 的世界中是存在的哦！
+
+系列一：add 之前，也就是还没有添加到暂存区之前# 注意跟
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-08
                             </span>
                         <span class="publish-author">
                             
@@ -1181,8 +1176,8 @@ docker <span class="token function">rm</span> redis<span aria-hidden="true" clas
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/docker/">
-                        <span class="chip bg-color">docker</span>
+                    <a href="/tags/git/">
+                        <span class="chip bg-color">git</span>
                     </a>
                     
                 </div>
