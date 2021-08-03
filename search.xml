@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>排查线上 CPU 100%的问题</title>
+      <link href="article/36ced1f.html"/>
+      <url>article/36ced1f.html</url>
+      
+        <content type="html"><![CDATA[<ol><li><p>首先使用 <code>top</code>命令查看出 CPU 100% 的进程 PID</p></li><li><p>查看当前 PID 的进程中有哪些线程</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看当前 pid 中有哪些线程</span><span class="token function">top</span> -Hp 进程pid<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><a id="more"></a><p>然后找到 CPU 较高的线程的 PID 然后转换成 16 进制</p></li><li><p>转换成 16 进制</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 把 pid 转换成 16 进制</span><span class="token builtin class-name">printf</span> <span class="token string">'%x'</span> 线程pid<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li><li><p>使用 <code>jstack</code> 生成 进程 pid 到一个文件 x.txt 中去</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">jstack 进程pid <span class="token operator">&gt;</span> x.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li><li><p>打开文件，搜索 16 进制的值</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 打开生成的文件</span><span class="token function">vim</span> x.txt<span class="token comment"># 搜索生成的16进制数据</span>/16进制<span class="token comment"># 往下看，找到业务代码哪行导致的</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ol>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MySQL递归查询</title>
       <link href="article/fb13700a.html"/>
       <url>article/fb13700a.html</url>

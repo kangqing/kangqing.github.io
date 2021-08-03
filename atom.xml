@@ -6,7 +6,7 @@
   <link href="http://www.yunqing.xyz/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2021-08-02T13:42:28.732Z</updated>
+  <updated>2021-08-03T13:29:07.750Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -17,11 +17,33 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>排查线上 CPU 100%的问题</title>
+    <link href="http://www.yunqing.xyz/article/36ced1f.html"/>
+    <id>http://www.yunqing.xyz/article/36ced1f.html</id>
+    <published>2021-08-03T13:22:48.000Z</published>
+    <updated>2021-08-03T13:29:07.750Z</updated>
+    
+    
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;首先使用 &lt;code&gt;top&lt;/code&gt;命令查看出 CPU 100% 的进程 PID&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;查看当前 PID 的进程中有哪些线程&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# 查看当前 pid 中有哪些线程&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;top&lt;/span&gt; -Hp 进程pid&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;&lt;/ol&gt;</summary>
+    
+    
+    
+    
+    <category term="面试" scheme="http://www.yunqing.xyz/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
     <title>MySQL递归查询</title>
     <link href="http://www.yunqing.xyz/article/fb13700a.html"/>
     <id>http://www.yunqing.xyz/article/fb13700a.html</id>
     <published>2021-08-02T13:25:03.000Z</published>
-    <updated>2021-08-02T13:42:28.732Z</updated>
+    <updated>2021-08-02T13:44:44.419Z</updated>
     
     
     <summary type="html">&lt;pre class=&quot;line-numbers language-mysql&quot; data-language=&quot;mysql&quot;&gt;&lt;code class=&quot;language-mysql&quot;&gt;-- 递归查询 id = 2 的所有子级菜单, m.parent_id = &#39;2&#39;,则不包括 id = 2 那条， 如果包括 m.id = `2`
@@ -440,35 +462,6 @@ yum install -y vim*&lt;span aria-hidden=&quot;true&quot; class=&quot;line-number
     <category term="mybatis plus" scheme="http://www.yunqing.xyz/tags/mybatis-plus/"/>
     
     <category term="hutool" scheme="http://www.yunqing.xyz/tags/hutool/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker搭建私有gitlab仓库</title>
-    <link href="http://www.yunqing.xyz/article/56db5bfb.html"/>
-    <id>http://www.yunqing.xyz/article/56db5bfb.html</id>
-    <published>2020-09-18T12:31:05.000Z</published>
-    <updated>2020-09-18T13:11:06.907Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;docker在centos安装教程：&quot;&gt;&lt;a href=&quot;#docker在centos安装教程：&quot; class=&quot;headerlink&quot; title=&quot;docker在centos安装教程：&quot;&gt;&lt;/a&gt;docker在centos安装教程：&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/install/linux/docker-ce/centos/&quot;&gt;官方教程：https://docs.docker.com/install/linux/docker-ce/centos/&lt;/a&gt;&lt;br&gt;1.查询是否安装过&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-shell&quot; data-language=&quot;shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;yum list installed &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;grep&lt;/span&gt; docker&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;2.卸载旧版本&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-shell&quot; data-language=&quot;shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; yum -y remove docker &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
-                  docker-client &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
-                  docker-client-latest &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
-                  docker-common &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
-                  docker-latest &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
-                  docker-latest-logrotate &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
-                  docker-logrotate &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
-                  docker-engine&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;</summary>
-    
-    
-    
-    
-    <category term="docker" scheme="http://www.yunqing.xyz/tags/docker/"/>
-    
-    <category term="git" scheme="http://www.yunqing.xyz/tags/git/"/>
     
   </entry>
   

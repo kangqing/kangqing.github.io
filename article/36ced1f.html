@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="mysql必知必会读书笔记（1）, java,git,spring,springboot,mybatis,mysql,docker,开发,编程,程序员,程序猿,python">
+    <meta name="keywords" content="排查线上 CPU 100%的问题, java,git,spring,springboot,mybatis,mysql,docker,开发,编程,程序员,程序猿,python">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>mysql必知必会读书笔记（1） | 黑白问道</title>
+    <title>排查线上 CPU 100%的问题 | 黑白问道</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -360,12 +360,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">mysql必知必会读书笔记（1）</h1>
+                    <h1 class="description center-align post-title">排查线上 CPU 100%的问题</h1>
                 </div>
             </div>
         </div>
@@ -481,8 +481,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/mysql/">
-                                <span class="chip bg-color">mysql</span>
+                            <a href="/tags/%E9%9D%A2%E8%AF%95/">
+                                <span class="chip bg-color">面试</span>
                             </a>
                         
                     </div>
@@ -497,28 +497,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-03-22
+                    2021-08-03
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-03-29
+                    2021-08-03
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    157
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    1 分
                 </div>
                 
 
@@ -541,122 +541,29 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="mysql命令行客户端登录"><a href="#mysql命令行客户端登录" class="headerlink" title="mysql命令行客户端登录"></a>mysql命令行客户端登录</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 默认端口3306 主机本地localhost</span>
-mysql <span class="token operator">-</span>u root <span class="token operator">-</span>p
-<span class="token comment">-- 写全的话</span>
-mysql <span class="token operator">-</span>u root <span class="token operator">-</span>p <span class="token operator">-</span>h localhost <span class="token operator">-</span>P <span class="token number">3307</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+                <ol>
+<li><p>首先使用 <code>top</code>命令查看出 CPU 100% 的进程 PID</p>
+</li>
+<li><p>查看当前 PID 的进程中有哪些线程</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看当前 pid 中有哪些线程</span>
+<span class="token function">top</span> -Hp 进程pid<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <a id="more"></a>
 
-<blockquote>
-<p>解释一下：-u 用户名为root     -p 密码待输入   -h 主机名localhost   -P 注意大写P ，意思是端口号3307</p>
-</blockquote>
-<h2 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 展示所有数据库
-show databases;
--- 使用数据库
-use kls;
--- 展示数据库中所有的表
-show tables;
--- 展示person表的字段
-show columns from person;
--- show columns from 可以用describe代替
-describe person;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-1.png" alt="22-3d0503d6-1.png"></p>
-<blockquote>
-<p>mysql不区分大小写，但是为了易于阅读，开发人员经常把关键字大写，列和表名小写。(反正我是遵守不了，看大写的英文难受)</p>
-</blockquote>
-<h2 id="检索不同的行"><a href="#检索不同的行" class="headerlink" title="检索不同的行"></a>检索不同的行</h2><blockquote>
-<p>如果查询学生表的年龄，每个年龄只出现一次</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select distinct age from student;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h2 id="限制返回结果数"><a href="#限制返回结果数" class="headerlink" title="限制返回结果数"></a>限制返回结果数</h2><blockquote>
-<p>limit 5 表示从第1行开始，返回5条记录</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select name from student limit 5;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<blockquote>
-<p>limit 5, 5表示从第5行开始，返回5条数据</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select name from student limit 5,5;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<blockquote>
-<p>另一种写法：limit 2 offset 3  代表从行3（也就是第四行）开始取2行</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select name from student limit 2 offset 3;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h2 id="排序order-by"><a href="#排序order-by" class="headerlink" title="排序order by"></a>排序order by</h2><blockquote>
-<p>注意：order by 不仅可以按照检索的列排序，用非检索的列排序也是合法的。<br>注意：在多个列进行降序排序，需要在每个列指定DESC关键字，因为不指定的都默认ASC升序排列。<br>注意：order by 和 limit连用的时候，limit放在order by的后面。</p>
-</blockquote>
-<h2 id="between操作符"><a href="#between操作符" class="headerlink" title="between操作符"></a>between操作符</h2><blockquote>
-<p>用来检索在两个数值之间的记录，例如查询在18-20岁之间的学生</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select * from student t where t.age between 18 and 20;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h2 id="通配符-和"><a href="#通配符-和" class="headerlink" title="通配符 % 和 _"></a>通配符 % 和 _</h2><blockquote>
-<p>mysql使用LIKE操作符跟%通配符进行模糊搜索。</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 查询姓李的学生
-select name from student where name like '李%';<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<blockquote>
-<p>①注意：根据mysql的配置方式，搜索是要区分大小写的，例如模糊搜索中’jet%’是不会匹配JetPack的。<br>②注意’%jet%’表示匹配任何位置包括jet文本的值，而不论他之前或之后出现什么值。<br>③%表示搜索模式指定位置有0到多个任意字符。<br>④注意通配符_下划线，只能匹配1个字符，不能多也不能少。<br>⑤%不会匹配NULL行，即使是like ‘%’也不会匹配NULL行。<br>⑥通配符一般处理时间比其他搜索要长，其他操作能达到尽量不要使用，使用通配符时候除非有绝对必要，否则不要把通配符用在开始处，因为放在开始处，搜索会最慢。</p>
-</blockquote>
-<h2 id="使用mysql正则表达式"><a href="#使用mysql正则表达式" class="headerlink" title="使用mysql正则表达式"></a>使用mysql正则表达式</h2><blockquote>
-<p>mysql使用 <code>regexp</code> 表示后面跟的内容为正则表达式</p>
-<p>###基本字符匹配</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 正则匹配姓名为小刚的行
-select * from student where name regexp '小刚'；<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<blockquote>
-<p><code>. </code>点号是正则表达式中的一个重要字符，表示匹配任意一个字符。</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 正则匹配0前面有任意一个字符的行,例如10、20等
-select * from student where age regexp '.0';<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<blockquote>
-<p>正则表达式不区分大小写，为了区分大小写可以使用binary关键字</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 下面例子则匹配jet 1000 或者 jet a000等
-... where name regexp binary 'jet .000';<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h3 id="进行OR匹配"><a href="#进行OR匹配" class="headerlink" title="进行OR匹配"></a>进行OR匹配</h3><blockquote>
-<p>正则表达式利用<code>|</code>来表示or操作</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 匹配名字中包括小明或小李的
-... where name regexp '小明|小李';<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h3 id="匹配几个字符之一"><a href="#匹配几个字符之一" class="headerlink" title="匹配几个字符之一"></a>匹配几个字符之一</h3><blockquote>
-<p>使用<code>[]</code>包裹的字符，表示匹配其中之一</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 正则匹配包括1或2或3的学号
-... where id regexp '[123]'；<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<blockquote>
-<p>解释：<code> [123]</code>是<code>[1|2|3]</code>的缩写，其实<code>[]</code>就是正则中另一种形式的or语句，为什么加<code>[]</code>是因为如下：</p>
-</blockquote>
-<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-2.png" alt="22-3d0503d6-2.png"></p>
-<blockquote>
-<p>字符集合也可以被否定，即匹配除指定字符之外的任何东西，即<code>[^123]</code>匹配除123这三个字符之外的任何东西。</p>
-</blockquote>
-<h2 id="正则匹配范围"><a href="#正则匹配范围" class="headerlink" title="正则匹配范围"></a>正则匹配范围</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 例如
-[0-9]
-[a-z]
-[1-3]
-[a-e]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 将会匹配到1 Ton anvil 或 .5 ton anvil等 
-... where name regexp '[1-5] Ton'；<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h3 id="正则匹配特殊字符-转义"><a href="#正则匹配特殊字符-转义" class="headerlink" title="正则匹配特殊字符\\转义"></a>正则匹配特殊字符<code>\\</code>转义</h3><blockquote>
-<p>如果需要转义<code>\</code>本身，需要使用<code>\\\</code><br>为什么正则表达式用两个<code>\\</code>呢？因为在mysql当中，mysql自己解释一个，正则表达式库解释一个。</p>
-</blockquote>
-<h3 id="正则匹配字符类"><a href="#正则匹配字符类" class="headerlink" title="正则匹配字符类"></a>正则匹配字符类</h3><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-3.png" alt="22-3d0503d6-3"></p>
-<h3 id="正则匹配多个实例"><a href="#正则匹配多个实例" class="headerlink" title="正则匹配多个实例"></a>正则匹配多个实例</h3><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-4.png" alt="22-3d0503d6-4"><br><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-5.png" alt="22-3d0503d6-5.png"></p>
-<h3 id="正则定位符"><a href="#正则定位符" class="headerlink" title="正则定位符"></a>正则定位符</h3><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-6.png" alt="22-3d0503d6-6"></p>
-<blockquote>
-<p>例如我们想搜索一个以<code>.</code>点号或者数字开头的结果，怎么办？<br>[0-9\.]是不行的，因为他会在文本的任意位置开始查找，解决办法就是使用定位符^从文本开始位置查找。</p>
-</blockquote>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">... where name regexp '^[0-9\\.]';<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h2 id="创建计算字段"><a href="#创建计算字段" class="headerlink" title="创建计算字段"></a>创建计算字段</h2><blockquote>
-<p>简单来说，数据库中存储的结果不是我们最终想要的，例如省市区分别存储在3列中，我们需要连在一列显示。</p>
-</blockquote>
-<h3 id="拼接字段Concat-函数"><a href="#拼接字段Concat-函数" class="headerlink" title="拼接字段Concat()函数"></a>拼接字段Concat()函数</h3><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 将first_name、 ( 、last_name、和）这四个字符串拼接起来，例如: 李 （小明）
-select Concat(first_name, ' (' , last_name, ')') as name from student;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h3 id="Trim-、LTrim-、RTrim-函数"><a href="#Trim-、LTrim-、RTrim-函数" class="headerlink" title="Trim()、LTrim() 、RTrim()函数"></a><code>Trim()</code>、<code>LTrim()</code> 、<code>RTrim()</code>函数</h3><blockquote>
-<p>分别为去掉左右两边的空格、去掉左边空格、去掉右边空格</p>
-</blockquote>
-<h2 id="如何测试计算？"><a href="#如何测试计算？" class="headerlink" title="如何测试计算？"></a>如何测试计算？</h2><p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-7.png" alt="22-3d0503d6-7"></p>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 例如查询当前时间
-select  now();<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p><img src="https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202003/22-3d0503d6-8.png" alt="22-3d0503d6-8"></p>
+<p>然后找到 CPU 较高的线程的 PID 然后转换成 16 进制</p>
+</li>
+<li><p>转换成 16 进制</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 把 pid 转换成 16 进制</span>
+<span class="token builtin class-name">printf</span> <span class="token string">'%x'</span> 线程pid<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li><p>使用 <code>jstack</code> 生成 进程 pid 到一个文件 x.txt 中去</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">jstack 进程pid <span class="token operator">&gt;</span> x.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>打开文件，搜索 16 进制的值</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 打开生成的文件</span>
+<span class="token function">vim</span> x.txt
+<span class="token comment"># 搜索生成的16进制数据</span>
+/16进制
+<span class="token comment"># 往下看，找到业务代码哪行导致的</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
 
                 
             </div>
@@ -683,7 +590,7 @@ select  now();<span aria-hidden="true" class="line-numbers-rows"><span></span><s
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://www.yunqing.xyz/article/3d0503d6.html">http://www.yunqing.xyz/article/3d0503d6.html</a>
+                    <a href="http://www.yunqing.xyz/article/36ced1f.html">http://www.yunqing.xyz/article/36ced1f.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -721,8 +628,8 @@ select  now();<span aria-hidden="true" class="line-numbers-rows"><span></span><s
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/mysql/">
-                                    <span class="chip bg-color">mysql</span>
+                                <a href="/tags/%E9%9D%A2%E8%AF%95/">
+                                    <span class="chip bg-color">面试</span>
                                 </a>
                             
                         </div>
@@ -1160,29 +1067,83 @@ select  now();<span aria-hidden="true" class="line-numbers-rows"><span></span><s
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/article/2fb0ac38.html">
+                <a href="/article/36ced1f.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="mysql必知必会读书笔记（2）">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="排查线上 CPU 100%的问题">
                         
-                        <span class="card-title">mysql必知必会读书笔记（2）</span>
+                        <span class="card-title">排查线上 CPU 100%的问题</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            11.使用数据处理函数常用的文本处理函数
+                            
+首先使用 top命令查看出 CPU 100% 的进程 PID
+
+查看当前 PID 的进程中有哪些线程
+# 查看当前 pid 中有哪些线程
+top -Hp 进程pid
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-22
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            云晴
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%9D%A2%E8%AF%95/">
+                        <span class="chip bg-color">面试</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/article/fb13700a.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="MySQL递归查询">
+                        
+                        <span class="card-title">MySQL递归查询</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            -- 递归查询 id = 2 的所有子级菜单, m.parent_id = '2',则不包括 id = 2 那条， 如果包括 m.id = `2`
+with recursive tmp AS (
+    select m.* from me
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -1198,43 +1159,6 @@ select  now();<span aria-hidden="true" class="line-numbers-rows"><span></span><s
                         <span class="chip bg-color">mysql</span>
                     </a>
                     
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/article/4a17b156.html">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
-                        
-                        <span class="card-title">Hello World</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-17
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            云晴
-                            
-                        </span>
-                    </div>
                 </div>
                 
             </div>
