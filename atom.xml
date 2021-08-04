@@ -6,7 +6,7 @@
   <link href="http://www.yunqing.xyz/atom.xml" rel="self"/>
   
   <link href="http://www.yunqing.xyz/"/>
-  <updated>2021-08-03T13:29:07.750Z</updated>
+  <updated>2021-08-04T12:37:55.642Z</updated>
   <id>http://www.yunqing.xyz/</id>
   
   <author>
@@ -17,11 +17,81 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>排查线上 Java 服务器内存飙升问题</title>
+    <link href="http://www.yunqing.xyz/article/4e90fbf1.html"/>
+    <id>http://www.yunqing.xyz/article/4e90fbf1.html</id>
+    <published>2021-08-04T12:25:46.000Z</published>
+    <updated>2021-08-04T12:37:55.642Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;首先 top 命令查看， shift + m 进行排序，查看 java 进程 % MEM 内存占用最高的 pid&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;通过下面的命令导出 pid 进程 堆的转存文件&lt;/p&gt;
+&lt;pre class=&quot;line-numbers</summary>
+        
+      
+    
+    
+    
+    
+    <category term="mysql" scheme="http://www.yunqing.xyz/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>获取springboot 的环境</title>
+    <link href="http://www.yunqing.xyz/article/adfe398e.html"/>
+    <id>http://www.yunqing.xyz/article/adfe398e.html</id>
+    <published>2021-08-04T12:25:01.000Z</published>
+    <updated>2021-08-04T12:33:29.880Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;即获取 application.yml中配置的spring.profiles.active=dev的值&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-java&quot; data-language=&quot;java&quot;&gt;&lt;code</summary>
+        
+      
+    
+    
+    
+    
+    <category term="mysql" scheme="http://www.yunqing.xyz/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL的三种日志</title>
+    <link href="http://www.yunqing.xyz/article/86d5e85.html"/>
+    <id>http://www.yunqing.xyz/article/86d5e85.html</id>
+    <published>2021-08-04T12:24:27.000Z</published>
+    <updated>2021-08-04T12:28:13.974Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;MySQL的在文件中是如何存储的？&lt;/p&gt;
+&lt;p&gt;答：数据是存在&lt;code&gt;页&lt;/code&gt;中的，&lt;code&gt;一页&lt;/code&gt;的大小是 16kb, 一个表由很多的&lt;code&gt;页&lt;/code&gt;组成，这些&lt;code&gt;页&lt;/code&gt;组成了 &lt;code&gt;B+树&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://yunqing-img.oss-cn-beijing.aliyuncs.com/hexo/article/202107/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1c3R6dzA3,size_16,color_FFFFFF,t_70.png&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="mysql" scheme="http://www.yunqing.xyz/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
     <title>排查线上 CPU 100%的问题</title>
     <link href="http://www.yunqing.xyz/article/36ced1f.html"/>
     <id>http://www.yunqing.xyz/article/36ced1f.html</id>
     <published>2021-08-03T13:22:48.000Z</published>
-    <updated>2021-08-03T13:29:07.750Z</updated>
+    <updated>2021-08-03T13:33:36.405Z</updated>
     
     
     <summary type="html">&lt;ol&gt;
@@ -383,85 +453,6 @@ yum install -y vim*&lt;span aria-hidden=&quot;true&quot; class=&quot;line-number
     
     
     <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Centos7 yum 出现could not retrieve mirrorlist解决方案</title>
-    <link href="http://www.yunqing.xyz/article/22212fda.html"/>
-    <id>http://www.yunqing.xyz/article/22212fda.html</id>
-    <published>2020-09-22T13:06:04.000Z</published>
-    <updated>2020-09-22T22:12:54.668Z</updated>
-    
-    
-    <summary type="html">&lt;h3 id=&quot;Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案&quot;&gt;&lt;a href=&quot;#Centos7-yum-出现could-not-retrieve-mirrorlist-最终解决方案&quot; class=&quot;headerlink&quot; title=&quot;Centos7 yum 出现could not retrieve mirrorlist 最终解决方案&quot;&gt;&lt;/a&gt;Centos7 yum 出现could not retrieve mirrorlist 最终解决方案&lt;/h3&gt;&lt;p&gt;首先遇到这个问题是因为安装centos7之后想看ip,用到命令&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;ifconfig&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;返回没有这个命令&lt;br&gt;然后想安装net-tools以得到ifconfig命令执行：&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;yum install net-tools&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;然后安装不成功报错could not retrieve mirrorlist ….&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS7防火墙端口设置</title>
-    <link href="http://www.yunqing.xyz/article/1be30850.html"/>
-    <id>http://www.yunqing.xyz/article/1be30850.html</id>
-    <published>2020-09-22T13:02:04.000Z</published>
-    <updated>2020-09-29T23:05:57.209Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;pre class=&quot;line-numbers language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;#centos7</summary>
-        
-      
-    
-    
-    
-    
-    <category term="linux" scheme="http://www.yunqing.xyz/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>结合Hutool的Money类处理业务中的金钱</title>
-    <link href="http://www.yunqing.xyz/article/4b82ae0a.html"/>
-    <id>http://www.yunqing.xyz/article/4b82ae0a.html</id>
-    <published>2020-09-18T12:34:12.000Z</published>
-    <updated>2020-09-18T13:45:20.296Z</updated>
-    
-    
-    <summary type="html">&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;货币类中封装了货币金额和币种。目前金额在内部是long类型表示， 单位是所属币种的最小货币单位（对人民币是分）。&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;blockquote&gt;
-&lt;p&gt;目前，货币实现了以下主要功能：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;支持货币对象与double(float)/long(int)/String/BigDecimal之间相互转换。&lt;/li&gt;
-&lt;li&gt;货币类在运算中提供与JDK中的BigDecimal类似的运算接口， BigDecimal的运算接口支持任意指定精度的运算功能，能够支持各种 可能的财务规则。&lt;/li&gt;
-&lt;li&gt;货币类在运算中也提供一组简单运算接口，使用这组运算接口，则在 精度处理上使用缺省的处理规则。&lt;/li&gt;
-&lt;li&gt;推荐使用Money，不建议直接使用BigDecimal的原因之一在于， 使用BigDecimal，同样金额和币种的货币使用BigDecimal存在多种可能 的表示，例如：new BigDecimal(“10.5”)与new BigDecimal(“10.50”) 不相等，因为scale不等。使得Money类，同样金额和币种的货币只有 一种表示方式，new Money(“10.5”)和new Money(“10.50”)应该是相等的。&lt;/li&gt;
-&lt;li&gt;不推荐直接使用BigDecimal的另一原因在于， BigDecimal是Immutable， 一旦创建就不可更改，对BigDecimal进行任意运算都会生成一个新的 BigDecimal对象，因此对于大批量统计的性能不够满意。Money类是 mutable的，对大批量统计提供较好的支持。&lt;/li&gt;
-&lt;li&gt;提供基本的格式化功能。&lt;/li&gt;
-&lt;li&gt;Money类中不包含与业务相关的统计功能和格式化功能。业务相关的功能 建议使用utility类来实现。&lt;/li&gt;
-&lt;li&gt;Money类实现了Serializable接口，支持作为远程调用的参数和返回值。&lt;/li&gt;
-&lt;li&gt;Money类实现了equals和hashCode方法。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    
-    <category term="mybatis plus" scheme="http://www.yunqing.xyz/tags/mybatis-plus/"/>
-    
-    <category term="hutool" scheme="http://www.yunqing.xyz/tags/hutool/"/>
     
   </entry>
   
